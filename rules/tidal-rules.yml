@@ -1,0 +1,62 @@
+extends:
+  - "@stoplight/spectral:oas"
+rules:
+  tidal-server-base-uri:
+    description: TIDAL servers must use the openapi.tidal.com/v2 production base.
+    severity: error
+    given: $.servers[*].url
+    then:
+      function: pattern
+      functionOptions:
+        match: "^https://openapi\\.tidal\\.com/v2$"
+  tidal-jsonapi-content-type:
+    description: TIDAL is JSON:API; request and response media types should be application/vnd.api+json.
+    severity: warn
+    given: $.paths.*.*.requestBody.content
+    then:
+      function: truthy
+      field: "application/vnd.api+json"
+  tidal-jsonapi-response-content-type:
+    description: JSON:API response media type should be advertised.
+    severity: warn
+    given: $.paths.*.*.responses[?(@property.match(/^2/))].content
+    then:
+      function: truthy
+      field: "application/vnd.api+json"
+  tidal-resource-camel-case:
+    description: TIDAL paths use camelCase resource names (albums, userCollections, trackManifests).
+    severity: warn
+    given: $.paths
+    then:
+      function: pattern
+      field: "@key"
+      functionOptions:
+        match: "^/[a-z][a-zA-Z]*(/.*)?$"
+  tidal-operation-summary:
+    description: Every operation should have a single-line summary.
+    severity: warn
+    given: $.paths.*.*
+    then:
+      field: summary
+      function: truthy
+  tidal-cursor-pagination:
+    description: TIDAL collection endpoints expose JSON:API page[cursor] pagination — list operations should
+      accept a page[cursor] query parameter.
+    severity: info
+    given: $.paths[?(@property.match(/^\/[a-zA-Z]+$/))].get.parameters[*]
+    then:
+      function: truthy
+  tidal-security-required:
+    description: All TIDAL operations require an OAuth 2.0 bearer token.
+    severity: error
+    given: $.paths.*.*
+    then:
+      field: security
+      function: truthy
+  tidal-include-relationship-naming:
+    description: JSON:API include query parameters must reference camelCase relationship names.
+    severity: info
+    given: $.paths.*.get.parameters[?(@.name == "include")]
+    then:
+      field: schema
+      function: truthy

@@ -1,0 +1,932 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Playlists API — Playlists
+  description: TIDAL Playlists API — Playlists. 17 operations. Self-contained Naftiko capability covering one TIDAL business
+    surface.
+  tags:
+  - TIDAL
+  - Music
+  - playlists
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: playlists-playlists
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Playlists API — Playlists business capability. Self-contained, no shared references.
+    resources:
+    - name: playlists
+      path: /playlists
+      operations:
+      - name: getplaylists
+        method: GET
+        description: Get multiple playlists.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: sort
+          in: query
+          type: array
+          description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles,
+            collaborators, coverArt, items, ow'
+          required: false
+        - name: filter[id]
+          in: query
+          type: array
+          description: Playlist id (e.g. `550e8400-e29b-41d4-a716-446655440000`)
+          required: false
+        - name: filter[owners.id]
+          in: query
+          type: array
+          description: User id. Use `me` for the authenticated user
+          required: false
+      - name: postplaylists
+        method: POST
+        description: Create single playlist.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: playlists-id
+      path: /playlists/{id}
+      operations:
+      - name: deleteplaylists
+        method: DELETE
+        description: Delete single playlist.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+      - name: getplaylists
+        method: GET
+        description: Get single playlist.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles,
+            collaborators, coverArt, items, ow'
+          required: false
+      - name: patchplaylists
+        method: PATCH
+        description: Update single playlist.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: playlists-id-relationships-collaboratorProfiles
+      path: /playlists/{id}/relationships/collaboratorProfiles
+      operations:
+      - name: deleteplaylists
+        method: DELETE
+        description: Delete from collaboratorProfiles relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+      - name: getplaylists
+        method: GET
+        description: Get collaboratorProfiles relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+      - name: postplaylists
+        method: POST
+        description: Add to collaboratorProfiles relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: playlists-id-relationships-collaborators
+      path: /playlists/{id}/relationships/collaborators
+      operations:
+      - name: getplaylists
+        method: GET
+        description: Get collaborators relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: collaborators'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: playlists-id-relationships-coverArt
+      path: /playlists/{id}/relationships/coverArt
+      operations:
+      - name: getplaylists
+        method: GET
+        description: Get coverArt relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: coverArt'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+      - name: patchplaylists
+        method: PATCH
+        description: Update coverArt relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: playlists-id-relationships-items
+      path: /playlists/{id}/relationships/items
+      operations:
+      - name: deleteplaylists
+        method: DELETE
+        description: Delete from items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+      - name: getplaylists
+        method: GET
+        description: Get items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+      - name: patchplaylists
+        method: PATCH
+        description: Update items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+      - name: postplaylists
+        method: POST
+        description: Add to items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: playlists-id-relationships-ownerProfiles
+      path: /playlists/{id}/relationships/ownerProfiles
+      operations:
+      - name: getplaylists
+        method: GET
+        description: Get ownerProfiles relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: ownerProfiles'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: playlists-id-relationships-owners
+      path: /playlists/{id}/relationships/owners
+      operations:
+      - name: getplaylists
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Playlist id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: playlists-playlists-rest
+    port: 8080
+    description: REST adapter for TIDAL Playlists API — Playlists. One Spectral-compliant resource per consumed operation,
+      prefixed with /v2.
+    resources:
+    - path: /v2/playlists
+      name: playlists
+      description: REST surface for playlists.
+      operations:
+      - method: GET
+        name: getplaylists
+        description: Get multiple playlists.
+        call: playlists-playlists.getplaylists
+        with:
+          page[cursor]: rest.query.page[cursor]
+          sort: rest.query.sort
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          filter[id]: rest.query.filter[id]
+          filter[owners.id]: rest.query.filter[owners.id]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postplaylists
+        description: Create single playlist.
+        call: playlists-playlists.postplaylists
+        with:
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/playlists/{id}
+      name: playlists-id
+      description: REST surface for playlists-id.
+      operations:
+      - method: DELETE
+        name: deleteplaylists
+        description: Delete single playlist.
+        call: playlists-playlists.deleteplaylists
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getplaylists
+        description: Get single playlist.
+        call: playlists-playlists.getplaylists
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchplaylists
+        description: Update single playlist.
+        call: playlists-playlists.patchplaylists
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/playlists/{id}/relationships/collaboratorProfiles
+      name: playlists-id-relationships-collaboratorProfiles
+      description: REST surface for playlists-id-relationships-collaboratorProfiles.
+      operations:
+      - method: DELETE
+        name: deleteplaylists
+        description: Delete from collaboratorProfiles relationship ("to-many").
+        call: playlists-playlists.deleteplaylists
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getplaylists
+        description: Get collaboratorProfiles relationship ("to-many").
+        call: playlists-playlists.getplaylists
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postplaylists
+        description: Add to collaboratorProfiles relationship ("to-many").
+        call: playlists-playlists.postplaylists
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/playlists/{id}/relationships/collaborators
+      name: playlists-id-relationships-collaborators
+      description: REST surface for playlists-id-relationships-collaborators.
+      operations:
+      - method: GET
+        name: getplaylists
+        description: Get collaborators relationship ("to-many").
+        call: playlists-playlists.getplaylists
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/playlists/{id}/relationships/coverArt
+      name: playlists-id-relationships-coverArt
+      description: REST surface for playlists-id-relationships-coverArt.
+      operations:
+      - method: GET
+        name: getplaylists
+        description: Get coverArt relationship ("to-many").
+        call: playlists-playlists.getplaylists
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchplaylists
+        description: Update coverArt relationship ("to-many").
+        call: playlists-playlists.patchplaylists
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/playlists/{id}/relationships/items
+      name: playlists-id-relationships-items
+      description: REST surface for playlists-id-relationships-items.
+      operations:
+      - method: DELETE
+        name: deleteplaylists
+        description: Delete from items relationship ("to-many").
+        call: playlists-playlists.deleteplaylists
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getplaylists
+        description: Get items relationship ("to-many").
+        call: playlists-playlists.getplaylists
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchplaylists
+        description: Update items relationship ("to-many").
+        call: playlists-playlists.patchplaylists
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postplaylists
+        description: Add to items relationship ("to-many").
+        call: playlists-playlists.postplaylists
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/playlists/{id}/relationships/ownerProfiles
+      name: playlists-id-relationships-ownerProfiles
+      description: REST surface for playlists-id-relationships-ownerProfiles.
+      operations:
+      - method: GET
+        name: getplaylists
+        description: Get ownerProfiles relationship ("to-many").
+        call: playlists-playlists.getplaylists
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/playlists/{id}/relationships/owners
+      name: playlists-id-relationships-owners
+      description: REST surface for playlists-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getplaylists
+        description: Get owners relationship ("to-many").
+        call: playlists-playlists.getplaylists
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: playlists-playlists-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Playlists API — Playlists. One tool per consumed operation.
+    tools:
+    - name: tidal-getplaylists
+      description: Get multiple playlists.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: playlists-playlists.getplaylists
+      with:
+        page[cursor]: tools.page[cursor]
+        sort: tools.sort
+        countryCode: tools.countryCode
+        include: tools.include
+        filter[id]: tools.filter[id]
+        filter[owners.id]: tools.filter[owners.id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postplaylists
+      description: Create single playlist.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: playlists-playlists.postplaylists
+      with:
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteplaylists
+      description: Delete single playlist.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: playlists-playlists.deleteplaylists
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getplaylists
+      description: Get single playlist.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: playlists-playlists.getplaylists
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-patchplaylists
+      description: Update single playlist.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: playlists-playlists.patchplaylists
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteplaylists
+      description: Delete from collaboratorProfiles relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: playlists-playlists.deleteplaylists
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getplaylists
+      description: Get collaboratorProfiles relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: playlists-playlists.getplaylists
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postplaylists
+      description: Add to collaboratorProfiles relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: playlists-playlists.postplaylists
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getplaylists
+      description: Get collaborators relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: playlists-playlists.getplaylists
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getplaylists
+      description: Get coverArt relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: playlists-playlists.getplaylists
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-patchplaylists
+      description: Update coverArt relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: playlists-playlists.patchplaylists
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteplaylists
+      description: Delete from items relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: playlists-playlists.deleteplaylists
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getplaylists
+      description: Get items relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: playlists-playlists.getplaylists
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-patchplaylists
+      description: Update items relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: playlists-playlists.patchplaylists
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postplaylists
+      description: Add to items relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: playlists-playlists.postplaylists
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getplaylists
+      description: Get ownerProfiles relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: playlists-playlists.getplaylists
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getplaylists
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: playlists-playlists.getplaylists
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.

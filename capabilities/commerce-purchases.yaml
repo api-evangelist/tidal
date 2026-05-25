@@ -1,0 +1,212 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Commerce API — Purchases
+  description: TIDAL Commerce API — Purchases. 3 operations. Self-contained Naftiko capability covering one TIDAL business
+    surface.
+  tags:
+  - TIDAL
+  - Music
+  - purchases
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: commerce-purchases
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Commerce API — Purchases business capability. Self-contained, no shared references.
+    resources:
+    - name: purchases
+      path: /purchases
+      operations:
+      - name: getpurchases
+        method: GET
+        description: Get multiple purchases.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners,
+            subject'
+          required: false
+        - name: filter[owners.id]
+          in: query
+          type: array
+          description: User id. Use `me` for the authenticated user
+          required: false
+        - name: filter[subject.type]
+          in: query
+          type: array
+          description: The type of purchased content (e.g. `albums`)
+          required: false
+    - name: purchases-id-relationships-owners
+      path: /purchases/{id}/relationships/owners
+      operations:
+      - name: getpurchases
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Purchase id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: purchases-id-relationships-subject
+      path: /purchases/{id}/relationships/subject
+      operations:
+      - name: getpurchases
+        method: GET
+        description: Get subject relationship ("to-one").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Purchase id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: subject'
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: commerce-purchases-rest
+    port: 8080
+    description: REST adapter for TIDAL Commerce API — Purchases. One Spectral-compliant resource per consumed operation,
+      prefixed with /v2.
+    resources:
+    - path: /v2/purchases
+      name: purchases
+      description: REST surface for purchases.
+      operations:
+      - method: GET
+        name: getpurchases
+        description: Get multiple purchases.
+        call: commerce-purchases.getpurchases
+        with:
+          page[cursor]: rest.query.page[cursor]
+          include: rest.query.include
+          filter[owners.id]: rest.query.filter[owners.id]
+          filter[subject.type]: rest.query.filter[subject.type]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/purchases/{id}/relationships/owners
+      name: purchases-id-relationships-owners
+      description: REST surface for purchases-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getpurchases
+        description: Get owners relationship ("to-many").
+        call: commerce-purchases.getpurchases
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/purchases/{id}/relationships/subject
+      name: purchases-id-relationships-subject
+      description: REST surface for purchases-id-relationships-subject.
+      operations:
+      - method: GET
+        name: getpurchases
+        description: Get subject relationship ("to-one").
+        call: commerce-purchases.getpurchases
+        with:
+          id: rest.path.id
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: commerce-purchases-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Commerce API — Purchases. One tool per consumed operation.
+    tools:
+    - name: tidal-getpurchases
+      description: Get multiple purchases.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: commerce-purchases.getpurchases
+      with:
+        page[cursor]: tools.page[cursor]
+        include: tools.include
+        filter[owners.id]: tools.filter[owners.id]
+        filter[subject.type]: tools.filter[subject.type]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getpurchases
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: commerce-purchases.getpurchases
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getpurchases
+      description: Get subject relationship ("to-one").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: commerce-purchases.getpurchases
+      with:
+        id: tools.id
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.

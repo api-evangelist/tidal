@@ -1,0 +1,351 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Users API — Terms
+  description: TIDAL Users API — Terms. 6 operations. Self-contained Naftiko capability covering one TIDAL business surface.
+  tags:
+  - TIDAL
+  - Music
+  - terms
+  - acceptedTerms
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: users-terms
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Users API — Terms business capability. Self-contained, no shared references.
+    resources:
+    - name: acceptedTerms
+      path: /acceptedTerms
+      operations:
+      - name: getacceptedterms
+        method: GET
+        description: Get multiple acceptedTerms.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners,
+            terms'
+          required: false
+        - name: filter[owners.id]
+          in: query
+          type: array
+          description: User id. Use `me` for the authenticated user
+          required: false
+        - name: filter[terms.isLatestVersion]
+          in: query
+          type: array
+          description: Filter by terms.isLatestVersion
+          required: false
+        - name: filter[terms.termsType]
+          in: query
+          type: array
+          description: 'One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. `DEVELOPER`)'
+          required: false
+      - name: postacceptedterms
+        method: POST
+        description: Create single acceptedTerm.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: acceptedTerms-id-relationships-owners
+      path: /acceptedTerms/{id}/relationships/owners
+      operations:
+      - name: getacceptedterms
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Accepted terms id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: acceptedTerms-id-relationships-terms
+      path: /acceptedTerms/{id}/relationships/terms
+      operations:
+      - name: getacceptedterms
+        method: GET
+        description: Get terms relationship ("to-one").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Accepted terms id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: terms'
+          required: false
+    - name: terms
+      path: /terms
+      operations:
+      - name: getterms
+        method: GET
+        description: Get multiple terms.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: filter[countryCode]
+          in: query
+          type: array
+          description: Filter by countryCode
+          required: false
+        - name: filter[id]
+          in: query
+          type: array
+          description: Terms id (e.g. `a468bee88def`)
+          required: false
+        - name: filter[isLatestVersion]
+          in: query
+          type: array
+          description: Filter by isLatestVersion
+          required: false
+        - name: filter[termsType]
+          in: query
+          type: array
+          description: 'One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. `DEVELOPER`)'
+          required: false
+    - name: terms-id
+      path: /terms/{id}
+      operations:
+      - name: getterms
+        method: GET
+        description: Get single term.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Terms id
+          required: true
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: users-terms-rest
+    port: 8080
+    description: REST adapter for TIDAL Users API — Terms. One Spectral-compliant resource per consumed operation, prefixed
+      with /v2.
+    resources:
+    - path: /v2/acceptedTerms
+      name: acceptedTerms
+      description: REST surface for acceptedTerms.
+      operations:
+      - method: GET
+        name: getacceptedterms
+        description: Get multiple acceptedTerms.
+        call: users-terms.getacceptedterms
+        with:
+          include: rest.query.include
+          filter[owners.id]: rest.query.filter[owners.id]
+          filter[terms.isLatestVersion]: rest.query.filter[terms.isLatestVersion]
+          filter[terms.termsType]: rest.query.filter[terms.termsType]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postacceptedterms
+        description: Create single acceptedTerm.
+        call: users-terms.postacceptedterms
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/acceptedTerms/{id}/relationships/owners
+      name: acceptedTerms-id-relationships-owners
+      description: REST surface for acceptedTerms-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getacceptedterms
+        description: Get owners relationship ("to-many").
+        call: users-terms.getacceptedterms
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/acceptedTerms/{id}/relationships/terms
+      name: acceptedTerms-id-relationships-terms
+      description: REST surface for acceptedTerms-id-relationships-terms.
+      operations:
+      - method: GET
+        name: getacceptedterms
+        description: Get terms relationship ("to-one").
+        call: users-terms.getacceptedterms
+        with:
+          id: rest.path.id
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/terms
+      name: terms
+      description: REST surface for terms.
+      operations:
+      - method: GET
+        name: getterms
+        description: Get multiple terms.
+        call: users-terms.getterms
+        with:
+          filter[countryCode]: rest.query.filter[countryCode]
+          filter[id]: rest.query.filter[id]
+          filter[isLatestVersion]: rest.query.filter[isLatestVersion]
+          filter[termsType]: rest.query.filter[termsType]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/terms/{id}
+      name: terms-id
+      description: REST surface for terms-id.
+      operations:
+      - method: GET
+        name: getterms
+        description: Get single term.
+        call: users-terms.getterms
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: users-terms-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Users API — Terms. One tool per consumed operation.
+    tools:
+    - name: tidal-getacceptedterms
+      description: Get multiple acceptedTerms.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-terms.getacceptedterms
+      with:
+        include: tools.include
+        filter[owners.id]: tools.filter[owners.id]
+        filter[terms.isLatestVersion]: tools.filter[terms.isLatestVersion]
+        filter[terms.termsType]: tools.filter[terms.termsType]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postacceptedterms
+      description: Create single acceptedTerm.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: users-terms.postacceptedterms
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getacceptedterms
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-terms.getacceptedterms
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getacceptedterms
+      description: Get terms relationship ("to-one").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-terms.getacceptedterms
+      with:
+        id: tools.id
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getterms
+      description: Get multiple terms.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-terms.getterms
+      with:
+        filter[countryCode]: tools.filter[countryCode]
+        filter[id]: tools.filter[id]
+        filter[isLatestVersion]: tools.filter[isLatestVersion]
+        filter[termsType]: tools.filter[termsType]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getterms
+      description: Get single term.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-terms.getterms
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.

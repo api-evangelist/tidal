@@ -1,0 +1,154 @@
+vocabulary: TIDAL
+version: '1.0'
+created: '2026-05-25'
+provider: TIDAL
+providerId: tidal
+description: Domain vocabulary for TIDAL's high-fidelity music streaming platform — catalog entities, playback,
+  collections, recommendations, social, commerce, and creator workflows. Mappings align with schema.org's
+  Music* hierarchy.
+namespaces:
+  schema: https://schema.org/
+  tidal: https://openapi.tidal.com/v2/
+  jsonapi: https://jsonapi.org/format/
+terms:
+  - name: Album
+    type: Entity
+    schemaOrg: schema:MusicAlbum
+    description: A TIDAL music release containing tracks and/or videos.
+  - name: Artist
+    type: Entity
+    schemaOrg: schema:MusicGroup
+    description: A performer or musical group represented in the TIDAL catalog.
+  - name: Track
+    type: Entity
+    schemaOrg: schema:MusicRecording
+    description: A single audio recording.
+  - name: Video
+    type: Entity
+    schemaOrg: schema:MusicVideoObject
+    description: A music video associated with an artist or album.
+  - name: Playlist
+    type: Entity
+    schemaOrg: schema:MusicPlaylist
+    description: An ordered collection of tracks and/or videos curated by a user, editor, or artist.
+  - name: Genre
+    type: Entity
+    schemaOrg: schema:MusicGenre
+    description: A genre classification applied to tracks, albums, and artists.
+  - name: Lyrics
+    type: Entity
+    schemaOrg: schema:lyrics
+    description: Time-aligned or static lyrics for a track.
+  - name: Credit
+    type: Entity
+    schemaOrg: schema:contributor
+    description: A credited contribution (composer, producer, engineer, performer, etc.) tied to a track.
+  - name: UserCollection
+    type: Entity
+    schemaOrg: schema:Collection
+    description: A user's My Collection containing saved albums, artists, tracks, videos, playlists, folders.
+  - name: Mix
+    type: Entity
+    schemaOrg: schema:MusicPlaylist
+    description: An algorithmically generated mix (Daily, Discovery, New Release, Offline).
+  - name: TrackManifest
+    type: Entity
+    description: A signed, opaque playback manifest (HLS or DASH) intended for consumption by the TIDAL
+      Player SDK only.
+  - name: AudioQuality
+    type: Concept
+    description: Quality tier for playback.
+    enum:
+      - LOW
+      - HIGH
+      - LOSSLESS
+      - HI_RES_LOSSLESS
+      - DOLBY_ATMOS
+      - SONY_360RA
+  - name: PlaylistType
+    type: Concept
+    description: Classification of a playlist's authorship.
+    enum:
+      - USER
+      - EDITORIAL
+      - ARTIST
+      - PODCAST
+  - name: Availability
+    type: Concept
+    description: Modes of availability for content in a market.
+    enum:
+      - STREAM
+      - DJ
+      - DOWNLOAD
+  - name: Privacy
+    type: Concept
+    description: Visibility setting for user-owned resources.
+    enum:
+      - PRIVATE
+      - PUBLIC
+      - UNLISTED
+  - name: AlbumType
+    type: Concept
+    enum:
+      - ALBUM
+      - EP
+      - SINGLE
+      - COMPILATION
+      - LIVE
+      - REMIX
+      - SOUNDTRACK
+      - PODCAST
+  - name: Scope
+    type: Concept
+    description: TIDAL OAuth 2.0 scopes.
+    enum:
+      - collection.read
+      - collection.write
+      - playlists.read
+      - playlists.write
+      - playback
+      - recommendations.read
+      - search.read
+      - search.write
+      - user.read
+      - entitlements.read
+  - name: AuthFlow
+    type: Concept
+    description: Supported OAuth 2.0 flows.
+    enum:
+      - authorization_code_pkce
+      - client_credentials
+  - name: ArtistClaim
+    type: Workflow
+    description: An artist's request to verify ownership of an artist profile on TIDAL.
+  - name: ContentClaim
+    type: Workflow
+    description: A content owner's assertion of rights over catalog items.
+  - name: Purchase
+    type: Workflow
+    schemaOrg: schema:Order
+    description: A direct fan purchase routed through the Commerce API.
+  - name: Share
+    type: Action
+    schemaOrg: schema:ShareAction
+    description: A share record linking a TIDAL resource to a sharing destination.
+  - name: Comment
+    type: Action
+    schemaOrg: schema:Comment
+  - name: Reaction
+    type: Action
+    schemaOrg: schema:ReactAction
+  - name: Appreciation
+    type: Action
+    description: A fan's appreciation (gratitude) directed at an artist.
+relationships:
+  - subject: Album
+    relations: [artists, items, genres, coverArt, providers, albumStatistics, owners, priceConfig, shares, similarAlbums, usageRules]
+  - subject: Artist
+    relations: [albums, tracks, videos, biography, roles, similarArtists, followers, following, owners, profileArt, radio, trackProviders]
+  - subject: Track
+    relations: [albums, artists, providers, genres, lyrics, credits, similarTracks, radio, trackStatistics, usageRules, owners]
+  - subject: Playlist
+    relations: [items, owners, coverArt]
+  - subject: UserCollection
+    relations: [userCollectionAlbums, userCollectionArtists, userCollectionPlaylists, userCollectionTracks, userCollectionVideos, userCollectionFolders, userCollectionSaveForLaters]

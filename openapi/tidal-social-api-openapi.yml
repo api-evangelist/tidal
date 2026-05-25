@@ -1,0 +1,6432 @@
+openapi: 3.0.1
+info:
+  title: TIDAL Social API
+  version: 1.10.14
+  description: 'Social and sharing features: shares, DSP sharing links, comments, reactions, and appreciations across albums,
+    artists, tracks, and playlists.'
+  x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
+servers:
+- url: https://openapi.tidal.com/v2
+  description: Production
+paths:
+  /appreciations:
+    post:
+      description: Creates a new appreciation.
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/AppreciationsCreateOperation_Payload'
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Appreciations_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Create single appreciation.
+      tags:
+      - appreciations
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /comments:
+    get:
+      description: Retrieves multiple comments by available filters, or without if applicable.
+      parameters:
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+        in: query
+        name: sort
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: createdAt
+            enum:
+            - createdAt
+            - -createdAt
+            - likeCount
+            - -likeCount
+            - replyCount
+            - -replyCount
+            - startTime
+            - -startTime
+            default: -createdAt
+            x-enum-varnames:
+            - CreatedAtAsc
+            - CreatedAtDesc
+            - LikeCountAsc
+            - LikeCountDesc
+            - ReplyCountAsc
+            - ReplyCountDesc
+            - StartTimeAsc
+            - StartTimeDesc
+      - description: 'Allows the client to customize which related resources should be returned. Available options: ownerProfiles,
+          owners, parentComment'
+        example: ownerProfiles
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: ownerProfiles
+      - description: Filter by parent comment ID to get replies (e.g. `550e8400-e29b-41d4-a716-446655440000`)
+        in: query
+        name: filter[parentComment.id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Filter by subject resource ID (e.g. `12345`)
+        in: query
+        name: filter[subject.id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Filter by subject resource type (e.g. `albums`)
+        in: query
+        name: filter[subject.type]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - albums
+            - tracks
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Comments_Multi_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE: []
+      summary: Get multiple comments.
+      tags:
+      - comments
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    post:
+      description: Creates a new comment.
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/CommentsCreateOperation_Payload'
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Comments_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Create single comment.
+      tags:
+      - comments
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /comments/{id}:
+    delete:
+      description: Deletes existing comment.
+      parameters:
+      - description: Comment Id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Delete single comment.
+      tags:
+      - comments
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    get:
+      description: Retrieves single comment by id.
+      parameters:
+      - description: Comment Id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: ownerProfiles,
+          owners, parentComment'
+        example: ownerProfiles
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: ownerProfiles
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Comments_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE: []
+      summary: Get single comment.
+      tags:
+      - comments
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    patch:
+      description: Updates existing comment.
+      parameters:
+      - description: Comment Id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/CommentsUpdateOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Update single comment.
+      tags:
+      - comments
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /comments/{id}/relationships/ownerProfiles:
+    get:
+      description: Retrieves ownerProfiles relationship.
+      parameters:
+      - description: Comment Id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: ownerProfiles'
+        example: ownerProfiles
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: ownerProfiles
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Comments_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE: []
+      summary: Get ownerProfiles relationship ("to-many").
+      tags:
+      - comments
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /comments/{id}/relationships/owners:
+    get:
+      description: Retrieves owners relationship.
+      parameters:
+      - description: Comment Id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Comments_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE: []
+      summary: Get owners relationship ("to-many").
+      tags:
+      - comments
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /comments/{id}/relationships/parentComment:
+    get:
+      description: Retrieves parentComment relationship.
+      parameters:
+      - description: Comment Id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: parentComment'
+        example: parentComment
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: parentComment
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Comments_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE: []
+      summary: Get parentComment relationship ("to-one").
+      tags:
+      - comments
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /dspSharingLinks:
+    get:
+      description: Retrieves multiple dspSharingLinks by available filters, or without if applicable.
+      parameters:
+      - description: 'Allows the client to customize which related resources should be returned. Available options: subject'
+        example: subject
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: subject
+      - description: The id of the subject resource
+        in: query
+        name: filter[subject.id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: The type of the subject resource (e.g., albums, tracks, artists) (e.g. `tracks`)
+        in: query
+        name: filter[subject.type]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - tracks
+            - albums
+            - artists
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/DspSharingLinks_Multi_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get multiple dspSharingLinks.
+      tags:
+      - dspSharingLinks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /dspSharingLinks/{id}/relationships/subject:
+    get:
+      description: Retrieves subject relationship.
+      parameters:
+      - description: DspSharingLinks Id
+        example: QUxCVU1TOjEyMzQ1
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: subject'
+        example: subject
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: subject
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/DspSharingLinks_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get subject relationship ("to-one").
+      tags:
+      - dspSharingLinks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /reactions:
+    get:
+      description: Retrieves multiple reactions by available filters, or without if applicable.
+      parameters:
+      - in: query
+        name: stats
+        required: false
+        schema:
+          type: string
+          enum:
+          - ALL
+          - COUNTS_BY_TYPE
+          - TOTAL_COUNT
+      - in: query
+        name: statsOnly
+        required: false
+        schema:
+          type: boolean
+      - in: query
+        name: viewerContext
+        required: false
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: ownerProfiles,
+          owners'
+        example: ownerProfiles
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: ownerProfiles
+      - description: "Filter by emoji (e.g. `\U0001F44D`)"
+        in: query
+        name: filter[emoji]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Filter by subject resource ID (e.g. `12345`)
+        in: query
+        name: filter[subject.id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Filter by subject resource type (e.g. `albums`)
+        in: query
+        name: filter[subject.type]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - albums
+            - tracks
+            - artists
+            - videos
+            - playlists
+            - comments
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Reactions_Multi_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE: []
+      summary: Get multiple reactions.
+      tags:
+      - reactions
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    post:
+      description: Creates a new reaction.
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/ReactionsCreateOperation_Payload'
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Reactions_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Create single reaction.
+      tags:
+      - reactions
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /reactions/{id}:
+    delete:
+      description: Deletes existing reaction.
+      parameters:
+      - description: Reaction Id
+        example: nejMcAhh5N8S3EQ4LaqysVdI0cZZ
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Delete single reaction.
+      tags:
+      - reactions
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /reactions/{id}/relationships/ownerProfiles:
+    get:
+      description: Retrieves ownerProfiles relationship.
+      parameters:
+      - description: Reaction Id
+        example: nejMcAhh5N8S3EQ4LaqysVdI0cZZ
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: ownerProfiles'
+        example: ownerProfiles
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: ownerProfiles
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Reactions_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE: []
+      summary: Get ownerProfiles relationship ("to-many").
+      tags:
+      - reactions
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /reactions/{id}/relationships/owners:
+    get:
+      description: Retrieves owners relationship.
+      parameters:
+      - description: Reaction Id
+        example: nejMcAhh5N8S3EQ4LaqysVdI0cZZ
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Reactions_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE: []
+      summary: Get owners relationship ("to-many").
+      tags:
+      - reactions
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /savedShares:
+    post:
+      description: Creates a new savedShare.
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/SavedSharesCreateOperation_Payload'
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SavedShares_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Create single savedShare.
+      tags:
+      - savedShares
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /shares:
+    get:
+      description: Retrieves multiple shares by available filters, or without if applicable.
+      parameters:
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners,
+          sharedResources'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: A share code (e.g. `xyz`)
+        in: query
+        name: filter[code]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: List of shares IDs (e.g. `a468bee88def`)
+        in: query
+        name: filter[id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Shares_Multi_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get multiple shares.
+      tags:
+      - shares
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    post:
+      description: Creates a new share.
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/SharesCreateOperation_Payload'
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Shares_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Create single share.
+      tags:
+      - shares
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /shares/{id}:
+    get:
+      description: Retrieves single share by id.
+      parameters:
+      - description: User share id
+        example: a468bee88def
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners,
+          sharedResources'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Shares_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get single share.
+      tags:
+      - shares
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /shares/{id}/relationships/owners:
+    get:
+      description: Retrieves owners relationship.
+      parameters:
+      - description: User share id
+        example: a468bee88def
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Shares_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get owners relationship ("to-many").
+      tags:
+      - shares
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /shares/{id}/relationships/sharedResources:
+    get:
+      description: Retrieves sharedResources relationship.
+      parameters:
+      - description: User share id
+        example: a468bee88def
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: sharedResources'
+        example: sharedResources
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: sharedResources
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Shares_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get sharedResources relationship ("to-many").
+      tags:
+      - shares
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+components:
+  schemas:
+    PlayQueues_Future_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayQueues_Future_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    StripeConnections_Attributes:
+      required:
+      - status
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Timestamp when the connection was created
+          format: date-time
+        externalLinks:
+          type: array
+          description: External links for Stripe connection
+          items:
+            $ref: '#/components/schemas/External_Link'
+        lastModifiedAt:
+          type: string
+          description: Timestamp when the connection was last modified
+          format: date-time
+        status:
+          minLength: 1
+          type: string
+          description: Current status of this Stripe connection
+          enum:
+          - PENDING_REQUIREMENTS
+          - UNDER_REVIEW
+          - ACCEPTED
+          - REJECTED
+          - SUSPENDED
+    VideoManifests_Attributes:
+      type: object
+      properties:
+        drmData:
+          $ref: '#/components/schemas/DrmData'
+        link:
+          $ref: '#/components/schemas/Link_Object'
+        previewReason:
+          type: string
+          description: Why a preview is served instead of the full video
+          enum:
+          - FULL_REQUIRES_SUBSCRIPTION
+          - FULL_REQUIRES_PURCHASE
+          - FULL_REQUIRES_HIGHER_ACCESS_TIER
+        videoPresentation:
+          type: string
+          description: Video presentation
+          enum:
+          - FULL
+          - PREVIEW
+    UserOfflineMixes_Attributes:
+      type: object
+    Users_Attributes:
+      required:
+      - country
+      - username
+      type: object
+      properties:
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          example: US
+        email:
+          type: string
+          description: email address
+          example: test@test.com
+        emailVerified:
+          type: boolean
+          description: Is the email verified
+          example: true
+        firstName:
+          type: string
+          description: Users first name
+          example: John
+        lastName:
+          type: string
+          description: Users last name
+          example: Rambo
+        nostrPublicKey:
+          type: string
+          description: Users nostr public key
+          example: e3fc3965800f9c729b483a2a7291f30e569fbf5ab91a6eef332f9e28a5e923dd
+        username:
+          type: string
+          description: user name
+          example: username
+    UserCollections_Playlists_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+    DrmData:
+      type: object
+      properties:
+        certificateUrl:
+          type: string
+        drmSystem:
+          type: string
+          enum:
+          - FAIRPLAY
+          - WIDEVINE
+        initData:
+          type: array
+          items:
+            type: string
+        licenseUrl:
+          type: string
+      description: DRM data. Absence implies no DRM.
+    UserCollections_Attributes:
+      type: object
+    UserCollections_Playlists_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollections_Playlists_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    Videos_Relationships:
+      properties:
+        albums:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        artists:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        credits:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        providers:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        replacement:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        similarVideos:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        suggestedVideos:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        thumbnailArt:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        usageRules:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    ProviderProductInfos_Relationships:
+      properties:
+        provider:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        subject:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    Installations_OfflineInventory_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Installations_OfflineInventory_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    CommentsCreateOperation_Payload_Data:
+      required:
+      - attributes
+      - relationships
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/CommentsCreateOperation_Payload_Data_Attributes'
+        relationships:
+          $ref: '#/components/schemas/CommentsCreateOperation_Payload_Data_Relationships'
+        type:
+          type: string
+          enum:
+          - comments
+    UserDataExportRequests_Attributes:
+      required:
+      - flowType
+      type: object
+      properties:
+        flowType:
+          type: string
+          description: The type of data export flow
+          enum:
+          - GDPR
+          - CCPA
+          - COPPA
+          - ANZ_PA
+          - US_PRIVACY_REGULATION
+          - APPI
+          - RETENTION_POLICY
+    Purchases_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        subject:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    Clients_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Clients_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Clients_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        links:
+          $ref: '#/components/schemas/Links'
+    SharesCreateOperation_Payload_Data_Relationships_SharedResources:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 1
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SharesCreateOperation_Payload_Data_Relationships_SharedResources_Data'
+    Artists_Following_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/Artists_Following_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    UserCollectionPlaylists_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/UserCollectionPlaylists_Items_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    UserOfflineMixes_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserOfflineMixes_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/UserOfflineMixes_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    SavedSharesCreateOperation_Payload_Data_Relationships_Share:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/SavedSharesCreateOperation_Payload_Data_Relationships_Share_Data'
+    Albums_Items_Resource_Identifier_Meta:
+      required:
+      - trackNumber
+      - volumeNumber
+      type: object
+      properties:
+        trackNumber:
+          type: integer
+          description: track number
+          format: int32
+          example: 4
+        volumeNumber:
+          type: integer
+          description: volume number
+          format: int32
+          example: 1
+    UserCollections_Playlists_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollections_Playlists_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
+    Comments_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Comments_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    StripeDashboardLinks_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/StripeDashboardLinks_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/StripeDashboardLinks_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    UserCollections_Relationships:
+      properties:
+        albums:
+          $ref: '#/components/schemas/UserCollections_Albums_Multi_Relationship_Data_Document'
+        artists:
+          $ref: '#/components/schemas/UserCollections_Artists_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        playlists:
+          $ref: '#/components/schemas/UserCollections_Playlists_Multi_Relationship_Data_Document'
+        tracks:
+          $ref: '#/components/schemas/UserCollections_Tracks_Multi_Relationship_Data_Document'
+        videos:
+          $ref: '#/components/schemas/UserCollections_Videos_Multi_Relationship_Data_Document'
+    UserNewReleaseMixes_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserNewReleaseMixes_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/UserNewReleaseMixes_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    DspSharingLinks_Relationships:
+      properties:
+        subject:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    CommentsUpdateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CommentsUpdateOperation_Payload_Data'
+    DspSharingLinks_Single_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    Purchases_Attributes:
+      required:
+      - createdAt
+      - status
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Datetime of purchase (ISO 8601)
+          format: date-time
+        status:
+          type: string
+          description: Current status of the purchase
+          enum:
+          - ACTIVE
+    Appreciations_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Appreciations_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    Providers_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Providers_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    AcceptedTerms_Attributes:
+      required:
+      - createdAt
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+    SavedShares_Attributes:
+      required:
+      - createdAt
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Datetime of saved share creation (ISO 8601)
+          format: date-time
+    Credits_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Credits_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Credits_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Artists_Following_Resource_Identifier_Meta:
+      type: object
+      properties:
+        viewer:
+          $ref: '#/components/schemas/Artists_Followers_Resource_Meta_ViewerContext'
+    Credits_Attributes:
+      required:
+      - name
+      - role
+      type: object
+      properties:
+        name:
+          type: string
+          description: Credit name
+          example: John Lennon
+        role:
+          type: string
+          description: Credit role
+          example: Vocals
+    StripeDashboardLinks_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    DynamicPages_Attributes:
+      required:
+      - pageType
+      - reportingId
+      type: object
+      properties:
+        pageType:
+          type: string
+          description: Type of the page eg. home, artist
+          example: HOME_STATIC
+          enum:
+          - HOME_STATIC
+          - HOME_UPLOADS
+          - HOME_EDITORIAL
+          - HOME_FREE
+          - ARTIST
+        reportingId:
+          type: string
+          description: Id used for reporting user events
+          format: uuid
+          example: 83c92ac0-b8e3-4e28-9e27-07909dcde1e5
+    ContentClaims_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/ContentClaims_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/ContentClaims_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Artists_Following_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artists_Following_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    UserCollectionAlbums_Items_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionAlbums_Items_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    ArtistRoles_Attributes:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the artist role
+    SearchSuggestions_Highlights:
+      required:
+      - length
+      - start
+      type: object
+      properties:
+        length:
+          type: integer
+          format: int32
+        start:
+          type: integer
+          format: int32
+    PlayQueues_Past_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/PlayQueues_Past_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    Artists_TrackProviders_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/Artists_TrackProviders_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    Lyrics_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Lyrics_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Lyrics_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Copyright:
+      required:
+      - text
+      type: object
+      properties:
+        text:
+          maxLength: 1024
+          minLength: 1
+          type: string
+      description: Copyright information
+    Download_Link_Meta:
+      type: object
+      properties:
+        requiredHeaders:
+          type: array
+          description: HTTP headers required when requesting the download URL
+          items:
+            type: string
+            description: HTTP headers required when requesting the download URL
+      description: Metadata for download link
+    Playlists_Items_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Playlists_Items_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    UserCollections_Artists_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+    TrackFiles_Attributes:
+      type: object
+      properties:
+        albumAudioNormalizationData:
+          $ref: '#/components/schemas/AudioNormalizationData'
+        format:
+          type: string
+          description: File's audio format
+          enum:
+          - HEAACV1
+          - AACLC
+          - FLAC
+          - FLAC_HIRES
+          - EAC3_JOC
+        trackAudioNormalizationData:
+          $ref: '#/components/schemas/AudioNormalizationData'
+        trackPresentation:
+          type: string
+          description: Track presentation
+          enum:
+          - FULL
+          - PREVIEW
+        url:
+          type: string
+          description: File URL
+    SavedShares_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/SavedShares_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    ArtistRoles_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/ArtistRoles_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    UserDiscoveryMixes_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    SquareConnections_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/SquareConnections_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    UserCollectionFolders_Items_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionFolders_Items_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    SquareConnections_Attributes:
+      required:
+      - status
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Timestamp when the connection was created
+          format: date-time
+        externalLinks:
+          type: array
+          description: External links for Square connection
+          items:
+            $ref: '#/components/schemas/External_Link'
+        lastModifiedAt:
+          type: string
+          description: Timestamp when the connection was last modified
+          format: date-time
+        status:
+          minLength: 1
+          type: string
+          description: Current status of this Square connection
+          enum:
+          - DRAFT
+          - PENDING_REQUIREMENTS
+          - KYC_PENDING
+          - ACCEPTED
+          - REJECTED
+          - SUSPENDED
+    UserCollectionTracks_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserCollectionTracks_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/UserCollectionTracks_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    ReactionsCreateOperation_Payload_Data_Relationships_Subject_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - albums
+          - tracks
+          - artists
+          - videos
+          - playlists
+          - comments
+    UserCollections_Artists_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollections_Artists_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    UserCollectionArtists_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserCollectionArtists_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/UserCollectionArtists_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Appreciations_Attributes:
+      required:
+      - createdAt
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Time when the appreciation was created
+          format: date-time
+          example: '2025-09-09T13:07:35.734Z'
+    UserCollectionFolders_Items_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionFolders_Items_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    UserCollectionAlbums_Attributes:
+      required:
+      - numberOfItems
+      type: object
+      properties:
+        lastModifiedAt:
+          type: string
+          description: When the collection was last modified
+          format: date-time
+        numberOfItems:
+          type: integer
+          description: Number of items in the collection
+          format: int32
+    SearchSuggestions_Relationships:
+      properties:
+        directHits:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        history:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    SharesCreateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/SharesCreateOperation_Payload_Data'
+    DynamicModules_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    CommentsCreateOperation_Payload_Data_Attributes:
+      required:
+      - message
+      type: object
+      properties:
+        endTime:
+          type: string
+        message:
+          maxLength: 2000
+          minLength: 1
+          type: string
+        startTime:
+          type: string
+    TrackStatistics_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    Playlists_Attributes:
+      required:
+      - accessType
+      - bounded
+      - createdAt
+      - externalLinks
+      - lastModifiedAt
+      - name
+      - numberOfFollowers
+      - playlistType
+      type: object
+      properties:
+        accessType:
+          type: string
+          description: Access type
+          example: PUBLIC
+          enum:
+          - PUBLIC
+          - UNLISTED
+        bounded:
+          type: boolean
+          description: Indicates if the playlist has a duration and set number of tracks
+        createdAt:
+          type: string
+          description: Datetime of playlist creation (ISO 8601)
+          format: date-time
+        description:
+          type: string
+          description: Playlist description
+        duration:
+          type: string
+          description: Duration of playlist (ISO 8601)
+          example: P30M5S
+        externalLinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/External_Link'
+        lastModifiedAt:
+          type: string
+          description: Datetime of last modification of the playlist (ISO 8601)
+          format: date-time
+        name:
+          minLength: 1
+          type: string
+          description: Playlist name
+        numberOfFollowers:
+          type: integer
+          description: The amount of followers of the playlist
+          format: int32
+        numberOfItems:
+          type: integer
+          description: Number of items in the playlist
+          format: int32
+        playlistType:
+          type: string
+          description: The type of the playlist
+          enum:
+          - EDITORIAL
+          - USER
+          - MIX
+          - ARTIST
+    ManualArtistClaims_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/ManualArtistClaims_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    TracksMetadataStatus_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/TracksMetadataStatus_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    ProviderOwners_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        provider:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    UserNewReleaseMixes_Attributes:
+      type: object
+    UserRecommendations_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserRecommendations_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/UserRecommendations_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Credits_Relationships:
+      properties:
+        artist:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        category:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    CurrentUserReaction:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: When the reaction was created
+          format: date-time
+        emoji:
+          type: string
+          description: User's emoji reaction
+        id:
+          type: string
+          description: Reaction ID
+      description: Current user's reaction
+    UserCollectionVideos_Items_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+    SavedShares_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/SavedShares_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    PlayQueues_Attributes:
+      required:
+      - createdAt
+      - lastModifiedAt
+      - repeat
+      - shuffled
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: ISO 8601 creation timestamp
+          format: date-time
+        lastModifiedAt:
+          type: string
+          description: ISO 8601 last modified timestamp
+          format: date-time
+        repeat:
+          type: string
+          description: Queue's repeat mode
+          enum:
+          - NONE
+          - ONE
+          - BATCH
+        shuffled:
+          type: boolean
+          description: Queue is shuffled or not
+    SearchResults_Relationships:
+      properties:
+        albums:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        artists:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        playlists:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        topHits:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        tracks:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        videos:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    Reactions_Multi_Resource_Data_Document_Meta:
+      type: object
+      properties:
+        currentUserReaction:
+          $ref: '#/components/schemas/CurrentUserReaction'
+        stats:
+          $ref: '#/components/schemas/ReactionStats'
+      description: Reaction response metadata with stats and current user reaction
+    DynamicPages_Relationships:
+      properties:
+        dynamicModules:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        subject:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    Terms_Attributes:
+      required:
+      - contentLink
+      - countryCode
+      - effectiveAt
+      - termsType
+      type: object
+      properties:
+        contentLink:
+          $ref: '#/components/schemas/Link_Object'
+        countryCode:
+          type: string
+        effectiveAt:
+          type: string
+          format: date-time
+        termsType:
+          type: string
+          enum:
+          - DEVELOPER
+          - UPLOAD_MARKETPLACE
+    UserCollectionPlaylists_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserCollectionPlaylists_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/UserCollectionPlaylists_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Links:
+      required:
+      - self
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/Links_Meta'
+        next:
+          type: string
+          description: Link to next page
+          example: /artists/xyz/relationships/tracks?page[cursor]=zyx
+        self:
+          type: string
+          description: Link to self
+          example: /artists/xyz/relationships/tracks
+    UserCollectionVideos_Items_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionVideos_Items_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    TrackInfo:
+      required:
+      - trackId
+      type: object
+      properties:
+        broken:
+          type: boolean
+        brokenCode:
+          type: integer
+          format: int32
+        trackId:
+          type: string
+    Artwork_File_Meta:
+      required:
+      - height
+      - width
+      type: object
+      properties:
+        height:
+          type: integer
+          description: Height (in pixels)
+          format: int32
+          example: 80
+        width:
+          type: integer
+          description: Width (in pixels)
+          format: int32
+          example: 80
+      description: Metadata about an artwork file
+    ReactionsCreateOperation_Payload_Data_Relationships:
+      required:
+      - subject
+      type: object
+      properties:
+        subject:
+          $ref: '#/components/schemas/ReactionsCreateOperation_Payload_Data_Relationships_Subject'
+    UserDiscoveryMixes_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserDiscoveryMixes_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/UserDiscoveryMixes_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Installations_OfflineInventory_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+    SharesCreateOperation_Payload_Data:
+      required:
+      - relationships
+      - type
+      type: object
+      properties:
+        relationships:
+          $ref: '#/components/schemas/SharesCreateOperation_Payload_Data_Relationships'
+        type:
+          type: string
+          enum:
+          - shares
+    UserCollections_Artists_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollections_Artists_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    ArtistClaims_Relationships:
+      properties:
+        acceptedArtists:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        recommendedArtists:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    Purchases_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Purchases_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Purchases_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    PlayQueues_Future_Resource_Identifier_Meta:
+      required:
+      - batchId
+      - itemId
+      type: object
+      properties:
+        batchId:
+          type: string
+          format: uuid
+        itemId:
+          minLength: 1
+          type: string
+        legacySource:
+          $ref: '#/components/schemas/LegacySource'
+    Artworks_Attributes:
+      required:
+      - files
+      - mediaType
+      type: object
+      properties:
+        files:
+          type: array
+          description: Artwork files
+          items:
+            $ref: '#/components/schemas/Artwork_File'
+        mediaType:
+          minLength: 1
+          type: string
+          description: Media type of artwork files
+          enum:
+          - IMAGE
+          - VIDEO
+        sourceFile:
+          $ref: '#/components/schemas/Artwork_SourceFile'
+        visualMetadata:
+          $ref: '#/components/schemas/Artwork_VisualMetadata'
+    UserCollectionAlbums_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserCollectionAlbums_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/UserCollectionAlbums_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    TemporaryUserTokens_Attributes:
+      type: object
+    Installations_Relationships:
+      properties:
+        offlineInventory:
+          $ref: '#/components/schemas/Installations_OfflineInventory_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    PriceConfigurations_Attributes:
+      required:
+      - currency
+      - price
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency code (ISO 4217)
+          enum:
+          - USD
+        price:
+          type: string
+          description: Price amount with max 2 decimal places
+          example: '9.99'
+    UserCollections_Videos_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+    Genres_Attributes:
+      required:
+      - genreName
+      type: object
+      properties:
+        genreName:
+          type: string
+          description: Genre name
+          example: pop
+    UserRecommendations_Attributes:
+      type: object
+    Artworks_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Artworks_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Artworks_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Artists_Followers_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artists_Followers_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    UserCollectionPlaylists_Attributes:
+      type: object
+    DspSharingLinks_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/DspSharingLinks_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/DspSharingLinks_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    AppreciationsCreateOperation_Payload_Data_Relationships_AppreciatedItem:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 1
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/AppreciationsCreateOperation_Payload_Data_Relationships_AppreciatedItem_Data'
+    Videos_Attributes:
+      required:
+      - duration
+      - explicit
+      - isrc
+      - popularity
+      - title
+      type: object
+      properties:
+        availability:
+          type: array
+          description: 'Available usage for this video. Deprecated: use ''usageRules'' instead. This field will be removed
+            in a future version.'
+          deprecated: true
+          items:
+            type: string
+            deprecated: true
+            enum:
+            - STREAM
+            - DJ
+            - STEM
+        copyright:
+          $ref: '#/components/schemas/Copyright'
+        duration:
+          type: string
+          description: Duration (ISO 8601)
+          example: PT2M58S
+        explicit:
+          type: boolean
+          description: Explicit content
+          example: false
+        externalLinks:
+          type: array
+          description: Video links external to TIDAL API
+          items:
+            $ref: '#/components/schemas/External_Link'
+        isrc:
+          type: string
+          description: International Standard Recording Code (ISRC)
+          example: TIDAL2274
+        popularity:
+          type: number
+          description: Popularity (0.0 - 1.0)
+          format: double
+          example: 0.56
+        releaseDate:
+          type: string
+          description: Release date (ISO-8601)
+          format: date
+          example: '2017-06-27'
+        title:
+          type: string
+          description: Video title
+          example: Kill Jay Z
+        version:
+          type: string
+          description: Video version, complements title
+          example: original, mix etc
+    TracksMetadataStatus_Attributes:
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status of the metadata detection job
+          enum:
+          - PENDING
+          - PROCESSING
+          - ERROR
+          - OK
+    Artists_TrackProviders_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artists_TrackProviders_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    SearchSuggestions_Suggestions:
+      required:
+      - query
+      type: object
+      properties:
+        highlights:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchSuggestions_Highlights'
+        query:
+          minLength: 1
+          type: string
+      description: Suggested search queries
+    UserCollectionAlbums_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/UserCollectionAlbums_Items_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    UserCollectionPlaylists_Items_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+    UserCollectionTracks_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/UserCollectionTracks_Items_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    UserCollectionArtists_Items_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+    Downloads_Attributes:
+      type: object
+      properties:
+        downloadLinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Download_Link'
+    UsageRules_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UsageRules_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Albums_Attributes:
+      required:
+      - albumType
+      - barcodeId
+      - duration
+      - explicit
+      - mediaTags
+      - numberOfItems
+      - numberOfVolumes
+      - popularity
+      - title
+      type: object
+      properties:
+        accessType:
+          type: string
+          description: Access type
+          example: PRIVATE
+          enum:
+          - PUBLIC
+          - UNLISTED
+          - PRIVATE
+        albumType:
+          type: string
+          description: Album type
+          enum:
+          - ALBUM
+          - EP
+          - SINGLE
+        availability:
+          type: array
+          description: 'Available usage for this album. Deprecated: use ''usageRules'' instead. This field will be removed
+            in a future version.'
+          deprecated: true
+          items:
+            type: string
+            deprecated: true
+            enum:
+            - STREAM
+            - DJ
+            - STEM
+        barcodeId:
+          type: string
+        copyright:
+          $ref: '#/components/schemas/Copyright'
+        createdAt:
+          type: string
+          description: Datetime of album creation (ISO 8601)
+          format: date-time
+        duration:
+          type: string
+          description: Duration (ISO 8601)
+          example: PT46M17S
+        explicit:
+          type: boolean
+          description: Explicit content
+          example: true
+        externalLinks:
+          type: array
+          description: Album links external to TIDAL API
+          items:
+            $ref: '#/components/schemas/External_Link'
+        mediaTags:
+          type: array
+          items:
+            type: string
+            description: Media metadata tags
+            example: HIRES_LOSSLESS, LOSSLESS
+        numberOfItems:
+          type: integer
+          description: Number of items in album
+          format: int32
+          example: 13
+        numberOfVolumes:
+          type: integer
+          description: Number of volumes
+          format: int32
+          example: 1
+        popularity:
+          type: number
+          description: Popularity (0.0 - 1.0)
+          format: double
+          example: 0.56
+        releaseDate:
+          type: string
+          description: Release date (ISO-8601)
+          format: date
+          example: '2017-06-30'
+        title:
+          type: string
+          description: Album title
+          example: '4:44'
+        type:
+          type: string
+          description: 'Album type. Deprecated: use ''albumType'' instead. This field will be removed in a future version.'
+          deprecated: true
+          enum:
+          - ALBUM
+          - EP
+          - SINGLE
+        version:
+          type: string
+          description: Album version
+          example: remix
+    Albums_SuggestedCoverArts_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Albums_SuggestedCoverArts_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Albums_SuggestedCoverArts_Multi_Relationship_Data_Document_Meta'
+    ArtistBiographies_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    UserCollectionTracks_Attributes:
+      required:
+      - numberOfItems
+      type: object
+      properties:
+        lastModifiedAt:
+          type: string
+          description: When the collection was last modified
+          format: date-time
+        numberOfItems:
+          type: integer
+          description: Number of items in the collection
+          format: int32
+    PlayQueues_Past_Resource_Identifier_Meta:
+      required:
+      - batchId
+      - itemId
+      type: object
+      properties:
+        batchId:
+          type: string
+          format: uuid
+        itemId:
+          minLength: 1
+          type: string
+        legacySource:
+          $ref: '#/components/schemas/LegacySource'
+    Tracks_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Tracks_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Tracks_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    UserOfflineMixes_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    ArtistClaims_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/ArtistClaims_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/ArtistClaims_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Tracks_Attributes:
+      required:
+      - duration
+      - explicit
+      - isrc
+      - key
+      - keyScale
+      - mediaTags
+      - popularity
+      - title
+      type: object
+      properties:
+        accessType:
+          type: string
+          description: Access type
+          example: PRIVATE
+          enum:
+          - PUBLIC
+          - UNLISTED
+          - PRIVATE
+        ai:
+          type: boolean
+          description: Whether the track is AI-generated
+          example: false
+        availability:
+          type: array
+          description: 'Available usage for this track. Deprecated: use ''usageRules'' instead. This field will be removed
+            in a future version.'
+          deprecated: true
+          items:
+            type: string
+            deprecated: true
+            enum:
+            - STREAM
+            - DJ
+            - STEM
+        bpm:
+          type: number
+          description: Beats per minute
+          format: float
+          example: 60.0
+        copyright:
+          $ref: '#/components/schemas/Copyright'
+        createdAt:
+          type: string
+          description: Datetime of track creation (ISO 8601)
+          format: date-time
+        duration:
+          type: string
+          description: Duration (ISO 8601)
+          example: PT2M58S
+        explicit:
+          type: boolean
+          description: Explicit content
+          example: false
+        externalLinks:
+          type: array
+          description: Track links external to TIDAL API
+          items:
+            $ref: '#/components/schemas/External_Link'
+        isrc:
+          type: string
+          description: International Standard Recording Code (ISRC)
+          example: QMJMT1701229
+        key:
+          type: string
+          description: Key
+          enum:
+          - UNKNOWN
+          - C
+          - CSharp
+          - D
+          - Eb
+          - E
+          - F
+          - FSharp
+          - G
+          - Ab
+          - A
+          - Bb
+          - B
+        keyScale:
+          type: string
+          description: The scale of the key
+          enum:
+          - UNKNOWN
+          - MAJOR
+          - MINOR
+          - AEOLIAN
+          - BLUES
+          - DORIAN
+          - HARMONIC_MINOR
+          - LOCRIAN
+          - LYDIAN
+          - MIXOLYDIAN
+          - PENTATONIC_MAJOR
+          - PHRYGIAN
+          - MELODIC_MINOR
+          - PENTATONIC_MINOR
+        mediaTags:
+          type: array
+          items:
+            type: string
+            description: Media metadata tags
+            example: HIRES_LOSSLESS
+        popularity:
+          type: number
+          description: Popularity (0.0 - 1.0)
+          format: double
+          example: 0.56
+        spotlighted:
+          type: boolean
+          description: Is the track spotlighted?
+          example: true
+        title:
+          type: string
+          description: Track title
+          example: Kill Jay Z
+        toneTags:
+          type: array
+          items:
+            type: string
+            description: Tone tags
+            example: Happy
+        version:
+          type: string
+          description: Track version, complements title
+          example: original, mix etc
+    Albums_Items_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/Albums_Items_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    ManualArtistClaims_Attributes:
+      required:
+      - artistId
+      - legalFirstName
+      - legalLastName
+      - websiteOrSocialLink
+      type: object
+      properties:
+        acceptedTerms:
+          type: boolean
+          description: Accepted terms and conditions
+        artistId:
+          type: string
+          description: Artist ID being claimed
+        createdAt:
+          type: string
+          description: Timestamp when the claim was created
+          format: date-time
+        distributorName:
+          type: string
+          description: Distributor name
+        enrollmentType:
+          type: string
+          description: Enrollment type
+        errorReason:
+          type: string
+          description: Error reason if claim failed
+        labelContactEmail:
+          type: string
+          description: Label contact email
+        labelContactName:
+          type: string
+          description: Label contact name
+        labelName:
+          type: string
+          description: Label name
+        lastModifiedAt:
+          type: string
+          description: Timestamp when the claim was last modified
+          format: date-time
+        legalFirstName:
+          minLength: 1
+          type: string
+          description: Legal first name
+        legalLastName:
+          minLength: 1
+          type: string
+          description: Legal last name
+        managerEmail:
+          type: string
+          description: Manager email
+        managerName:
+          type: string
+          description: Manager name
+        role:
+          type: string
+          description: Role
+        selectedAlbums:
+          type: array
+          description: Album IDs selected by user
+          items:
+            type: string
+            description: Album IDs selected by user
+        selectedSingles:
+          type: array
+          description: Single IDs selected by user
+          items:
+            type: string
+            description: Single IDs selected by user
+        socialLink:
+          $ref: '#/components/schemas/Link_Object'
+        status:
+          type: string
+          description: Claim status
+          enum:
+          - SUBMITTED
+          - PENDING
+          - APPROVED
+          - REJECTED
+        upcs:
+          type: array
+          description: UPCs associated with the claim
+          items:
+            type: string
+            description: UPCs associated with the claim
+        websiteOrSocialLink:
+          $ref: '#/components/schemas/Link_Object'
+    ProviderProductInfos_Attributes:
+      required:
+      - barcodeId
+      type: object
+      properties:
+        barcodeId:
+          type: string
+        broken:
+          type: boolean
+        brokenCode:
+          type: integer
+          format: int32
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrackInfo'
+    Download_Link:
+      required:
+      - href
+      - meta
+      type: object
+      properties:
+        href:
+          type: string
+          description: URL to download the content from
+        meta:
+          $ref: '#/components/schemas/Download_Link_Meta'
+    ReactionsCreateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ReactionsCreateOperation_Payload_Data'
+    CommentsUpdateOperation_Payload_Data:
+      required:
+      - attributes
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/CommentsUpdateOperation_Payload_Data_Attributes'
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - comments
+    UserDataExportRequests_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserDataExportRequests_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    UsageRules_Attributes:
+      required:
+      - countryCode
+      type: object
+      properties:
+        countryCode:
+          type: string
+          description: Country code (ISO 3166-1 alpha-2)
+        free:
+          type: array
+          description: Usage types allowed for free/ad-supported model
+          items:
+            type: string
+            description: Usage types allowed for free/ad-supported model
+            enum:
+            - STREAM
+            - DJ
+            - STEM
+            - DOWNLOAD
+        inherited:
+          type: boolean
+          description: 'Whether these usage rules are inherited from a parent (e.g. a track inheriting from its album). Tri-state:
+            true means the rules are inherited, false means an explicit per-track override, null means the value is unknown
+            or not applicable (albums, videos, and legacy data).'
+        paid:
+          type: array
+          description: Usage types allowed for paid/purchase model
+          items:
+            type: string
+            description: Usage types allowed for paid/purchase model
+            enum:
+            - STREAM
+            - DJ
+            - STEM
+            - DOWNLOAD
+        subscription:
+          type: array
+          description: Usage types allowed for subscription model
+          items:
+            type: string
+            description: Usage types allowed for subscription model
+            enum:
+            - STREAM
+            - DJ
+            - STEM
+            - DOWNLOAD
+        validFrom:
+          type: string
+          description: Datetime from which these usage rules are valid (ISO 8601)
+          format: date-time
+    CommentsCreateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CommentsCreateOperation_Payload_Data'
+    Installations_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Installations_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Installations_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    UserDailyMixes_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserDailyMixes_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/UserDailyMixes_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    OfflineTasks_Attributes:
+      required:
+      - action
+      - position
+      - state
+      - volume
+      type: object
+      properties:
+        action:
+          type: string
+          description: Action to perform
+          enum:
+          - STORE
+          - REMOVE
+        position:
+          type: integer
+          description: Collection position of item
+          format: int32
+        state:
+          type: string
+          description: Task state
+          enum:
+          - PENDING
+          - IN_PROGRESS
+          - FAILED
+          - COMPLETED
+        volume:
+          type: integer
+          description: Collection volume of item
+          format: int32
+    AlbumStatistics_Attributes:
+      required:
+      - totalPlaybacks
+      - uniqueListeners
+      type: object
+      properties:
+        numSales:
+          type: integer
+          description: Number of sales
+          format: int32
+        totalPlaybacks:
+          type: integer
+          description: Total playbacks
+          format: int32
+        uniqueListeners:
+          type: integer
+          description: Unique listeners
+          format: int32
+    UserCollections_Tracks_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+    Albums_SuggestedCoverArts_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/Albums_SuggestedCoverArts_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    StripeConnections_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/StripeConnections_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/StripeConnections_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    TemporaryUserTokens_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    External_Link_Meta:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - TIDAL_SHARING
+          - TIDAL_USER_SHARING
+          - TIDAL_AUTOPLAY_ANDROID
+          - TIDAL_AUTOPLAY_IOS
+          - TIDAL_AUTOPLAY_WEB
+          - TWITTER
+          - FACEBOOK
+          - INSTAGRAM
+          - TIKTOK
+          - SNAPCHAT
+          - OFFICIAL_HOMEPAGE
+          - CASHAPP_CONTRIBUTIONS
+          - ARTIST_CLAIM_PROVIDER_REDIRECT
+          - STRIPE_AUTHORIZATION_REDIRECT
+          - SQUARE_AUTHORIZATION_REDIRECT
+      description: metadata about an external link
+    UserCollectionVideos_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/UserCollectionVideos_Items_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    Artists_Followers_Resource_Meta_ViewerContext:
+      type: object
+      properties:
+        followsMyArtist:
+          type: boolean
+          description: Boolean to indicate if the artist is following my artist
+          default: false
+        myArtistFollows:
+          type: boolean
+          description: Boolean to indicate if my artist is following the artist
+          default: false
+      description: Optional context about the relationship
+    ReactionsCreateOperation_Payload_Data_Relationships_Subject:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ReactionsCreateOperation_Payload_Data_Relationships_Subject_Data'
+    AppreciationsCreateOperation_Payload_Meta:
+      type: object
+      properties:
+        dryRun:
+          type: boolean
+    UserCollectionArtists_Items_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionArtists_Items_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    CommentsCreateOperation_Payload_Data_Relationships_ParentComment:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CommentsCreateOperation_Payload_Data_Relationships_ParentComment_Data'
+    ThirdPartyLyricsProvider:
+      required:
+      - commonTrackId
+      - lyricsId
+      - name
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LyricsProvider'
+      - type: object
+        properties:
+          commonTrackId:
+            type: string
+          lyricsId:
+            type: string
+    DynamicPages_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/DynamicPages_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/DynamicPages_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    UserCollectionFolders_Attributes:
+      required:
+      - collectionType
+      - createdAt
+      - lastModifiedAt
+      - name
+      type: object
+      properties:
+        collectionType:
+          type: string
+          enum:
+          - PLAYLISTS
+        createdAt:
+          type: string
+          format: date-time
+        lastModifiedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        numberOfItems:
+          type: integer
+          format: int32
+    UserCollectionSaveForLaters_Items_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+    Reactions_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    UserCollectionVideos_Items_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionVideos_Items_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    Installations_Attributes:
+      required:
+      - clientProvidedInstallationId
+      - name
+      type: object
+      properties:
+        clientProvidedInstallationId:
+          type: string
+          description: Client provided installation identifier
+        name:
+          type: string
+          description: Human-readable name for the installation
+          example: My iPhone
+    Appreciations_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Appreciations_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Artists_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Artists_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Artists_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Shares_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Shares_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    ArtistClaims_Attributes:
+      required:
+      - artistId
+      - provider
+      - status
+      type: object
+      properties:
+        artistId:
+          type: string
+          description: The artist id which is being claimed
+        externalLinks:
+          type: array
+          description: Artist claim links external to TIDAL API
+          items:
+            $ref: '#/components/schemas/External_Link'
+        provider:
+          minLength: 1
+          type: string
+          description: The DSP used for authentication
+          enum:
+          - DISTROKID
+          - CDBABY
+          - TUNECORE
+        recommendation:
+          type: string
+          description: The recommended claim resolution
+          enum:
+          - CLAIM_PROFILE
+          - CLAIM_CONTENT
+        retrievedUpcs:
+          type: array
+          description: List of UPCs retrieved from the DSP
+          items:
+            $ref: '#/components/schemas/LegacyBarcodeId'
+        status:
+          minLength: 1
+          type: string
+          description: Current status of this claim
+          enum:
+          - AWAITING_OAUTH
+          - FETCHING_CONTENT
+          - VERIFIED
+          - NO_MATCHES
+          - AUTHENTICATION_FAILED
+          - PROCESSING
+          - COMPLETED
+          - FAILED
+          - CANCELLED
+          - NAME_MISMATCH
+          - CLAIMED_ARTIST_MISMATCH
+    ProviderOwners_Attributes:
+      required:
+      - createdAt
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+    SavedSharesCreateOperation_Payload_Data_Relationships_Share_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - shares
+    Artists_Followers_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/Artists_Followers_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    CommentsCreateOperation_Payload_Data_Relationships:
+      required:
+      - subject
+      type: object
+      properties:
+        parentComment:
+          $ref: '#/components/schemas/CommentsCreateOperation_Payload_Data_Relationships_ParentComment'
+        subject:
+          $ref: '#/components/schemas/CommentsCreateOperation_Payload_Data_Relationships_Subject'
+    DynamicModules_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/DynamicModules_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/DynamicModules_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    PlayQueues_Current_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/PlayQueues_Current_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    ProviderProductInfos_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/ProviderProductInfos_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/ProviderProductInfos_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Albums_SuggestedCoverArts_Resource_Identifier_Meta:
+      required:
+      - backgroundColor
+      - foregroundColor
+      type: object
+      properties:
+        backgroundColor:
+          type: string
+          description: Background color for the suggested artwork
+        foregroundColor:
+          type: string
+          description: Foreground color for the suggested artwork
+    UserCollectionTracks_Items_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+    Reactions_Attributes:
+      required:
+      - createdAt
+      - emoji
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Datetime of the reaction creation (ISO 8601)
+          format: date-time
+          example: '2025-11-17T12:54:48.60606Z'
+        emoji:
+          type: string
+          description: The type of reaction representing an emoji
+    UserCollectionFolders_Items_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+    UserCollections_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserCollections_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/UserCollections_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    SavedSharesCreateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/SavedSharesCreateOperation_Payload_Data'
+    UserDailyMixes_Attributes:
+      type: object
+    StripeConnections_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    SearchResults_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/SearchResults_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/SearchResults_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    DspSharingLinks_Attributes:
+      type: object
+      properties:
+        amazonMusic:
+          $ref: '#/components/schemas/Link_Object'
+        appleMusic:
+          $ref: '#/components/schemas/Link_Object'
+        spotify:
+          $ref: '#/components/schemas/Link_Object'
+        youTubeMusic:
+          $ref: '#/components/schemas/Link_Object'
+    Downloads_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    AppreciationsCreateOperation_Payload_Data_Relationships_AppreciatedItem_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - artists
+    PlayQueues_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/PlayQueues_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/PlayQueues_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    AlbumStatistics_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/AlbumStatistics_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/AlbumStatistics_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    UserCollections_Albums_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollections_Albums_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    Artists_TrackProviders_Resource_Identifier_Meta:
+      required:
+      - numberOfTracks
+      type: object
+      properties:
+        numberOfTracks:
+          type: integer
+          description: Total number of tracks released together with the provider
+          format: int64
+          example: 14
+    UserRecommendations_Relationships:
+      properties:
+        discoveryMixes:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        myMixes:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        newArrivalMixes:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        offlineMixes:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    ContentClaims_Attributes:
+      required:
+      - assertion
+      - createdAt
+      - lastModifiedAt
+      - status
+      type: object
+      properties:
+        assertion:
+          type: string
+          description: The claim assertion type
+          enum:
+          - CLAIM
+          - DISCLAIM
+        createdAt:
+          type: string
+          description: Timestamp when the claim was created
+          format: date-time
+        lastModifiedAt:
+          type: string
+          description: Timestamp when the claim was last modified
+          format: date-time
+        status:
+          type: string
+          description: Current status of this claim
+          enum:
+          - OPEN
+          - IN_PROGRESS
+          - RESOLVED
+          - REJECTED
+    Comments_Single_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    Albums_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Albums_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Albums_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    ArtistBiographies_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/ArtistBiographies_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/ArtistBiographies_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    UserDiscoveryMixes_Attributes:
+      type: object
+    UserReports_Attributes:
+      required:
+      - description
+      - reason
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description
+        reason:
+          type: string
+          description: Reason
+          enum:
+          - SEXUAL_CONTENT_OR_NUDITY
+          - VIOLENT_OR_DANGEROUS_CONTENT
+          - HATEFUL_OR_ABUSIVE_CONTENT
+          - HARASSMENT
+          - PRIVACY_VIOLATION
+          - SCAMS_OR_FRAUD
+          - SPAM
+          - COPYRIGHT_INFRINGEMENT
+          - APPEAL
+          - UNKNOWN
+    SavedSharesCreateOperation_Payload_Data_Relationships:
+      required:
+      - share
+      type: object
+      properties:
+        share:
+          $ref: '#/components/schemas/SavedSharesCreateOperation_Payload_Data_Relationships_Share'
+    UserCollectionSaveForLaters_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    UserCollectionArtists_Attributes:
+      required:
+      - numberOfItems
+      type: object
+      properties:
+        lastModifiedAt:
+          type: string
+          description: When the collection was last modified
+          format: date-time
+        numberOfItems:
+          type: integer
+          description: Number of items in the collection
+          format: int32
+    SharesCreateOperation_Payload_Data_Relationships:
+      required:
+      - sharedResources
+      type: object
+      properties:
+        sharedResources:
+          $ref: '#/components/schemas/SharesCreateOperation_Payload_Data_Relationships_SharedResources'
+    Shares_Multi_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Shares_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    UserCollectionTracks_Items_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionTracks_Items_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    SearchHistoryEntries_Attributes:
+      required:
+      - highlights
+      - query
+      type: object
+      properties:
+        highlights:
+          type: array
+          items:
+            $ref: '#/components/schemas/Highlight'
+        query:
+          minLength: 1
+          type: string
+    Artwork_File:
+      required:
+      - href
+      type: object
+      properties:
+        href:
+          type: string
+          description: Artwork file href
+        meta:
+          $ref: '#/components/schemas/Artwork_File_Meta'
+      description: Artwork files
+    DynamicModules_Attributes:
+      required:
+      - icons
+      - layoutType
+      - moduleType
+      - sourceType
+      type: object
+      properties:
+        icons:
+          type: array
+          description: Type of icons the module should show
+          example: SPOTLIGHT_ICON
+          items:
+            type: string
+            description: Type of icons the module should show
+            example: SPOTLIGHT_ICON
+            enum:
+            - SPOTLIGHT_INFO
+            - UNKNOWN
+        layoutType:
+          type: string
+          description: Type of representation of the items in the module view all screen
+          example: COMPACT
+          enum:
+          - COMPACT
+          - GRID
+          - UNKNOWN
+        moduleType:
+          type: string
+          description: Type of representation of the module
+          example: HORIZONTAL_LIST
+          enum:
+          - ARTIST_LIST
+          - COMPACT_GRID_CARD
+          - COMPACT_HORIZONTAL_LIST
+          - COMPACT_HORIZONTAL_LIST_WITH_CONTEXT
+          - FEATURED_CARD
+          - GRID_CARD
+          - GRID_CARD_WITH_CONTEXT
+          - GRID_HIGHLIGHT_CARD
+          - ANNIVERSARY_CARD
+          - ARTIST_BIRTHDAY_CARD
+          - ARTIST_MEMORIAM_CARD
+          - ARTIST_TRACK_CREDITS_CARD
+          - PILL_LIST
+          - VERTICAL_LIST
+          - HORIZONTAL_LIST
+          - HORIZONTAL_LIST_WITH_CONTEXT
+          - SHORTCUT_LIST
+          - TRACK_LIST
+          - VERTICAL_LIST_CARD
+          - TEXT_CARD
+          - LINKS_LIST
+          - PUBLIC_PLAYLIST_LIST
+        sourceType:
+          type: string
+          description: Type of source represented by the module
+          example: SHORTCUTS
+          enum:
+          - ALBUM_RECOMMENDATIONS
+          - BECAUSE_YOU_LISTENED_TO_ALBUM
+          - BECAUSE_YOU_ADDED_ALBUM
+          - BECAUSE_YOU_ADDED_ARTIST
+          - CONTINUE_LISTEN_TO
+          - DAILY_MIXES
+          - FORGOTTEN_FAVORITES
+          - GENRE_MIXES
+          - HISTORY_MIXES
+          - LOCAL_PLAYLISTS
+          - MY_PLAYLISTS
+          - NEW_ALBUM_SUGGESTIONS
+          - NEW_TRACK_SUGGESTIONS
+          - NEW_ALBUMS
+          - NEW_TRACKS
+          - POPULAR_PLAYLISTS
+          - RECENTLY_UPDATED_FAVORITED_PLAYLIST
+          - RECOMMENDED_USERS_PLAYLISTS
+          - SUGGESTED_ESSENTIAL_PLAYLISTS
+          - SUGGESTED_RADIOS_MIXES
+          - WELCOME_MIX
+          - YOUR_FAVORITE_ARTISTS
+          - UPLOADS_FOR_YOU
+          - LATEST_SPOTLIGHTED_TRACKS
+          - SHORTCUTS
+          - ARTIST_TOP_TRACKS
+          - ARTIST_SPOTLIGHTED_TRACKS
+          - ARTIST_ALBUMS
+          - ARTIST_TOP_SINGLES
+          - ARTIST_COMPILATIONS
+          - ARTIST_LIVE_ALBUMS
+          - ARTIST_APPEARS_ON
+          - ARTIST_PLAYLIST
+          - ARTIST_PUBLIC_PLAYLIST
+          - ARTIST_SIMILAR_ARTISTS
+          - ARTIST_TRACK_UPLOADS
+          - ARTIST_LINKS
+          - ARTIST_VIDEOS
+          - ARTIST_CREDITS
+          - ALBUM_ITEMS
+          - ALBUM_ANNIVERSARY
+          - ARTIST_BIRTHDAY
+          - ARTIST_MEMORIAM
+          - DJ_TOOLS
+          - DJ_ARTIST_CURATED
+          - THE_HITS
+          - FROM_OUR_EDITORS
+          - TOP_PLAYLISTS
+          - FEATURED_TOP_TRACKS
+          - FEATURED_TOP_ALBUMS
+          - TOP_ARTISTS_ESSENTIALS
+          - FEATURED_RECOMMENDED_PLAYLISTS
+          - HOME_3_FEATURED_PLAYLISTS
+          - HOME_3_FEATURED_UPLOAD_TRACKS
+          - HOME_3_FEATURED_ALBUMS
+          - POPULAR_ALBUMS
+          - POPULAR_ARTISTS
+          - POPULAR_MIXES
+          - FEATURED_RECOMMENDED_TRACKS
+          - FEATURED_RECOMMENDED_ALBUMS
+          - FEATURED_RECOMMENDED_CLASSIC_ALBUMS
+          - BACK_TO_SCHOOL_MUSIC_101
+          - BACK_TO_SCHOOL_GENRES_FOR_BEGINNERS
+          - HEADLINERS_2026
+          - HOME_3_0_GENERIC_PLAYLISTS_1
+          - HOME_3_0_GENERIC_PLAYLISTS_2
+          - HOME_3_0_GENERIC_ALBUMS_1
+          - HOME_3_0_GENERIC_TRACKS_1
+          - HOME_3_0_GENERIC_ARTISTS_1
+          - HOME_3_0_GENERIC_VIDEOS_1
+          - STAFF_PICKS_PAGE_ALBUMS_WE_LOVE
+          - STAFF_PICKS_PAGE_EXPLORE
+          - STAFF_PICKS_PAGE_FAVORITE_SONGS
+          - STAFF_PICKS_PAGE_RECENTLY_UPDATED_PLAYLISTS
+          - STAFF_PICKS_PAGE_TIDAL_NEWS_MAGAZINE
+          - STAFF_PICKS_PAGE_WHAT_LISTENING_TO
+          - BASED_ON_YOUR_INTERESTS_1
+          - BASED_ON_YOUR_INTERESTS_2
+          - UPLOAD_PAGE_SPOTLIGHTED_PLAYLISTS
+          - UPLOAD_PAGE_PAYGATED_ALBUMS
+          - UPLOAD_PAGE_ALBUMS
+          - TOP_UPLOADERS
+          - UPLOAD_PAGE_ARTISTS
+          - UPLOAD_PAGE_FEATURED_MAGAZINE
+          - EXPLORE_DECADES
+          - EXPLORE_GENRES
+          - EXPLORE_MOODS
+          - UNKNOWN
+        subtitle:
+          type: string
+          description: Subtitle of the module
+          example: Short description of this module
+        title:
+          type: string
+          description: Title of the module
+          example: Shortcuts
+    ReactionsCreateOperation_Payload_Data_Attributes:
+      required:
+      - emoji
+      type: object
+      properties:
+        emoji:
+          type: string
+    UserDailyMixes_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    Comments_Multi_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comments_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    Clients_Attributes:
+      required:
+      - accessTier
+      - name
+      type: object
+      properties:
+        accessTier:
+          type: string
+          enum:
+          - THIRD_PARTY
+          - THIRD_PARTY_PROD
+          - PARTNER
+          - INTERNAL
+        clientSecret:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        description:
+          type: string
+        name:
+          type: string
+        platformPreset:
+          type: string
+          enum:
+          - NONE
+          - WEB
+          - ANDROID
+          - IOS
+        redirectUris:
+          type: array
+          items:
+            type: string
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    OfflineTasks_Relationships:
+      properties:
+        collection:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        item:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    CommentsUpdateOperation_Payload_Data_Attributes:
+      type: object
+      properties:
+        endTime:
+          type: string
+        message:
+          maxLength: 2000
+          minLength: 1
+          type: string
+        startTime:
+          type: string
+    Comments_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Comments_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Comments_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    PlayQueues_Current_Single_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/PlayQueues_Current_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    ArtistBiographies_Attributes:
+      required:
+      - editable
+      - text
+      type: object
+      properties:
+        editable:
+          type: boolean
+          description: Boolean to indicate if the biography is editable (source = tidal or artist)
+          example: true
+        source:
+          type: string
+          description: Source the biography is coming from
+          example: ARTIST
+          enum:
+          - TIDAL
+          - TiVo
+          - MusicBrainz
+          - Avex
+          - Artist
+          - UNKNOWN
+        text:
+          type: string
+          description: Artist biography
+          example: Once upon a time an artist is born
+    Link_Object:
+      type: object
+      properties:
+        href:
+          type: string
+      description: A JSON:API link object
+    Downloads_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Downloads_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Downloads_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    SearchHistoryEntries_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/SearchHistoryEntries_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Installations_OfflineInventory_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/Installations_OfflineInventory_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    PlayQueues_Past_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayQueues_Past_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    SavedSharesCreateOperation_Payload_Data:
+      required:
+      - relationships
+      - type
+      type: object
+      properties:
+        relationships:
+          $ref: '#/components/schemas/SavedSharesCreateOperation_Payload_Data_Relationships'
+        type:
+          type: string
+          enum:
+          - savedShares
+    UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    UserCollectionPlaylists_Items_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionPlaylists_Items_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    PlayQueues_Relationships:
+      properties:
+        current:
+          $ref: '#/components/schemas/PlayQueues_Current_Single_Relationship_Data_Document'
+        future:
+          $ref: '#/components/schemas/PlayQueues_Future_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        past:
+          $ref: '#/components/schemas/PlayQueues_Past_Multi_Relationship_Data_Document'
+    SearchSuggestions_History:
+      required:
+      - query
+      type: object
+      properties:
+        highlights:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchSuggestions_Highlights'
+        query:
+          minLength: 1
+          type: string
+      description: "Suggestions from search history. Deprecated \u2014 use the history relationship instead. Will be deleted\
+        \ shortly."
+    UserCollectionFolders_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserCollectionFolders_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/UserCollectionFolders_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    AppreciationsCreateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AppreciationsCreateOperation_Payload_Data'
+        meta:
+          $ref: '#/components/schemas/AppreciationsCreateOperation_Payload_Meta'
+    CommentsCreateOperation_Payload_Data_Relationships_Subject:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CommentsCreateOperation_Payload_Data_Relationships_Subject_Data'
+    SharesCreateOperation_Payload_Data_Relationships_SharedResources_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - tracks
+          - albums
+    TrackManifests_Attributes:
+      type: object
+      properties:
+        albumAudioNormalizationData:
+          $ref: '#/components/schemas/AudioNormalizationData'
+        drmData:
+          $ref: '#/components/schemas/DrmData'
+        formats:
+          type: array
+          description: Formats present in manifest
+          items:
+            type: string
+            description: Formats present in manifest
+            enum:
+            - HEAACV1
+            - AACLC
+            - FLAC
+            - FLAC_HIRES
+            - EAC3_JOC
+        hash:
+          type: string
+          description: Unique manifest hash
+        previewReason:
+          type: string
+          description: Why a preview is served instead of the full track
+          enum:
+          - FULL_REQUIRES_SUBSCRIPTION
+          - FULL_REQUIRES_PURCHASE
+          - FULL_REQUIRES_HIGHER_ACCESS_TIER
+        trackAudioNormalizationData:
+          $ref: '#/components/schemas/AudioNormalizationData'
+        trackPresentation:
+          type: string
+          description: Track presentation
+          enum:
+          - FULL
+          - PREVIEW
+        uri:
+          type: string
+          description: Manifest URI
+    LyricsProvider:
+      type: object
+      properties:
+        name:
+          type: string
+        source:
+          type: string
+          enum:
+          - TIDAL
+          - THIRD_PARTY
+      discriminator:
+        mapping:
+          THIRD_PARTY: '#/components/schemas/ThirdPartyLyricsProvider'
+          TIDAL: '#/components/schemas/TidalLyricsProvider'
+        propertyName: source
+    Playlists_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Playlists_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Playlists_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Providers_Attributes:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Provider name
+          example: Columbia/Legacy
+    Genres_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Genres_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    UserCollections_Tracks_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollections_Tracks_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    Comments_Relationships:
+      properties:
+        ownerProfiles:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        parentComment:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    Albums_Relationships:
+      properties:
+        albumStatistics:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        artists:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        coverArt:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        genres:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        items:
+          $ref: '#/components/schemas/Albums_Items_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        priceConfig:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        providers:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        replacement:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        shares:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        similarAlbums:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        suggestedCoverArts:
+          $ref: '#/components/schemas/Albums_SuggestedCoverArts_Multi_Relationship_Data_Document'
+        usageRules:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    SearchResults_Attributes:
+      required:
+      - trackingId
+      type: object
+      properties:
+        didYouMean:
+          type: string
+          description: '''did you mean'' prompt'
+          example: beatles
+        trackingId:
+          type: string
+          description: search request unique tracking number
+          example: 5896e37d-e847-4ca6-9629-ef8001719f7f
+    UserCollectionFolders_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/UserCollectionFolders_Items_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    OfflineTasks_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/OfflineTasks_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/OfflineTasks_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    UserCollectionVideos_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserCollectionVideos_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/UserCollectionVideos_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Artists_Relationships:
+      properties:
+        albums:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        biography:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        followers:
+          $ref: '#/components/schemas/Artists_Followers_Multi_Relationship_Data_Document'
+        following:
+          $ref: '#/components/schemas/Artists_Following_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        profileArt:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        radio:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        roles:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        similarArtists:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        trackProviders:
+          $ref: '#/components/schemas/Artists_TrackProviders_Multi_Relationship_Data_Document'
+        tracks:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        videos:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    UserCollectionSaveForLaters_Attributes:
+      required:
+      - numberOfItems
+      type: object
+      properties:
+        lastModifiedAt:
+          type: string
+          description: When the collection was last modified
+          format: date-time
+        numberOfItems:
+          type: integer
+          description: Number of items in the collection
+          format: int32
+    UserCollectionTracks_Items_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionTracks_Items_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    UserCollections_Albums_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+    Links_Meta:
+      required:
+      - nextCursor
+      type: object
+      properties:
+        nextCursor:
+          type: string
+          description: Only cursor part of next link
+          example: zyx
+      description: Non-standard meta information for links
+    ReactionsCreateOperation_Payload_Data:
+      required:
+      - attributes
+      - relationships
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/ReactionsCreateOperation_Payload_Data_Attributes'
+        relationships:
+          $ref: '#/components/schemas/ReactionsCreateOperation_Payload_Data_Relationships'
+        type:
+          type: string
+          enum:
+          - reactions
+    UserCollectionAlbums_Items_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionAlbums_Items_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    LegacySource:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+    TidalLyricsProvider:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LyricsProvider'
+    Reactions_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Reactions_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    AppreciationsCreateOperation_Payload_Data:
+      required:
+      - relationships
+      - type
+      type: object
+      properties:
+        relationships:
+          $ref: '#/components/schemas/AppreciationsCreateOperation_Payload_Data_Relationships'
+        type:
+          type: string
+          enum:
+          - appreciations
+    Single_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Resource_Identifier'
+        links:
+          $ref: '#/components/schemas/Links'
+    VideoManifests_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/VideoManifests_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    AudioNormalizationData:
+      type: object
+      properties:
+        peakAmplitude:
+          type: number
+          format: float
+        replayGain:
+          type: number
+          format: float
+      description: Track normalization data
+    TrackStatistics_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/TrackStatistics_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/TrackStatistics_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    AcceptedTerms_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/AcceptedTerms_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/AcceptedTerms_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    ProviderOwners_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/ProviderOwners_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/ProviderOwners_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Clients_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    CommentsCreateOperation_Payload_Data_Relationships_ParentComment_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - comments
+    Reactions_Relationships:
+      properties:
+        ownerProfiles:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    Artwork_VisualMetadata:
+      type: object
+      properties:
+        blurHash:
+          type: string
+          description: BlurHash representation of the artwork for placeholder display
+        selectedPaletteColor:
+          type: string
+          description: Selected color from the extracted artwork palette
+        status:
+          type: string
+          description: Status of visual metadata extraction
+          enum:
+          - NONE
+          - PROCESSING
+          - OK
+      description: Color information extracted from artwork
+    AlbumStatistics_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    Included:
+      type: array
+      items:
+        discriminator:
+          mapping:
+            acceptedTerms: '#/components/schemas/AcceptedTerms_Resource_Object'
+            albumStatistics: '#/components/schemas/AlbumStatistics_Resource_Object'
+            albums: '#/components/schemas/Albums_Resource_Object'
+            appreciations: '#/components/schemas/Appreciations_Resource_Object'
+            artistBiographies: '#/components/schemas/ArtistBiographies_Resource_Object'
+            artistClaims: '#/components/schemas/ArtistClaims_Resource_Object'
+            artistRoles: '#/components/schemas/ArtistRoles_Resource_Object'
+            artists: '#/components/schemas/Artists_Resource_Object'
+            artworks: '#/components/schemas/Artworks_Resource_Object'
+            clients: '#/components/schemas/Clients_Resource_Object'
+            comments: '#/components/schemas/Comments_Resource_Object'
+            contentClaims: '#/components/schemas/ContentClaims_Resource_Object'
+            credits: '#/components/schemas/Credits_Resource_Object'
+            downloads: '#/components/schemas/Downloads_Resource_Object'
+            dspSharingLinks: '#/components/schemas/DspSharingLinks_Resource_Object'
+            dynamicModules: '#/components/schemas/DynamicModules_Resource_Object'
+            dynamicPages: '#/components/schemas/DynamicPages_Resource_Object'
+            genres: '#/components/schemas/Genres_Resource_Object'
+            installations: '#/components/schemas/Installations_Resource_Object'
+            lyrics: '#/components/schemas/Lyrics_Resource_Object'
+            manualArtistClaims: '#/components/schemas/ManualArtistClaims_Resource_Object'
+            offlineTasks: '#/components/schemas/OfflineTasks_Resource_Object'
+            playQueues: '#/components/schemas/PlayQueues_Resource_Object'
+            playlists: '#/components/schemas/Playlists_Resource_Object'
+            priceConfigurations: '#/components/schemas/PriceConfigurations_Resource_Object'
+            providerOwners: '#/components/schemas/ProviderOwners_Resource_Object'
+            providerProductInfos: '#/components/schemas/ProviderProductInfos_Resource_Object'
+            providers: '#/components/schemas/Providers_Resource_Object'
+            purchases: '#/components/schemas/Purchases_Resource_Object'
+            reactions: '#/components/schemas/Reactions_Resource_Object'
+            savedShares: '#/components/schemas/SavedShares_Resource_Object'
+            searchHistoryEntries: '#/components/schemas/SearchHistoryEntries_Resource_Object'
+            searchResults: '#/components/schemas/SearchResults_Resource_Object'
+            searchSuggestions: '#/components/schemas/SearchSuggestions_Resource_Object'
+            shares: '#/components/schemas/Shares_Resource_Object'
+            squareConnections: '#/components/schemas/SquareConnections_Resource_Object'
+            stripeConnections: '#/components/schemas/StripeConnections_Resource_Object'
+            stripeDashboardLinks: '#/components/schemas/StripeDashboardLinks_Resource_Object'
+            temporaryUserTokens: '#/components/schemas/TemporaryUserTokens_Resource_Object'
+            terms: '#/components/schemas/Terms_Resource_Object'
+            trackFiles: '#/components/schemas/TrackFiles_Resource_Object'
+            trackManifests: '#/components/schemas/TrackManifests_Resource_Object'
+            trackSourceFiles: '#/components/schemas/TrackSourceFiles_Resource_Object'
+            trackStatistics: '#/components/schemas/TrackStatistics_Resource_Object'
+            tracks: '#/components/schemas/Tracks_Resource_Object'
+            tracksMetadataStatus: '#/components/schemas/TracksMetadataStatus_Resource_Object'
+            usageRules: '#/components/schemas/UsageRules_Resource_Object'
+            userCollectionAlbums: '#/components/schemas/UserCollectionAlbums_Resource_Object'
+            userCollectionArtists: '#/components/schemas/UserCollectionArtists_Resource_Object'
+            userCollectionFolders: '#/components/schemas/UserCollectionFolders_Resource_Object'
+            userCollectionPlaylists: '#/components/schemas/UserCollectionPlaylists_Resource_Object'
+            userCollectionSaveForLaters: '#/components/schemas/UserCollectionSaveForLaters_Resource_Object'
+            userCollectionTracks: '#/components/schemas/UserCollectionTracks_Resource_Object'
+            userCollectionVideos: '#/components/schemas/UserCollectionVideos_Resource_Object'
+            userCollections: '#/components/schemas/UserCollections_Resource_Object'
+            userDailyMixes: '#/components/schemas/UserDailyMixes_Resource_Object'
+            userDataExportRequests: '#/components/schemas/UserDataExportRequests_Resource_Object'
+            userDiscoveryMixes: '#/components/schemas/UserDiscoveryMixes_Resource_Object'
+            userNewReleaseMixes: '#/components/schemas/UserNewReleaseMixes_Resource_Object'
+            userOfflineMixes: '#/components/schemas/UserOfflineMixes_Resource_Object'
+            userRecommendations: '#/components/schemas/UserRecommendations_Resource_Object'
+            userReports: '#/components/schemas/UserReports_Resource_Object'
+            users: '#/components/schemas/Users_Resource_Object'
+            videoManifests: '#/components/schemas/VideoManifests_Resource_Object'
+            videos: '#/components/schemas/Videos_Resource_Object'
+          propertyName: type
+        oneOf:
+        - $ref: '#/components/schemas/AcceptedTerms_Resource_Object'
+        - $ref: '#/components/schemas/AlbumStatistics_Resource_Object'
+        - $ref: '#/components/schemas/Albums_Resource_Object'
+        - $ref: '#/components/schemas/Appreciations_Resource_Object'
+        - $ref: '#/components/schemas/ArtistBiographies_Resource_Object'
+        - $ref: '#/components/schemas/ArtistClaims_Resource_Object'
+        - $ref: '#/components/schemas/ArtistRoles_Resource_Object'
+        - $ref: '#/components/schemas/Artists_Resource_Object'
+        - $ref: '#/components/schemas/Artworks_Resource_Object'
+        - $ref: '#/components/schemas/Clients_Resource_Object'
+        - $ref: '#/components/schemas/Comments_Resource_Object'
+        - $ref: '#/components/schemas/ContentClaims_Resource_Object'
+        - $ref: '#/components/schemas/Credits_Resource_Object'
+        - $ref: '#/components/schemas/Downloads_Resource_Object'
+        - $ref: '#/components/schemas/DspSharingLinks_Resource_Object'
+        - $ref: '#/components/schemas/DynamicModules_Resource_Object'
+        - $ref: '#/components/schemas/DynamicPages_Resource_Object'
+        - $ref: '#/components/schemas/Genres_Resource_Object'
+        - $ref: '#/components/schemas/Installations_Resource_Object'
+        - $ref: '#/components/schemas/Lyrics_Resource_Object'
+        - $ref: '#/components/schemas/ManualArtistClaims_Resource_Object'
+        - $ref: '#/components/schemas/OfflineTasks_Resource_Object'
+        - $ref: '#/components/schemas/PlayQueues_Resource_Object'
+        - $ref: '#/components/schemas/Playlists_Resource_Object'
+        - $ref: '#/components/schemas/PriceConfigurations_Resource_Object'
+        - $ref: '#/components/schemas/ProviderOwners_Resource_Object'
+        - $ref: '#/components/schemas/ProviderProductInfos_Resource_Object'
+        - $ref: '#/components/schemas/Providers_Resource_Object'
+        - $ref: '#/components/schemas/Purchases_Resource_Object'
+        - $ref: '#/components/schemas/Reactions_Resource_Object'
+        - $ref: '#/components/schemas/SavedShares_Resource_Object'
+        - $ref: '#/components/schemas/SearchHistoryEntries_Resource_Object'
+        - $ref: '#/components/schemas/SearchResults_Resource_Object'
+        - $ref: '#/components/schemas/SearchSuggestions_Resource_Object'
+        - $ref: '#/components/schemas/Shares_Resource_Object'
+        - $ref: '#/components/schemas/SquareConnections_Resource_Object'
+        - $ref: '#/components/schemas/StripeConnections_Resource_Object'
+        - $ref: '#/components/schemas/StripeDashboardLinks_Resource_Object'
+        - $ref: '#/components/schemas/TemporaryUserTokens_Resource_Object'
+        - $ref: '#/components/schemas/Terms_Resource_Object'
+        - $ref: '#/components/schemas/TrackFiles_Resource_Object'
+        - $ref: '#/components/schemas/TrackManifests_Resource_Object'
+        - $ref: '#/components/schemas/TrackSourceFiles_Resource_Object'
+        - $ref: '#/components/schemas/TrackStatistics_Resource_Object'
+        - $ref: '#/components/schemas/Tracks_Resource_Object'
+        - $ref: '#/components/schemas/TracksMetadataStatus_Resource_Object'
+        - $ref: '#/components/schemas/UsageRules_Resource_Object'
+        - $ref: '#/components/schemas/UserCollectionAlbums_Resource_Object'
+        - $ref: '#/components/schemas/UserCollectionArtists_Resource_Object'
+        - $ref: '#/components/schemas/UserCollectionFolders_Resource_Object'
+        - $ref: '#/components/schemas/UserCollectionPlaylists_Resource_Object'
+        - $ref: '#/components/schemas/UserCollectionSaveForLaters_Resource_Object'
+        - $ref: '#/components/schemas/UserCollectionTracks_Resource_Object'
+        - $ref: '#/components/schemas/UserCollectionVideos_Resource_Object'
+        - $ref: '#/components/schemas/UserCollections_Resource_Object'
+        - $ref: '#/components/schemas/UserDailyMixes_Resource_Object'
+        - $ref: '#/components/schemas/UserDataExportRequests_Resource_Object'
+        - $ref: '#/components/schemas/UserDiscoveryMixes_Resource_Object'
+        - $ref: '#/components/schemas/UserNewReleaseMixes_Resource_Object'
+        - $ref: '#/components/schemas/UserOfflineMixes_Resource_Object'
+        - $ref: '#/components/schemas/UserRecommendations_Resource_Object'
+        - $ref: '#/components/schemas/UserReports_Resource_Object'
+        - $ref: '#/components/schemas/Users_Resource_Object'
+        - $ref: '#/components/schemas/VideoManifests_Resource_Object'
+        - $ref: '#/components/schemas/Videos_Resource_Object'
+    Playlists_Relationships:
+      properties:
+        collaboratorProfiles:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        collaborators:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        coverArt:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        items:
+          $ref: '#/components/schemas/Playlists_Items_Multi_Relationship_Data_Document'
+        ownerProfiles:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    Shares_Attributes:
+      required:
+      - code
+      - createdAt
+      type: object
+      properties:
+        code:
+          type: string
+          description: Share code
+        createdAt:
+          type: string
+          description: Datetime of share creation (ISO 8601)
+          format: date-time
+        externalLinks:
+          type: array
+          description: Links external to TIDAL API
+          items:
+            $ref: '#/components/schemas/External_Link'
+    UserCollectionPlaylists_Items_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionPlaylists_Items_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    Tracks_Relationships:
+      properties:
+        albums:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        artists:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        credits:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        download:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        genres:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        lyrics:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        metadataStatus:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        priceConfig:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        providers:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        radio:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        replacement:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        shares:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        similarTracks:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sourceFile:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        suggestedTracks:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        trackStatistics:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        usageRules:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    PlayQueues_Current_Resource_Identifier_Meta:
+      required:
+      - batchId
+      - itemId
+      type: object
+      properties:
+        batchId:
+          type: string
+          format: uuid
+        itemId:
+          minLength: 1
+          type: string
+        legacySource:
+          $ref: '#/components/schemas/LegacySource'
+    External_Link:
+      required:
+      - href
+      - meta
+      type: object
+      properties:
+        href:
+          type: string
+        meta:
+          $ref: '#/components/schemas/External_Link_Meta'
+    Artists_Attributes:
+      required:
+      - name
+      - popularity
+      type: object
+      properties:
+        contributionsEnabled:
+          type: boolean
+          description: Is the artist enabled for contributions?
+          example: true
+        contributionsSalesPitch:
+          type: string
+          description: Contributions sales pitch
+          example: Help me be a full time artist
+        externalLinks:
+          type: array
+          description: Artist links external to TIDAL API
+          items:
+            $ref: '#/components/schemas/External_Link'
+        handle:
+          type: string
+          description: Artist handle
+          example: jayz
+        name:
+          type: string
+          description: Artist name
+          example: JAY Z
+        ownerType:
+          type: string
+          description: 'Ownership type of the artist profile. LABEL: label-managed profile, USER: user-created profile, MIXED:
+            claimed profile with both label and user content. May be null during rollout/backfill.'
+          enum:
+          - LABEL
+          - USER
+          - MIXED
+        popularity:
+          type: number
+          description: Artist popularity (0.0 - 1.0)
+          format: double
+          example: 0.56
+        spotlighted:
+          type: boolean
+          description: Is the artist spotlighted?
+          example: true
+    TrackStatistics_Attributes:
+      required:
+      - totalPlaybacks
+      - uniqueListeners
+      type: object
+      properties:
+        totalPlaybacks:
+          type: integer
+          description: Total playbacks
+          format: int32
+        uniqueListeners:
+          type: integer
+          description: Unique listeners
+          format: int32
+    Artwork_SourceFile:
+      required:
+      - md5Hash
+      - size
+      - status
+      - uploadLink
+      type: object
+      properties:
+        md5Hash:
+          type: string
+          description: MD5 hash of file to be uploaded
+        size:
+          type: integer
+          description: File size of the artwork in bytes
+          format: int64
+        status:
+          $ref: '#/components/schemas/File_Status'
+        uploadLink:
+          $ref: '#/components/schemas/File_Upload_Link'
+      description: Artwork source file
+    UserReports_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserReports_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    UserCollectionAlbums_Items_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+    Comments_Attributes:
+      required:
+      - createdAt
+      - lastModifiedAt
+      - likeCount
+      - message
+      - moderationStatus
+      - replyCount
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Datetime when the comment was created (ISO 8601)
+          format: date-time
+          example: '2025-11-17T12:54:48.606Z'
+        endTime:
+          type: string
+          description: End time offset for timestamped comments (ISO 8601 duration)
+          example: PT2M
+        lastModifiedAt:
+          type: string
+          description: Datetime when the comment was last modified (ISO 8601)
+          format: date-time
+          example: '2025-11-17T12:54:48.606Z'
+        likeCount:
+          type: integer
+          description: Number of likes on this comment
+          format: int32
+        message:
+          maxLength: 2000
+          minLength: 1
+          type: string
+          description: The comment message content
+        moderationStatus:
+          type: string
+          description: Moderation status of the comment
+          enum:
+          - NOT_MODERATED
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        replyCount:
+          type: integer
+          description: Number of replies to this comment
+          format: int32
+        startTime:
+          type: string
+          description: Start time offset for timestamped comments (ISO 8601 duration)
+          example: PT1M30S
+    ReactionStats:
+      type: object
+      properties:
+        countsByType:
+          type: object
+          additionalProperties:
+            type: integer
+            description: Count of reactions by type
+            format: int32
+          description: Count of reactions by type
+        totalCount:
+          type: integer
+          description: Total number of reactions
+          format: int32
+      description: Reaction statistics
+    TrackSourceFiles_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    Playlists_Items_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/Playlists_Items_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    Artworks_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    CommentsCreateOperation_Payload_Data_Relationships_Subject_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - albums
+          - tracks
+    Reactions_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Reactions_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Reactions_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Artists_Followers_Resource_Identifier_Meta:
+      type: object
+      properties:
+        viewer:
+          $ref: '#/components/schemas/Artists_Followers_Resource_Meta_ViewerContext'
+    PlayQueues_Future_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/PlayQueues_Future_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    UserCollectionArtists_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/UserCollectionArtists_Items_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    AcceptedTerms_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        terms:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    StripeDashboardLinks_Attributes:
+      type: object
+      properties:
+        dashboardLink:
+          $ref: '#/components/schemas/Link_Object'
+    UserCollectionArtists_Items_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionArtists_Items_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    TrackFiles_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/TrackFiles_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Lyrics_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        track:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    Playlists_Items_Resource_Identifier_Meta:
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+        itemId:
+          type: string
+    ContentClaims_Relationships:
+      properties:
+        claimedResource:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        claimingArtist:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    Albums_Items_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Albums_Items_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    UserCollections_Albums_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollections_Albums_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    AppreciationsCreateOperation_Payload_Data_Relationships:
+      required:
+      - appreciatedItems
+      type: object
+      properties:
+        appreciatedItems:
+          $ref: '#/components/schemas/AppreciationsCreateOperation_Payload_Data_Relationships_AppreciatedItem'
+    Shares_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Shares_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Shares_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    UserCollections_Videos_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollections_Videos_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    UserCollectionSaveForLaters_Items_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    Highlight:
+      type: object
+      properties:
+        length:
+          type: integer
+          format: int32
+        start:
+          type: integer
+          format: int32
+    File_Upload_Link:
+      required:
+      - href
+      - meta
+      type: object
+      properties:
+        href:
+          type: string
+          description: Href to upload actual file to
+        meta:
+          $ref: '#/components/schemas/File_Upload_Link_Meta'
+      description: Upload link
+    Comments_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    UserCollections_Videos_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollections_Videos_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    Videos_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Videos_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/Videos_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    LegacyBarcodeId:
+      type: object
+      properties:
+        value:
+          type: string
+      description: List of UPCs retrieved from the DSP
+    UserCollectionVideos_Attributes:
+      required:
+      - numberOfItems
+      type: object
+      properties:
+        lastModifiedAt:
+          type: string
+          description: When the collection was last modified
+          format: date-time
+        numberOfItems:
+          type: integer
+          description: Number of items in the collection
+          format: int32
+    DspSharingLinks_Multi_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DspSharingLinks_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    TrackManifests_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/TrackManifests_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    SearchSuggestions_Attributes:
+      required:
+      - trackingId
+      type: object
+      properties:
+        history:
+          type: array
+          description: "Suggestions from search history. Deprecated \u2014 use the history relationship instead. Will be deleted\
+            \ shortly."
+          deprecated: true
+          items:
+            $ref: '#/components/schemas/SearchSuggestions_History'
+        suggestions:
+          type: array
+          description: Suggested search queries
+          items:
+            $ref: '#/components/schemas/SearchSuggestions_Suggestions'
+        trackingId:
+          minLength: 1
+          type: string
+          description: Unique tracking id
+    UserCollectionSaveForLaters_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Lyrics_Attributes:
+      required:
+      - technicalStatus
+      type: object
+      properties:
+        direction:
+          type: string
+          enum:
+          - LEFT_TO_RIGHT
+          - RIGHT_TO_LEFT
+        lrcText:
+          type: string
+        provider:
+          oneOf:
+          - $ref: '#/components/schemas/ThirdPartyLyricsProvider'
+          - $ref: '#/components/schemas/TidalLyricsProvider'
+        technicalStatus:
+          type: string
+          enum:
+          - PENDING
+          - PROCESSING
+          - ERROR
+          - OK
+        text:
+          type: string
+    Terms_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Terms_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    TemporaryUserTokens_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/TemporaryUserTokens_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/TemporaryUserTokens_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Shares_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    UserCollections_Tracks_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollections_Tracks_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    Albums_SuggestedCoverArts_Multi_Relationship_Data_Document_Meta:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - PENDING
+          - PROCESSING
+          - ERROR
+          - OK
+    TrackSourceFiles_Attributes:
+      required:
+      - md5Hash
+      - size
+      - status
+      - uploadLink
+      type: object
+      properties:
+        md5Hash:
+          type: string
+          description: MD5 hash of file to be uploaded
+        size:
+          type: integer
+          description: File size of the track in bytes
+          format: int64
+        status:
+          $ref: '#/components/schemas/File_Status'
+        uploadLink:
+          $ref: '#/components/schemas/File_Upload_Link'
+    SearchSuggestions_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/SearchSuggestions_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/SearchSuggestions_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    File_Upload_Link_Meta:
+      required:
+      - method
+      type: object
+      properties:
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+            description: HTTP headers that must be added to the operation
+          description: HTTP headers that must be added to the operation
+        method:
+          type: string
+          description: HTTP method
+      description: metadata for upload link
+    UserNewReleaseMixes_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    TrackSourceFiles_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/TrackSourceFiles_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/TrackSourceFiles_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    PriceConfigurations_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/PriceConfigurations_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Users_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Users_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
+    Reactions_Multi_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reactions_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Reactions_Multi_Resource_Data_Document_Meta'
+  securitySchemes:
+    Authorization_Code_PKCE:
+      description: See https://developer.tidal.com/documentation/authorization/authorization-authorization-code
+      flows:
+        authorizationCode:
+          authorizationUrl: https://login.tidal.com/authorize
+          scopes:
+            collection.read: Read access to a user's "My Collection".
+            collection.write: Write access to a user's "My Collection".
+            entitlements.read: Read access to what functionality a user is entitled to access on TIDAL, such as whether they
+              can stream music, use DJ add-ons and similar.
+            playback: Required to play media content and control playback.
+            playlists.read: Required to list playlists created by a user.
+            playlists.write: Write access to a user's playlists.
+            r_usr: Read access to all end user data
+            recommendations.read: "Read access to a user\u2019s personal recommendations."
+            search.read: Required to read personalized search results.
+            search.write: Required to update personalized search results, e.g. delete search history.
+            user.read: Read access to a user's account information, such as country and email address.
+            w_usr: Write user
+          tokenUrl: https://auth.tidal.com/v1/oauth2/token
+          x-scopes-required-access-tier:
+            collection.read: THIRD_PARTY
+            collection.write: THIRD_PARTY
+            entitlements.read: THIRD_PARTY
+            playback: THIRD_PARTY
+            playlists.read: THIRD_PARTY
+            playlists.write: THIRD_PARTY
+            r_usr: INTERNAL
+            recommendations.read: THIRD_PARTY
+            search.read: THIRD_PARTY
+            search.write: THIRD_PARTY
+            user.read: THIRD_PARTY
+            w_usr: INTERNAL
+      type: oauth2
+    Client_Credentials:
+      description: See https://developer.tidal.com/documentation/authorization/authorization-client-credentials
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://auth.tidal.com/v1/oauth2/token
+      type: oauth2

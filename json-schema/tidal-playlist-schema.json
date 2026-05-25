@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.com/schemas/tidal/tidal-playlist-schema.json",
+  "title": "TIDAL Playlist",
+  "description": "JSON:API resource representing a TIDAL playlist (user-owned or editorial). Returned by the Playlists API at GET /v2/playlists and GET /v2/playlists/{id}.",
+  "type": "object",
+  "required": ["id", "type", "attributes"],
+  "properties": {
+    "id": { "type": "string", "description": "Stable TIDAL playlist identifier (UUID for user playlists)." },
+    "type": { "type": "string", "const": "playlists" },
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "bounded": { "type": "boolean", "description": "Whether the playlist has a fixed item set (false for dynamic radio-style)." },
+        "duration": { "type": "string", "description": "ISO 8601 total duration across all items." },
+        "numberOfItems": { "type": "integer", "minimum": 0 },
+        "externalLinks": { "type": "array", "items": { "type": "object" } },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "lastModifiedAt": { "type": "string", "format": "date-time" },
+        "privacy": { "type": "string", "enum": ["PRIVATE", "PUBLIC", "UNLISTED"] },
+        "playlistType": { "type": "string", "enum": ["USER", "EDITORIAL", "ARTIST", "PODCAST"] },
+        "imageLinks": { "type": "array", "items": { "type": "object" } },
+        "squareImageLinks": { "type": "array", "items": { "type": "object" } },
+        "tidalUrl": { "type": "string", "format": "uri" }
+      }
+    },
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "items": { "type": "object" },
+        "owners": { "type": "object" },
+        "coverArt": { "type": "object" }
+      }
+    }
+  }
+}

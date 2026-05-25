@@ -1,0 +1,310 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL User Collections API — Playlists
+  description: TIDAL User Collections API — Playlists. 5 operations. Self-contained Naftiko capability covering one TIDAL
+    business surface.
+  tags:
+  - TIDAL
+  - Music
+  - userCollectionPlaylists
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: user-collections-playlists
+    baseUri: https://openapi.tidal.com
+    description: TIDAL User Collections API — Playlists business capability. Self-contained, no shared references.
+    resources:
+    - name: userCollectionPlaylists-id
+      path: /userCollectionPlaylists/{id}
+      operations:
+      - name: getusercollectionplaylists
+        method: GET
+        description: Get single userCollectionPlaylist.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection playlists id. Use `me` for the authenticated user's resource
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items,
+            owners'
+          required: false
+    - name: userCollectionPlaylists-id-relationships-items
+      path: /userCollectionPlaylists/{id}/relationships/items
+      operations:
+      - name: deleteusercollectionplaylists
+        method: DELETE
+        description: Delete from items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection playlists id. Use `me` for the authenticated user's resource
+          required: true
+      - name: getusercollectionplaylists
+        method: GET
+        description: Get items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection playlists id. Use `me` for the authenticated user's resource
+          required: true
+        - name: collectionView
+          in: query
+          type: string
+          description: ''
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: sort
+          in: query
+          type: array
+          description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+      - name: postusercollectionplaylists
+        method: POST
+        description: Add to items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection playlists id. Use `me` for the authenticated user's resource
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: userCollectionPlaylists-id-relationships-owners
+      path: /userCollectionPlaylists/{id}/relationships/owners
+      operations:
+      - name: getusercollectionplaylists
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection playlists id. Use `me` for the authenticated user's resource
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: user-collections-playlists-rest
+    port: 8080
+    description: REST adapter for TIDAL User Collections API — Playlists. One Spectral-compliant resource per consumed operation,
+      prefixed with /v2.
+    resources:
+    - path: /v2/userCollectionPlaylists/{id}
+      name: userCollectionPlaylists-id
+      description: REST surface for userCollectionPlaylists-id.
+      operations:
+      - method: GET
+        name: getusercollectionplaylists
+        description: Get single userCollectionPlaylist.
+        call: user-collections-playlists.getusercollectionplaylists
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollectionPlaylists/{id}/relationships/items
+      name: userCollectionPlaylists-id-relationships-items
+      description: REST surface for userCollectionPlaylists-id-relationships-items.
+      operations:
+      - method: DELETE
+        name: deleteusercollectionplaylists
+        description: Delete from items relationship ("to-many").
+        call: user-collections-playlists.deleteusercollectionplaylists
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getusercollectionplaylists
+        description: Get items relationship ("to-many").
+        call: user-collections-playlists.getusercollectionplaylists
+        with:
+          id: rest.path.id
+          collectionView: rest.query.collectionView
+          page[cursor]: rest.query.page[cursor]
+          sort: rest.query.sort
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusercollectionplaylists
+        description: Add to items relationship ("to-many").
+        call: user-collections-playlists.postusercollectionplaylists
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollectionPlaylists/{id}/relationships/owners
+      name: userCollectionPlaylists-id-relationships-owners
+      description: REST surface for userCollectionPlaylists-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getusercollectionplaylists
+        description: Get owners relationship ("to-many").
+        call: user-collections-playlists.getusercollectionplaylists
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: user-collections-playlists-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL User Collections API — Playlists. One tool per consumed operation.
+    tools:
+    - name: tidal-getusercollectionplaylists
+      description: Get single userCollectionPlaylist.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-playlists.getusercollectionplaylists
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteusercollectionplaylists
+      description: Delete from items relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: user-collections-playlists.deleteusercollectionplaylists
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollectionplaylists
+      description: Get items relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-playlists.getusercollectionplaylists
+      with:
+        id: tools.id
+        collectionView: tools.collectionView
+        page[cursor]: tools.page[cursor]
+        sort: tools.sort
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postusercollectionplaylists
+      description: Add to items relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: user-collections-playlists.postusercollectionplaylists
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollectionplaylists
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-playlists.getusercollectionplaylists
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.

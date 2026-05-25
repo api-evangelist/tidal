@@ -1,0 +1,1415 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Catalog API — Artists
+  description: TIDAL Catalog API — Artists. 25 operations. Self-contained Naftiko capability covering one TIDAL business surface.
+  tags:
+  - TIDAL
+  - Music
+  - artists
+  - artistBiographies
+  - artistRoles
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: catalog-artists
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Catalog API — Artists business capability. Self-contained, no shared references.
+    resources:
+    - name: artistBiographies
+      path: /artistBiographies
+      operations:
+      - name: getartistbiographies
+        method: GET
+        description: Get multiple artistBiographies.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: filter[id]
+          in: query
+          type: array
+          description: Artist id (e.g. `1566`)
+          required: false
+    - name: artistBiographies-id
+      path: /artistBiographies/{id}
+      operations:
+      - name: getartistbiographies
+        method: GET
+        description: Get single artistBiographie.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist biography id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+      - name: patchartistbiographies
+        method: PATCH
+        description: Update single artistBiographie.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist biography id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: artistBiographies-id-relationships-owners
+      path: /artistBiographies/{id}/relationships/owners
+      operations:
+      - name: getartistbiographies
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist biography id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: artistRoles
+      path: /artistRoles
+      operations:
+      - name: getartistroles
+        method: GET
+        description: Get multiple artistRoles.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: filter[id]
+          in: query
+          type: array
+          description: List of artist role IDs (e.g. `1`)
+          required: false
+    - name: artistRoles-id
+      path: /artistRoles/{id}
+      operations:
+      - name: getartistroles
+        method: GET
+        description: Get single artistRole.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist role id
+          required: true
+    - name: artists
+      path: /artists
+      operations:
+      - name: getartists
+        method: GET
+        description: Get multiple artists.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: albums,
+            biography, followers, following, owners, profile'
+          required: false
+        - name: filter[handle]
+          in: query
+          type: array
+          description: Artist handle (e.g. `jayz`)
+          required: false
+        - name: filter[id]
+          in: query
+          type: array
+          description: Artist id (e.g. `1566`)
+          required: false
+        - name: filter[owners.id]
+          in: query
+          type: array
+          description: User id. Use `me` for the authenticated user
+          required: false
+      - name: postartists
+        method: POST
+        description: Create single artist.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: artists-id
+      path: /artists/{id}
+      operations:
+      - name: getartists
+        method: GET
+        description: Get single artist.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: albums,
+            biography, followers, following, owners, profile'
+          required: false
+      - name: patchartists
+        method: PATCH
+        description: Update single artist.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: artists-id-relationships-albums
+      path: /artists/{id}/relationships/albums
+      operations:
+      - name: getartists
+        method: GET
+        description: Get albums relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: albums'
+          required: false
+    - name: artists-id-relationships-biography
+      path: /artists/{id}/relationships/biography
+      operations:
+      - name: getartists
+        method: GET
+        description: Get biography relationship ("to-one").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: biography'
+          required: false
+    - name: artists-id-relationships-followers
+      path: /artists/{id}/relationships/followers
+      operations:
+      - name: getartists
+        method: GET
+        description: Get followers relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: viewerContext
+          in: query
+          type: string
+          description: ''
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: followers'
+          required: false
+    - name: artists-id-relationships-following
+      path: /artists/{id}/relationships/following
+      operations:
+      - name: deleteartists
+        method: DELETE
+        description: Delete from following relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+      - name: getartists
+        method: GET
+        description: Get following relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: viewerContext
+          in: query
+          type: string
+          description: ''
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: following'
+          required: false
+      - name: postartists
+        method: POST
+        description: Add to following relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: artists-id-relationships-owners
+      path: /artists/{id}/relationships/owners
+      operations:
+      - name: getartists
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: artists-id-relationships-profileArt
+      path: /artists/{id}/relationships/profileArt
+      operations:
+      - name: getartists
+        method: GET
+        description: Get profileArt relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: profileArt'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+      - name: patchartists
+        method: PATCH
+        description: Update profileArt relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: artists-id-relationships-radio
+      path: /artists/{id}/relationships/radio
+      operations:
+      - name: getartists
+        method: GET
+        description: Get radio relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: radio'
+          required: false
+    - name: artists-id-relationships-roles
+      path: /artists/{id}/relationships/roles
+      operations:
+      - name: getartists
+        method: GET
+        description: Get roles relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: roles'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: artists-id-relationships-similarArtists
+      path: /artists/{id}/relationships/similarArtists
+      operations:
+      - name: getartists
+        method: GET
+        description: Get similarArtists relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: similarArtists'
+          required: false
+    - name: artists-id-relationships-trackProviders
+      path: /artists/{id}/relationships/trackProviders
+      operations:
+      - name: getartists
+        method: GET
+        description: Get trackProviders relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: trackProviders'
+          required: false
+    - name: artists-id-relationships-tracks
+      path: /artists/{id}/relationships/tracks
+      operations:
+      - name: getartists
+        method: GET
+        description: Get tracks relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: collapseBy
+          in: query
+          type: string
+          description: 'Collapse by options for getting artist tracks. Available options: FINGERPRINT, ID. FINGERPRINT option
+            might collapse similar tracks based entry finger'
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: tracks'
+          required: false
+    - name: artists-id-relationships-videos
+      path: /artists/{id}/relationships/videos
+      operations:
+      - name: getartists
+        method: GET
+        description: Get videos relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: videos'
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: catalog-artists-rest
+    port: 8080
+    description: REST adapter for TIDAL Catalog API — Artists. One Spectral-compliant resource per consumed operation, prefixed
+      with /v2.
+    resources:
+    - path: /v2/artistBiographies
+      name: artistBiographies
+      description: REST surface for artistBiographies.
+      operations:
+      - method: GET
+        name: getartistbiographies
+        description: Get multiple artistBiographies.
+        call: catalog-artists.getartistbiographies
+        with:
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          filter[id]: rest.query.filter[id]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artistBiographies/{id}
+      name: artistBiographies-id
+      description: REST surface for artistBiographies-id.
+      operations:
+      - method: GET
+        name: getartistbiographies
+        description: Get single artistBiographie.
+        call: catalog-artists.getartistbiographies
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchartistbiographies
+        description: Update single artistBiographie.
+        call: catalog-artists.patchartistbiographies
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artistBiographies/{id}/relationships/owners
+      name: artistBiographies-id-relationships-owners
+      description: REST surface for artistBiographies-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getartistbiographies
+        description: Get owners relationship ("to-many").
+        call: catalog-artists.getartistbiographies
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artistRoles
+      name: artistRoles
+      description: REST surface for artistRoles.
+      operations:
+      - method: GET
+        name: getartistroles
+        description: Get multiple artistRoles.
+        call: catalog-artists.getartistroles
+        with:
+          filter[id]: rest.query.filter[id]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artistRoles/{id}
+      name: artistRoles-id
+      description: REST surface for artistRoles-id.
+      operations:
+      - method: GET
+        name: getartistroles
+        description: Get single artistRole.
+        call: catalog-artists.getartistroles
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artists
+      name: artists
+      description: REST surface for artists.
+      operations:
+      - method: GET
+        name: getartists
+        description: Get multiple artists.
+        call: catalog-artists.getartists
+        with:
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          filter[handle]: rest.query.filter[handle]
+          filter[id]: rest.query.filter[id]
+          filter[owners.id]: rest.query.filter[owners.id]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postartists
+        description: Create single artist.
+        call: catalog-artists.postartists
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artists/{id}
+      name: artists-id
+      description: REST surface for artists-id.
+      operations:
+      - method: GET
+        name: getartists
+        description: Get single artist.
+        call: catalog-artists.getartists
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchartists
+        description: Update single artist.
+        call: catalog-artists.patchartists
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artists/{id}/relationships/albums
+      name: artists-id-relationships-albums
+      description: REST surface for artists-id-relationships-albums.
+      operations:
+      - method: GET
+        name: getartists
+        description: Get albums relationship ("to-many").
+        call: catalog-artists.getartists
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artists/{id}/relationships/biography
+      name: artists-id-relationships-biography
+      description: REST surface for artists-id-relationships-biography.
+      operations:
+      - method: GET
+        name: getartists
+        description: Get biography relationship ("to-one").
+        call: catalog-artists.getartists
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artists/{id}/relationships/followers
+      name: artists-id-relationships-followers
+      description: REST surface for artists-id-relationships-followers.
+      operations:
+      - method: GET
+        name: getartists
+        description: Get followers relationship ("to-many").
+        call: catalog-artists.getartists
+        with:
+          id: rest.path.id
+          viewerContext: rest.query.viewerContext
+          page[cursor]: rest.query.page[cursor]
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artists/{id}/relationships/following
+      name: artists-id-relationships-following
+      description: REST surface for artists-id-relationships-following.
+      operations:
+      - method: DELETE
+        name: deleteartists
+        description: Delete from following relationship ("to-many").
+        call: catalog-artists.deleteartists
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getartists
+        description: Get following relationship ("to-many").
+        call: catalog-artists.getartists
+        with:
+          id: rest.path.id
+          viewerContext: rest.query.viewerContext
+          page[cursor]: rest.query.page[cursor]
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postartists
+        description: Add to following relationship ("to-many").
+        call: catalog-artists.postartists
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artists/{id}/relationships/owners
+      name: artists-id-relationships-owners
+      description: REST surface for artists-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getartists
+        description: Get owners relationship ("to-many").
+        call: catalog-artists.getartists
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artists/{id}/relationships/profileArt
+      name: artists-id-relationships-profileArt
+      description: REST surface for artists-id-relationships-profileArt.
+      operations:
+      - method: GET
+        name: getartists
+        description: Get profileArt relationship ("to-many").
+        call: catalog-artists.getartists
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchartists
+        description: Update profileArt relationship ("to-many").
+        call: catalog-artists.patchartists
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artists/{id}/relationships/radio
+      name: artists-id-relationships-radio
+      description: REST surface for artists-id-relationships-radio.
+      operations:
+      - method: GET
+        name: getartists
+        description: Get radio relationship ("to-many").
+        call: catalog-artists.getartists
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artists/{id}/relationships/roles
+      name: artists-id-relationships-roles
+      description: REST surface for artists-id-relationships-roles.
+      operations:
+      - method: GET
+        name: getartists
+        description: Get roles relationship ("to-many").
+        call: catalog-artists.getartists
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artists/{id}/relationships/similarArtists
+      name: artists-id-relationships-similarArtists
+      description: REST surface for artists-id-relationships-similarArtists.
+      operations:
+      - method: GET
+        name: getartists
+        description: Get similarArtists relationship ("to-many").
+        call: catalog-artists.getartists
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artists/{id}/relationships/trackProviders
+      name: artists-id-relationships-trackProviders
+      description: REST surface for artists-id-relationships-trackProviders.
+      operations:
+      - method: GET
+        name: getartists
+        description: Get trackProviders relationship ("to-many").
+        call: catalog-artists.getartists
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artists/{id}/relationships/tracks
+      name: artists-id-relationships-tracks
+      description: REST surface for artists-id-relationships-tracks.
+      operations:
+      - method: GET
+        name: getartists
+        description: Get tracks relationship ("to-many").
+        call: catalog-artists.getartists
+        with:
+          id: rest.path.id
+          collapseBy: rest.query.collapseBy
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artists/{id}/relationships/videos
+      name: artists-id-relationships-videos
+      description: REST surface for artists-id-relationships-videos.
+      operations:
+      - method: GET
+        name: getartists
+        description: Get videos relationship ("to-many").
+        call: catalog-artists.getartists
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: catalog-artists-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Catalog API — Artists. One tool per consumed operation.
+    tools:
+    - name: tidal-getartistbiographies
+      description: Get multiple artistBiographies.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartistbiographies
+      with:
+        countryCode: tools.countryCode
+        include: tools.include
+        filter[id]: tools.filter[id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartistbiographies
+      description: Get single artistBiographie.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartistbiographies
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-patchartistbiographies
+      description: Update single artistBiographie.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: catalog-artists.patchartistbiographies
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartistbiographies
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartistbiographies
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartistroles
+      description: Get multiple artistRoles.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartistroles
+      with:
+        filter[id]: tools.filter[id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartistroles
+      description: Get single artistRole.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartistroles
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartists
+      description: Get multiple artists.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartists
+      with:
+        countryCode: tools.countryCode
+        include: tools.include
+        filter[handle]: tools.filter[handle]
+        filter[id]: tools.filter[id]
+        filter[owners.id]: tools.filter[owners.id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postartists
+      description: Create single artist.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: catalog-artists.postartists
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartists
+      description: Get single artist.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartists
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-patchartists
+      description: Update single artist.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: catalog-artists.patchartists
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartists
+      description: Get albums relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartists
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartists
+      description: Get biography relationship ("to-one").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartists
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartists
+      description: Get followers relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartists
+      with:
+        id: tools.id
+        viewerContext: tools.viewerContext
+        page[cursor]: tools.page[cursor]
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteartists
+      description: Delete from following relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: catalog-artists.deleteartists
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartists
+      description: Get following relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartists
+      with:
+        id: tools.id
+        viewerContext: tools.viewerContext
+        page[cursor]: tools.page[cursor]
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postartists
+      description: Add to following relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: catalog-artists.postartists
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartists
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartists
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartists
+      description: Get profileArt relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartists
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-patchartists
+      description: Update profileArt relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: catalog-artists.patchartists
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartists
+      description: Get radio relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartists
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartists
+      description: Get roles relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartists
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartists
+      description: Get similarArtists relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartists
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartists
+      description: Get trackProviders relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartists
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartists
+      description: Get tracks relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartists
+      with:
+        id: tools.id
+        collapseBy: tools.collapseBy
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartists
+      description: Get videos relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-artists.getartists
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.

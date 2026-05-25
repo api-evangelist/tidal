@@ -1,0 +1,1272 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Catalog API — Albums
+  description: TIDAL Catalog API — Albums. 20 operations. Self-contained Naftiko capability covering one TIDAL business surface.
+  tags:
+  - TIDAL
+  - Music
+  - albums
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: catalog-albums
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Catalog API — Albums business capability. Self-contained, no shared references.
+    resources:
+    - name: albums
+      path: /albums
+      operations:
+      - name: getalbums
+        method: GET
+        description: Get multiple albums.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: sort
+          in: query
+          type: array
+          description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: albumStatistics,
+            artists, coverArt, genres, items, owner'
+          required: false
+        - name: filter[barcodeId]
+          in: query
+          type: array
+          description: 'List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only
+            return one album per barcode ID. (e.g. `1965895254'
+          required: false
+        - name: filter[id]
+          in: query
+          type: array
+          description: Album id (e.g. `251380836`)
+          required: false
+        - name: filter[owners.id]
+          in: query
+          type: array
+          description: User id. Use `me` for the authenticated user
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+      - name: postalbums
+        method: POST
+        description: Create single album.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: albums-id
+      path: /albums/{id}
+      operations:
+      - name: deletealbums
+        method: DELETE
+        description: Delete single album.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+      - name: getalbums
+        method: GET
+        description: Get single album.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: albumStatistics,
+            artists, coverArt, genres, items, owner'
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+      - name: patchalbums
+        method: PATCH
+        description: Update single album.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: albums-id-relationships-albumStatistics
+      path: /albums/{id}/relationships/albumStatistics
+      operations:
+      - name: getalbums
+        method: GET
+        description: Get albumStatistics relationship ("to-one").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: albumStatistics'
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+    - name: albums-id-relationships-artists
+      path: /albums/{id}/relationships/artists
+      operations:
+      - name: getalbums
+        method: GET
+        description: Get artists relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: artists'
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+    - name: albums-id-relationships-coverArt
+      path: /albums/{id}/relationships/coverArt
+      operations:
+      - name: getalbums
+        method: GET
+        description: Get coverArt relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: coverArt'
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+      - name: patchalbums
+        method: PATCH
+        description: Update coverArt relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: albums-id-relationships-genres
+      path: /albums/{id}/relationships/genres
+      operations:
+      - name: getalbums
+        method: GET
+        description: Get genres relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: genres'
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+    - name: albums-id-relationships-items
+      path: /albums/{id}/relationships/items
+      operations:
+      - name: getalbums
+        method: GET
+        description: Get items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+      - name: patchalbums
+        method: PATCH
+        description: Update items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: albums-id-relationships-owners
+      path: /albums/{id}/relationships/owners
+      operations:
+      - name: getalbums
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+    - name: albums-id-relationships-priceConfig
+      path: /albums/{id}/relationships/priceConfig
+      operations:
+      - name: getalbums
+        method: GET
+        description: Get priceConfig relationship ("to-one").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: priceConfig'
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+    - name: albums-id-relationships-providers
+      path: /albums/{id}/relationships/providers
+      operations:
+      - name: getalbums
+        method: GET
+        description: Get providers relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: providers'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+    - name: albums-id-relationships-replacement
+      path: /albums/{id}/relationships/replacement
+      operations:
+      - name: getalbums
+        method: GET
+        description: Get replacement relationship ("to-one").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: replacement'
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+    - name: albums-id-relationships-shares
+      path: /albums/{id}/relationships/shares
+      operations:
+      - name: getalbums
+        method: GET
+        description: Get shares relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: shares'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+    - name: albums-id-relationships-similarAlbums
+      path: /albums/{id}/relationships/similarAlbums
+      operations:
+      - name: getalbums
+        method: GET
+        description: Get similarAlbums relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: similarAlbums'
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+    - name: albums-id-relationships-suggestedCoverArts
+      path: /albums/{id}/relationships/suggestedCoverArts
+      operations:
+      - name: getalbums
+        method: GET
+        description: Get suggestedCoverArts relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: suggestedCoverArts'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+    - name: albums-id-relationships-usageRules
+      path: /albums/{id}/relationships/usageRules
+      operations:
+      - name: getalbums
+        method: GET
+        description: Get usageRules relationship ("to-one").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Album id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: usageRules'
+          required: false
+        - name: shareCode
+          in: query
+          type: string
+          description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources
+            that would otherwise be restricted.
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: catalog-albums-rest
+    port: 8080
+    description: REST adapter for TIDAL Catalog API — Albums. One Spectral-compliant resource per consumed operation, prefixed
+      with /v2.
+    resources:
+    - path: /v2/albums
+      name: albums
+      description: REST surface for albums.
+      operations:
+      - method: GET
+        name: getalbums
+        description: Get multiple albums.
+        call: catalog-albums.getalbums
+        with:
+          page[cursor]: rest.query.page[cursor]
+          sort: rest.query.sort
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          filter[barcodeId]: rest.query.filter[barcodeId]
+          filter[id]: rest.query.filter[id]
+          filter[owners.id]: rest.query.filter[owners.id]
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postalbums
+        description: Create single album.
+        call: catalog-albums.postalbums
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/albums/{id}
+      name: albums-id
+      description: REST surface for albums-id.
+      operations:
+      - method: DELETE
+        name: deletealbums
+        description: Delete single album.
+        call: catalog-albums.deletealbums
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getalbums
+        description: Get single album.
+        call: catalog-albums.getalbums
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchalbums
+        description: Update single album.
+        call: catalog-albums.patchalbums
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/albums/{id}/relationships/albumStatistics
+      name: albums-id-relationships-albumStatistics
+      description: REST surface for albums-id-relationships-albumStatistics.
+      operations:
+      - method: GET
+        name: getalbums
+        description: Get albumStatistics relationship ("to-one").
+        call: catalog-albums.getalbums
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/albums/{id}/relationships/artists
+      name: albums-id-relationships-artists
+      description: REST surface for albums-id-relationships-artists.
+      operations:
+      - method: GET
+        name: getalbums
+        description: Get artists relationship ("to-many").
+        call: catalog-albums.getalbums
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/albums/{id}/relationships/coverArt
+      name: albums-id-relationships-coverArt
+      description: REST surface for albums-id-relationships-coverArt.
+      operations:
+      - method: GET
+        name: getalbums
+        description: Get coverArt relationship ("to-many").
+        call: catalog-albums.getalbums
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchalbums
+        description: Update coverArt relationship ("to-many").
+        call: catalog-albums.patchalbums
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/albums/{id}/relationships/genres
+      name: albums-id-relationships-genres
+      description: REST surface for albums-id-relationships-genres.
+      operations:
+      - method: GET
+        name: getalbums
+        description: Get genres relationship ("to-many").
+        call: catalog-albums.getalbums
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/albums/{id}/relationships/items
+      name: albums-id-relationships-items
+      description: REST surface for albums-id-relationships-items.
+      operations:
+      - method: GET
+        name: getalbums
+        description: Get items relationship ("to-many").
+        call: catalog-albums.getalbums
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchalbums
+        description: Update items relationship ("to-many").
+        call: catalog-albums.patchalbums
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/albums/{id}/relationships/owners
+      name: albums-id-relationships-owners
+      description: REST surface for albums-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getalbums
+        description: Get owners relationship ("to-many").
+        call: catalog-albums.getalbums
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/albums/{id}/relationships/priceConfig
+      name: albums-id-relationships-priceConfig
+      description: REST surface for albums-id-relationships-priceConfig.
+      operations:
+      - method: GET
+        name: getalbums
+        description: Get priceConfig relationship ("to-one").
+        call: catalog-albums.getalbums
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/albums/{id}/relationships/providers
+      name: albums-id-relationships-providers
+      description: REST surface for albums-id-relationships-providers.
+      operations:
+      - method: GET
+        name: getalbums
+        description: Get providers relationship ("to-many").
+        call: catalog-albums.getalbums
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/albums/{id}/relationships/replacement
+      name: albums-id-relationships-replacement
+      description: REST surface for albums-id-relationships-replacement.
+      operations:
+      - method: GET
+        name: getalbums
+        description: Get replacement relationship ("to-one").
+        call: catalog-albums.getalbums
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/albums/{id}/relationships/shares
+      name: albums-id-relationships-shares
+      description: REST surface for albums-id-relationships-shares.
+      operations:
+      - method: GET
+        name: getalbums
+        description: Get shares relationship ("to-many").
+        call: catalog-albums.getalbums
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/albums/{id}/relationships/similarAlbums
+      name: albums-id-relationships-similarAlbums
+      description: REST surface for albums-id-relationships-similarAlbums.
+      operations:
+      - method: GET
+        name: getalbums
+        description: Get similarAlbums relationship ("to-many").
+        call: catalog-albums.getalbums
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/albums/{id}/relationships/suggestedCoverArts
+      name: albums-id-relationships-suggestedCoverArts
+      description: REST surface for albums-id-relationships-suggestedCoverArts.
+      operations:
+      - method: GET
+        name: getalbums
+        description: Get suggestedCoverArts relationship ("to-many").
+        call: catalog-albums.getalbums
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/albums/{id}/relationships/usageRules
+      name: albums-id-relationships-usageRules
+      description: REST surface for albums-id-relationships-usageRules.
+      operations:
+      - method: GET
+        name: getalbums
+        description: Get usageRules relationship ("to-one").
+        call: catalog-albums.getalbums
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+          shareCode: rest.query.shareCode
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: catalog-albums-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Catalog API — Albums. One tool per consumed operation.
+    tools:
+    - name: tidal-getalbums
+      description: Get multiple albums.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        page[cursor]: tools.page[cursor]
+        sort: tools.sort
+        countryCode: tools.countryCode
+        include: tools.include
+        filter[barcodeId]: tools.filter[barcodeId]
+        filter[id]: tools.filter[id]
+        filter[owners.id]: tools.filter[owners.id]
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postalbums
+      description: Create single album.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: catalog-albums.postalbums
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deletealbums
+      description: Delete single album.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: catalog-albums.deletealbums
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getalbums
+      description: Get single album.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-patchalbums
+      description: Update single album.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: catalog-albums.patchalbums
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getalbums
+      description: Get albumStatistics relationship ("to-one").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        id: tools.id
+        include: tools.include
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getalbums
+      description: Get artists relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        include: tools.include
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getalbums
+      description: Get coverArt relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        include: tools.include
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-patchalbums
+      description: Update coverArt relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: catalog-albums.patchalbums
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getalbums
+      description: Get genres relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        include: tools.include
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getalbums
+      description: Get items relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        include: tools.include
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-patchalbums
+      description: Update items relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: catalog-albums.patchalbums
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getalbums
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getalbums
+      description: Get priceConfig relationship ("to-one").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getalbums
+      description: Get providers relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getalbums
+      description: Get replacement relationship ("to-one").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getalbums
+      description: Get shares relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getalbums
+      description: Get similarAlbums relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        include: tools.include
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getalbums
+      description: Get suggestedCoverArts relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getalbums
+      description: Get usageRules relationship ("to-one").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: catalog-albums.getalbums
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        include: tools.include
+        shareCode: tools.shareCode
+      outputParameters:
+      - type: object
+        mapping: $.

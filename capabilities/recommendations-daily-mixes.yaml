@@ -1,0 +1,168 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Recommendations API — Daily Mixes
+  description: TIDAL Recommendations API — Daily Mixes. 2 operations. Self-contained Naftiko capability covering one TIDAL
+    business surface.
+  tags:
+  - TIDAL
+  - Music
+  - userDailyMixes
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: recommendations-daily-mixes
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Recommendations API — Daily Mixes business capability. Self-contained, no shared references.
+    resources:
+    - name: userDailyMixes-id
+      path: /userDailyMixes/{id}
+      operations:
+      - name: getuserdailymixes
+        method: GET
+        description: Get single userDailyMixe.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User daily mixes id. Use `me` for the authenticated user's resource
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+    - name: userDailyMixes-id-relationships-items
+      path: /userDailyMixes/{id}/relationships/items
+      operations:
+      - name: getuserdailymixes
+        method: GET
+        description: Get items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User daily mixes id. Use `me` for the authenticated user's resource
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: recommendations-daily-mixes-rest
+    port: 8080
+    description: REST adapter for TIDAL Recommendations API — Daily Mixes. One Spectral-compliant resource per consumed operation,
+      prefixed with /v2.
+    resources:
+    - path: /v2/userDailyMixes/{id}
+      name: userDailyMixes-id
+      description: REST surface for userDailyMixes-id.
+      operations:
+      - method: GET
+        name: getuserdailymixes
+        description: Get single userDailyMixe.
+        call: recommendations-daily-mixes.getuserdailymixes
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userDailyMixes/{id}/relationships/items
+      name: userDailyMixes-id-relationships-items
+      description: REST surface for userDailyMixes-id-relationships-items.
+      operations:
+      - method: GET
+        name: getuserdailymixes
+        description: Get items relationship ("to-many").
+        call: recommendations-daily-mixes.getuserdailymixes
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: recommendations-daily-mixes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Recommendations API — Daily Mixes. One tool per consumed operation.
+    tools:
+    - name: tidal-getuserdailymixes
+      description: Get single userDailyMixe.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: recommendations-daily-mixes.getuserdailymixes
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getuserdailymixes
+      description: Get items relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: recommendations-daily-mixes.getuserdailymixes
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.

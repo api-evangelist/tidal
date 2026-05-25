@@ -1,0 +1,25 @@
+{
+  "_meta": {
+    "operation": "GET /v2/trackManifests/{id}",
+    "description": "Resolve a playback manifest for a TIDAL track. Returns an opaque, signed manifest (HLS or DASH) intended to be passed directly to the TIDAL Player SDK. The Player SDK is the only sanctioned consumer of these manifests — third-party apps must not decode them.",
+    "request": "GET https://openapi.tidal.com/v2/trackManifests/124759336?audioQuality=HI_RES_LOSSLESS&playbackMode=STREAM&assetPresentation=FULL",
+    "headers": {
+      "Authorization": "Bearer <access_token>",
+      "Accept": "application/vnd.api+json"
+    }
+  },
+  "data": {
+    "id": "124759336",
+    "type": "trackManifests",
+    "attributes": {
+      "audioQuality": "HI_RES_LOSSLESS",
+      "manifestMimeType": "application/dash+xml",
+      "manifest": "<base64-encoded MPD>",
+      "manifestHash": "sha256:...",
+      "trackId": "124759336",
+      "bitDepth": 24,
+      "sampleRate": 96000,
+      "codec": "flac"
+    }
+  }
+}

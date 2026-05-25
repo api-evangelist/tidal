@@ -1,0 +1,446 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Social API — Shares and Sharing Links
+  description: TIDAL Social API — Shares and Sharing Links. 8 operations. Self-contained Naftiko capability covering one TIDAL
+    business surface.
+  tags:
+  - TIDAL
+  - Music
+  - shares
+  - savedShares
+  - dspSharingLinks
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: social-shares
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Social API — Shares and Sharing Links business capability. Self-contained, no shared references.
+    resources:
+    - name: dspSharingLinks
+      path: /dspSharingLinks
+      operations:
+      - name: getdspsharinglinks
+        method: GET
+        description: Get multiple dspSharingLinks.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: subject'
+          required: false
+        - name: filter[subject.id]
+          in: query
+          type: array
+          description: The id of the subject resource
+          required: false
+        - name: filter[subject.type]
+          in: query
+          type: array
+          description: The type of the subject resource (e.g., albums, tracks, artists) (e.g. `tracks`)
+          required: false
+    - name: dspSharingLinks-id-relationships-subject
+      path: /dspSharingLinks/{id}/relationships/subject
+      operations:
+      - name: getdspsharinglinks
+        method: GET
+        description: Get subject relationship ("to-one").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: DspSharingLinks Id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: subject'
+          required: false
+    - name: savedShares
+      path: /savedShares
+      operations:
+      - name: postsavedshares
+        method: POST
+        description: Create single savedShare.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: shares
+      path: /shares
+      operations:
+      - name: getshares
+        method: GET
+        description: Get multiple shares.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners,
+            sharedResources'
+          required: false
+        - name: filter[code]
+          in: query
+          type: array
+          description: A share code (e.g. `xyz`)
+          required: false
+        - name: filter[id]
+          in: query
+          type: array
+          description: List of shares IDs (e.g. `a468bee88def`)
+          required: false
+      - name: postshares
+        method: POST
+        description: Create single share.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: shares-id
+      path: /shares/{id}
+      operations:
+      - name: getshares
+        method: GET
+        description: Get single share.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User share id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners,
+            sharedResources'
+          required: false
+    - name: shares-id-relationships-owners
+      path: /shares/{id}/relationships/owners
+      operations:
+      - name: getshares
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User share id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: shares-id-relationships-sharedResources
+      path: /shares/{id}/relationships/sharedResources
+      operations:
+      - name: getshares
+        method: GET
+        description: Get sharedResources relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User share id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: sharedResources'
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: social-shares-rest
+    port: 8080
+    description: REST adapter for TIDAL Social API — Shares and Sharing Links. One Spectral-compliant resource per consumed
+      operation, prefixed with /v2.
+    resources:
+    - path: /v2/dspSharingLinks
+      name: dspSharingLinks
+      description: REST surface for dspSharingLinks.
+      operations:
+      - method: GET
+        name: getdspsharinglinks
+        description: Get multiple dspSharingLinks.
+        call: social-shares.getdspsharinglinks
+        with:
+          include: rest.query.include
+          filter[subject.id]: rest.query.filter[subject.id]
+          filter[subject.type]: rest.query.filter[subject.type]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/dspSharingLinks/{id}/relationships/subject
+      name: dspSharingLinks-id-relationships-subject
+      description: REST surface for dspSharingLinks-id-relationships-subject.
+      operations:
+      - method: GET
+        name: getdspsharinglinks
+        description: Get subject relationship ("to-one").
+        call: social-shares.getdspsharinglinks
+        with:
+          id: rest.path.id
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/savedShares
+      name: savedShares
+      description: REST surface for savedShares.
+      operations:
+      - method: POST
+        name: postsavedshares
+        description: Create single savedShare.
+        call: social-shares.postsavedshares
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/shares
+      name: shares
+      description: REST surface for shares.
+      operations:
+      - method: GET
+        name: getshares
+        description: Get multiple shares.
+        call: social-shares.getshares
+        with:
+          include: rest.query.include
+          filter[code]: rest.query.filter[code]
+          filter[id]: rest.query.filter[id]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postshares
+        description: Create single share.
+        call: social-shares.postshares
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/shares/{id}
+      name: shares-id
+      description: REST surface for shares-id.
+      operations:
+      - method: GET
+        name: getshares
+        description: Get single share.
+        call: social-shares.getshares
+        with:
+          id: rest.path.id
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/shares/{id}/relationships/owners
+      name: shares-id-relationships-owners
+      description: REST surface for shares-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getshares
+        description: Get owners relationship ("to-many").
+        call: social-shares.getshares
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/shares/{id}/relationships/sharedResources
+      name: shares-id-relationships-sharedResources
+      description: REST surface for shares-id-relationships-sharedResources.
+      operations:
+      - method: GET
+        name: getshares
+        description: Get sharedResources relationship ("to-many").
+        call: social-shares.getshares
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: social-shares-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Social API — Shares and Sharing Links. One tool per consumed operation.
+    tools:
+    - name: tidal-getdspsharinglinks
+      description: Get multiple dspSharingLinks.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: social-shares.getdspsharinglinks
+      with:
+        include: tools.include
+        filter[subject.id]: tools.filter[subject.id]
+        filter[subject.type]: tools.filter[subject.type]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getdspsharinglinks
+      description: Get subject relationship ("to-one").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: social-shares.getdspsharinglinks
+      with:
+        id: tools.id
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postsavedshares
+      description: Create single savedShare.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: social-shares.postsavedshares
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getshares
+      description: Get multiple shares.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: social-shares.getshares
+      with:
+        include: tools.include
+        filter[code]: tools.filter[code]
+        filter[id]: tools.filter[id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postshares
+      description: Create single share.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: social-shares.postshares
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getshares
+      description: Get single share.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: social-shares.getshares
+      with:
+        id: tools.id
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getshares
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: social-shares.getshares
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getshares
+      description: Get sharedResources relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: social-shares.getshares
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.

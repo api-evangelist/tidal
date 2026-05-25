@@ -1,0 +1,479 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Recommendations API — Dynamic Pages and Modules
+  description: TIDAL Recommendations API — Dynamic Pages and Modules. 5 operations. Self-contained Naftiko capability covering
+    one TIDAL business surface.
+  tags:
+  - TIDAL
+  - Music
+  - dynamicPages
+  - dynamicModules
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: recommendations-dynamic-pages
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Recommendations API — Dynamic Pages and Modules business capability. Self-contained, no shared references.
+    resources:
+    - name: dynamicModules
+      path: /dynamicModules
+      operations:
+      - name: getdynamicmodules
+        method: GET
+        description: Get multiple dynamicModules.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: refreshId
+          in: query
+          type: string
+          description: ''
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: deviceType
+          in: query
+          type: string
+          description: The type of device making the request
+          required: true
+        - name: systemType
+          in: query
+          type: string
+          description: The system type of the device making the request
+          required: true
+        - name: clientVersion
+          in: query
+          type: string
+          description: Client version number
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+        - name: filter[id]
+          in: query
+          type: array
+          description: DynamicModules Id (e.g. `nejMcAhh5N8S3EQ4LaqysVdI0cZZ`)
+          required: false
+    - name: dynamicModules-id-relationships-items
+      path: /dynamicModules/{id}/relationships/items
+      operations:
+      - name: getdynamicmodules
+        method: GET
+        description: Get items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: DynamicModules Id
+          required: true
+        - name: refreshId
+          in: query
+          type: string
+          description: ''
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: deviceType
+          in: query
+          type: string
+          description: The type of device making the request
+          required: true
+        - name: systemType
+          in: query
+          type: string
+          description: The system type of the device making the request
+          required: true
+        - name: clientVersion
+          in: query
+          type: string
+          description: Client version number
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+    - name: dynamicPages
+      path: /dynamicPages
+      operations:
+      - name: getdynamicpages
+        method: GET
+        description: Get multiple dynamicPages.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: refreshId
+          in: query
+          type: string
+          description: ''
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: deviceType
+          in: query
+          type: string
+          description: The type of device making the request
+          required: true
+        - name: systemType
+          in: query
+          type: string
+          description: The system type of the device making the request
+          required: true
+        - name: clientVersion
+          in: query
+          type: string
+          description: Client version number
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: dynamicModules,
+            subject'
+          required: false
+        - name: filter[pageType]
+          in: query
+          type: array
+          description: type of the page (e.g. `ARTIST`)
+          required: false
+        - name: filter[subject.id]
+          in: query
+          type: array
+          description: the subject id, eg. artistId (e.g. `67890`)
+          required: false
+    - name: dynamicPages-id-relationships-dynamicModules
+      path: /dynamicPages/{id}/relationships/dynamicModules
+      operations:
+      - name: getdynamicpages
+        method: GET
+        description: Get dynamicModules relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: DynamicPages Id
+          required: true
+        - name: refreshId
+          in: query
+          type: string
+          description: ''
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: deviceType
+          in: query
+          type: string
+          description: The type of device making the request
+          required: true
+        - name: systemType
+          in: query
+          type: string
+          description: The system type of the device making the request
+          required: true
+        - name: clientVersion
+          in: query
+          type: string
+          description: Client version number
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: dynamicModules'
+          required: false
+    - name: dynamicPages-id-relationships-subject
+      path: /dynamicPages/{id}/relationships/subject
+      operations:
+      - name: getdynamicpages
+        method: GET
+        description: Get subject relationship ("to-one").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: DynamicPages Id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: subject'
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: recommendations-dynamic-pages-rest
+    port: 8080
+    description: REST adapter for TIDAL Recommendations API — Dynamic Pages and Modules. One Spectral-compliant resource per
+      consumed operation, prefixed with /v2.
+    resources:
+    - path: /v2/dynamicModules
+      name: dynamicModules
+      description: REST surface for dynamicModules.
+      operations:
+      - method: GET
+        name: getdynamicmodules
+        description: Get multiple dynamicModules.
+        call: recommendations-dynamic-pages.getdynamicmodules
+        with:
+          refreshId: rest.query.refreshId
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          deviceType: rest.query.deviceType
+          systemType: rest.query.systemType
+          clientVersion: rest.query.clientVersion
+          include: rest.query.include
+          filter[id]: rest.query.filter[id]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/dynamicModules/{id}/relationships/items
+      name: dynamicModules-id-relationships-items
+      description: REST surface for dynamicModules-id-relationships-items.
+      operations:
+      - method: GET
+        name: getdynamicmodules
+        description: Get items relationship ("to-many").
+        call: recommendations-dynamic-pages.getdynamicmodules
+        with:
+          id: rest.path.id
+          refreshId: rest.query.refreshId
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          deviceType: rest.query.deviceType
+          systemType: rest.query.systemType
+          clientVersion: rest.query.clientVersion
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/dynamicPages
+      name: dynamicPages
+      description: REST surface for dynamicPages.
+      operations:
+      - method: GET
+        name: getdynamicpages
+        description: Get multiple dynamicPages.
+        call: recommendations-dynamic-pages.getdynamicpages
+        with:
+          refreshId: rest.query.refreshId
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          deviceType: rest.query.deviceType
+          systemType: rest.query.systemType
+          clientVersion: rest.query.clientVersion
+          include: rest.query.include
+          filter[pageType]: rest.query.filter[pageType]
+          filter[subject.id]: rest.query.filter[subject.id]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/dynamicPages/{id}/relationships/dynamicModules
+      name: dynamicPages-id-relationships-dynamicModules
+      description: REST surface for dynamicPages-id-relationships-dynamicModules.
+      operations:
+      - method: GET
+        name: getdynamicpages
+        description: Get dynamicModules relationship ("to-many").
+        call: recommendations-dynamic-pages.getdynamicpages
+        with:
+          id: rest.path.id
+          refreshId: rest.query.refreshId
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          deviceType: rest.query.deviceType
+          systemType: rest.query.systemType
+          clientVersion: rest.query.clientVersion
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/dynamicPages/{id}/relationships/subject
+      name: dynamicPages-id-relationships-subject
+      description: REST surface for dynamicPages-id-relationships-subject.
+      operations:
+      - method: GET
+        name: getdynamicpages
+        description: Get subject relationship ("to-one").
+        call: recommendations-dynamic-pages.getdynamicpages
+        with:
+          id: rest.path.id
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: recommendations-dynamic-pages-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Recommendations API — Dynamic Pages and Modules. One tool per consumed operation.
+    tools:
+    - name: tidal-getdynamicmodules
+      description: Get multiple dynamicModules.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: recommendations-dynamic-pages.getdynamicmodules
+      with:
+        refreshId: tools.refreshId
+        countryCode: tools.countryCode
+        locale: tools.locale
+        deviceType: tools.deviceType
+        systemType: tools.systemType
+        clientVersion: tools.clientVersion
+        include: tools.include
+        filter[id]: tools.filter[id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getdynamicmodules
+      description: Get items relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: recommendations-dynamic-pages.getdynamicmodules
+      with:
+        id: tools.id
+        refreshId: tools.refreshId
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        locale: tools.locale
+        deviceType: tools.deviceType
+        systemType: tools.systemType
+        clientVersion: tools.clientVersion
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getdynamicpages
+      description: Get multiple dynamicPages.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: recommendations-dynamic-pages.getdynamicpages
+      with:
+        refreshId: tools.refreshId
+        countryCode: tools.countryCode
+        locale: tools.locale
+        deviceType: tools.deviceType
+        systemType: tools.systemType
+        clientVersion: tools.clientVersion
+        include: tools.include
+        filter[pageType]: tools.filter[pageType]
+        filter[subject.id]: tools.filter[subject.id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getdynamicpages
+      description: Get dynamicModules relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: recommendations-dynamic-pages.getdynamicpages
+      with:
+        id: tools.id
+        refreshId: tools.refreshId
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        locale: tools.locale
+        deviceType: tools.deviceType
+        systemType: tools.systemType
+        clientVersion: tools.clientVersion
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getdynamicpages
+      description: Get subject relationship ("to-one").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: recommendations-dynamic-pages.getdynamicpages
+      with:
+        id: tools.id
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.

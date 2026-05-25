@@ -1,0 +1,388 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL User Collections API — Tracks
+  description: TIDAL User Collections API — Tracks. 6 operations. Self-contained Naftiko capability covering one TIDAL business
+    surface.
+  tags:
+  - TIDAL
+  - Music
+  - userCollectionTracks
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: user-collections-tracks
+    baseUri: https://openapi.tidal.com
+    description: TIDAL User Collections API — Tracks business capability. Self-contained, no shared references.
+    resources:
+    - name: userCollectionTracks
+      path: /userCollectionTracks
+      operations:
+      - name: getusercollectiontracks
+        method: GET
+        description: Get multiple userCollectionTracks.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items,
+            owners'
+          required: false
+        - name: filter[id]
+          in: query
+          type: array
+          description: User collection tracks id (e.g. `FMJUCzH4`)
+          required: false
+    - name: userCollectionTracks-id
+      path: /userCollectionTracks/{id}
+      operations:
+      - name: getusercollectiontracks
+        method: GET
+        description: Get single userCollectionTrack.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection tracks id. Use `me` for the authenticated user's resource
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items,
+            owners'
+          required: false
+    - name: userCollectionTracks-id-relationships-items
+      path: /userCollectionTracks/{id}/relationships/items
+      operations:
+      - name: deleteusercollectiontracks
+        method: DELETE
+        description: Delete from items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection tracks id. Use `me` for the authenticated user's resource
+          required: true
+      - name: getusercollectiontracks
+        method: GET
+        description: Get items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection tracks id. Use `me` for the authenticated user's resource
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: sort
+          in: query
+          type: array
+          description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+      - name: postusercollectiontracks
+        method: POST
+        description: Add to items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection tracks id. Use `me` for the authenticated user's resource
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: userCollectionTracks-id-relationships-owners
+      path: /userCollectionTracks/{id}/relationships/owners
+      operations:
+      - name: getusercollectiontracks
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection tracks id. Use `me` for the authenticated user's resource
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: user-collections-tracks-rest
+    port: 8080
+    description: REST adapter for TIDAL User Collections API — Tracks. One Spectral-compliant resource per consumed operation,
+      prefixed with /v2.
+    resources:
+    - path: /v2/userCollectionTracks
+      name: userCollectionTracks
+      description: REST surface for userCollectionTracks.
+      operations:
+      - method: GET
+        name: getusercollectiontracks
+        description: Get multiple userCollectionTracks.
+        call: user-collections-tracks.getusercollectiontracks
+        with:
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+          filter[id]: rest.query.filter[id]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollectionTracks/{id}
+      name: userCollectionTracks-id
+      description: REST surface for userCollectionTracks-id.
+      operations:
+      - method: GET
+        name: getusercollectiontracks
+        description: Get single userCollectionTrack.
+        call: user-collections-tracks.getusercollectiontracks
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollectionTracks/{id}/relationships/items
+      name: userCollectionTracks-id-relationships-items
+      description: REST surface for userCollectionTracks-id-relationships-items.
+      operations:
+      - method: DELETE
+        name: deleteusercollectiontracks
+        description: Delete from items relationship ("to-many").
+        call: user-collections-tracks.deleteusercollectiontracks
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getusercollectiontracks
+        description: Get items relationship ("to-many").
+        call: user-collections-tracks.getusercollectiontracks
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          sort: rest.query.sort
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusercollectiontracks
+        description: Add to items relationship ("to-many").
+        call: user-collections-tracks.postusercollectiontracks
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollectionTracks/{id}/relationships/owners
+      name: userCollectionTracks-id-relationships-owners
+      description: REST surface for userCollectionTracks-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getusercollectiontracks
+        description: Get owners relationship ("to-many").
+        call: user-collections-tracks.getusercollectiontracks
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: user-collections-tracks-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL User Collections API — Tracks. One tool per consumed operation.
+    tools:
+    - name: tidal-getusercollectiontracks
+      description: Get multiple userCollectionTracks.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-tracks.getusercollectiontracks
+      with:
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+        filter[id]: tools.filter[id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollectiontracks
+      description: Get single userCollectionTrack.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-tracks.getusercollectiontracks
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteusercollectiontracks
+      description: Delete from items relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: user-collections-tracks.deleteusercollectiontracks
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollectiontracks
+      description: Get items relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-tracks.getusercollectiontracks
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        sort: tools.sort
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postusercollectiontracks
+      description: Add to items relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: user-collections-tracks.postusercollectiontracks
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollectiontracks
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-tracks.getusercollectiontracks
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.

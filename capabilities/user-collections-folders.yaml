@@ -1,0 +1,1625 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL User Collections API — Folders and Save for Later
+  description: TIDAL User Collections API — Folders and Save for Later. 31 operations. Self-contained Naftiko capability covering
+    one TIDAL business surface.
+  tags:
+  - TIDAL
+  - Music
+  - userCollectionFolders
+  - userCollectionSaveForLaters
+  - userCollections
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: user-collections-folders
+    baseUri: https://openapi.tidal.com
+    description: TIDAL User Collections API — Folders and Save for Later business capability. Self-contained, no shared references.
+    resources:
+    - name: userCollectionFolders
+      path: /userCollectionFolders
+      operations:
+      - name: getusercollectionfolders
+        method: GET
+        description: Get multiple userCollectionFolders.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items,
+            owners'
+          required: false
+        - name: filter[id]
+          in: query
+          type: array
+          description: Folder Id (e.g. `CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX`)
+          required: false
+      - name: postusercollectionfolders
+        method: POST
+        description: Create single userCollectionFolder.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: userCollectionFolders-id
+      path: /userCollectionFolders/{id}
+      operations:
+      - name: deleteusercollectionfolders
+        method: DELETE
+        description: Delete single userCollectionFolder.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Folder Id
+          required: true
+      - name: getusercollectionfolders
+        method: GET
+        description: Get single userCollectionFolder.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Folder Id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items,
+            owners'
+          required: false
+      - name: patchusercollectionfolders
+        method: PATCH
+        description: Update single userCollectionFolder.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Folder Id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: userCollectionFolders-id-relationships-items
+      path: /userCollectionFolders/{id}/relationships/items
+      operations:
+      - name: deleteusercollectionfolders
+        method: DELETE
+        description: Delete from items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Folder Id
+          required: true
+      - name: getusercollectionfolders
+        method: GET
+        description: Get items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Folder Id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: sort
+          in: query
+          type: array
+          description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+      - name: postusercollectionfolders
+        method: POST
+        description: Add to items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Folder Id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: userCollectionFolders-id-relationships-owners
+      path: /userCollectionFolders/{id}/relationships/owners
+      operations:
+      - name: getusercollectionfolders
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Folder Id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: userCollectionSaveForLaters-id
+      path: /userCollectionSaveForLaters/{id}
+      operations:
+      - name: getusercollectionsaveforlaters
+        method: GET
+        description: Get single userCollectionSaveForLater.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection save for later id. Use `me` for the authenticated user's resource
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items,
+            owners'
+          required: false
+    - name: userCollectionSaveForLaters-id-relationships-items
+      path: /userCollectionSaveForLaters/{id}/relationships/items
+      operations:
+      - name: deleteusercollectionsaveforlaters
+        method: DELETE
+        description: Delete from items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection save for later id. Use `me` for the authenticated user's resource
+          required: true
+      - name: getusercollectionsaveforlaters
+        method: GET
+        description: Get items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection save for later id. Use `me` for the authenticated user's resource
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+      - name: postusercollectionsaveforlaters
+        method: POST
+        description: Add to items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection save for later id. Use `me` for the authenticated user's resource
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: userCollectionSaveForLaters-id-relationships-owners
+      path: /userCollectionSaveForLaters/{id}/relationships/owners
+      operations:
+      - name: getusercollectionsaveforlaters
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection save for later id. Use `me` for the authenticated user's resource
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: userCollections-id
+      path: /userCollections/{id}
+      operations:
+      - name: getusercollections
+        method: GET
+        description: Get single userCollection.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: albums,
+            artists, owners, playlists, tracks, videos'
+          required: false
+    - name: userCollections-id-relationships-albums
+      path: /userCollections/{id}/relationships/albums
+      operations:
+      - name: deleteusercollections
+        method: DELETE
+        description: Delete from albums relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+      - name: getusercollections
+        method: GET
+        description: Get albums relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: sort
+          in: query
+          type: array
+          description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: albums'
+          required: false
+      - name: postusercollections
+        method: POST
+        description: Add to albums relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: userCollections-id-relationships-artists
+      path: /userCollections/{id}/relationships/artists
+      operations:
+      - name: deleteusercollections
+        method: DELETE
+        description: Delete from artists relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+      - name: getusercollections
+        method: GET
+        description: Get artists relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: sort
+          in: query
+          type: array
+          description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: artists'
+          required: false
+      - name: postusercollections
+        method: POST
+        description: Add to artists relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: userCollections-id-relationships-owners
+      path: /userCollections/{id}/relationships/owners
+      operations:
+      - name: getusercollections
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: userCollections-id-relationships-playlists
+      path: /userCollections/{id}/relationships/playlists
+      operations:
+      - name: deleteusercollections
+        method: DELETE
+        description: Delete from playlists relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+      - name: getusercollections
+        method: GET
+        description: Get playlists relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+        - name: collectionView
+          in: query
+          type: string
+          description: ''
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: sort
+          in: query
+          type: array
+          description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: playlists'
+          required: false
+      - name: postusercollections
+        method: POST
+        description: Add to playlists relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: userCollections-id-relationships-tracks
+      path: /userCollections/{id}/relationships/tracks
+      operations:
+      - name: deleteusercollections
+        method: DELETE
+        description: Delete from tracks relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+      - name: getusercollections
+        method: GET
+        description: Get tracks relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: sort
+          in: query
+          type: array
+          description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: tracks'
+          required: false
+      - name: postusercollections
+        method: POST
+        description: Add to tracks relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: userCollections-id-relationships-videos
+      path: /userCollections/{id}/relationships/videos
+      operations:
+      - name: deleteusercollections
+        method: DELETE
+        description: Delete from videos relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+      - name: getusercollections
+        method: GET
+        description: Get videos relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: sort
+          in: query
+          type: array
+          description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: videos'
+          required: false
+      - name: postusercollections
+        method: POST
+        description: Add to videos relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User collection id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: user-collections-folders-rest
+    port: 8080
+    description: REST adapter for TIDAL User Collections API — Folders and Save for Later. One Spectral-compliant resource
+      per consumed operation, prefixed with /v2.
+    resources:
+    - path: /v2/userCollectionFolders
+      name: userCollectionFolders
+      description: REST surface for userCollectionFolders.
+      operations:
+      - method: GET
+        name: getusercollectionfolders
+        description: Get multiple userCollectionFolders.
+        call: user-collections-folders.getusercollectionfolders
+        with:
+          include: rest.query.include
+          filter[id]: rest.query.filter[id]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusercollectionfolders
+        description: Create single userCollectionFolder.
+        call: user-collections-folders.postusercollectionfolders
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollectionFolders/{id}
+      name: userCollectionFolders-id
+      description: REST surface for userCollectionFolders-id.
+      operations:
+      - method: DELETE
+        name: deleteusercollectionfolders
+        description: Delete single userCollectionFolder.
+        call: user-collections-folders.deleteusercollectionfolders
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getusercollectionfolders
+        description: Get single userCollectionFolder.
+        call: user-collections-folders.getusercollectionfolders
+        with:
+          id: rest.path.id
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchusercollectionfolders
+        description: Update single userCollectionFolder.
+        call: user-collections-folders.patchusercollectionfolders
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollectionFolders/{id}/relationships/items
+      name: userCollectionFolders-id-relationships-items
+      description: REST surface for userCollectionFolders-id-relationships-items.
+      operations:
+      - method: DELETE
+        name: deleteusercollectionfolders
+        description: Delete from items relationship ("to-many").
+        call: user-collections-folders.deleteusercollectionfolders
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getusercollectionfolders
+        description: Get items relationship ("to-many").
+        call: user-collections-folders.getusercollectionfolders
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          sort: rest.query.sort
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusercollectionfolders
+        description: Add to items relationship ("to-many").
+        call: user-collections-folders.postusercollectionfolders
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollectionFolders/{id}/relationships/owners
+      name: userCollectionFolders-id-relationships-owners
+      description: REST surface for userCollectionFolders-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getusercollectionfolders
+        description: Get owners relationship ("to-many").
+        call: user-collections-folders.getusercollectionfolders
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollectionSaveForLaters/{id}
+      name: userCollectionSaveForLaters-id
+      description: REST surface for userCollectionSaveForLaters-id.
+      operations:
+      - method: GET
+        name: getusercollectionsaveforlaters
+        description: Get single userCollectionSaveForLater.
+        call: user-collections-folders.getusercollectionsaveforlaters
+        with:
+          id: rest.path.id
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollectionSaveForLaters/{id}/relationships/items
+      name: userCollectionSaveForLaters-id-relationships-items
+      description: REST surface for userCollectionSaveForLaters-id-relationships-items.
+      operations:
+      - method: DELETE
+        name: deleteusercollectionsaveforlaters
+        description: Delete from items relationship ("to-many").
+        call: user-collections-folders.deleteusercollectionsaveforlaters
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getusercollectionsaveforlaters
+        description: Get items relationship ("to-many").
+        call: user-collections-folders.getusercollectionsaveforlaters
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusercollectionsaveforlaters
+        description: Add to items relationship ("to-many").
+        call: user-collections-folders.postusercollectionsaveforlaters
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollectionSaveForLaters/{id}/relationships/owners
+      name: userCollectionSaveForLaters-id-relationships-owners
+      description: REST surface for userCollectionSaveForLaters-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getusercollectionsaveforlaters
+        description: Get owners relationship ("to-many").
+        call: user-collections-folders.getusercollectionsaveforlaters
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollections/{id}
+      name: userCollections-id
+      description: REST surface for userCollections-id.
+      operations:
+      - method: GET
+        name: getusercollections
+        description: Get single userCollection.
+        call: user-collections-folders.getusercollections
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollections/{id}/relationships/albums
+      name: userCollections-id-relationships-albums
+      description: REST surface for userCollections-id-relationships-albums.
+      operations:
+      - method: DELETE
+        name: deleteusercollections
+        description: Delete from albums relationship ("to-many").
+        call: user-collections-folders.deleteusercollections
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getusercollections
+        description: Get albums relationship ("to-many").
+        call: user-collections-folders.getusercollections
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          sort: rest.query.sort
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusercollections
+        description: Add to albums relationship ("to-many").
+        call: user-collections-folders.postusercollections
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollections/{id}/relationships/artists
+      name: userCollections-id-relationships-artists
+      description: REST surface for userCollections-id-relationships-artists.
+      operations:
+      - method: DELETE
+        name: deleteusercollections
+        description: Delete from artists relationship ("to-many").
+        call: user-collections-folders.deleteusercollections
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getusercollections
+        description: Get artists relationship ("to-many").
+        call: user-collections-folders.getusercollections
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          sort: rest.query.sort
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusercollections
+        description: Add to artists relationship ("to-many").
+        call: user-collections-folders.postusercollections
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollections/{id}/relationships/owners
+      name: userCollections-id-relationships-owners
+      description: REST surface for userCollections-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getusercollections
+        description: Get owners relationship ("to-many").
+        call: user-collections-folders.getusercollections
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollections/{id}/relationships/playlists
+      name: userCollections-id-relationships-playlists
+      description: REST surface for userCollections-id-relationships-playlists.
+      operations:
+      - method: DELETE
+        name: deleteusercollections
+        description: Delete from playlists relationship ("to-many").
+        call: user-collections-folders.deleteusercollections
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getusercollections
+        description: Get playlists relationship ("to-many").
+        call: user-collections-folders.getusercollections
+        with:
+          id: rest.path.id
+          collectionView: rest.query.collectionView
+          page[cursor]: rest.query.page[cursor]
+          sort: rest.query.sort
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusercollections
+        description: Add to playlists relationship ("to-many").
+        call: user-collections-folders.postusercollections
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollections/{id}/relationships/tracks
+      name: userCollections-id-relationships-tracks
+      description: REST surface for userCollections-id-relationships-tracks.
+      operations:
+      - method: DELETE
+        name: deleteusercollections
+        description: Delete from tracks relationship ("to-many").
+        call: user-collections-folders.deleteusercollections
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getusercollections
+        description: Get tracks relationship ("to-many").
+        call: user-collections-folders.getusercollections
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          sort: rest.query.sort
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusercollections
+        description: Add to tracks relationship ("to-many").
+        call: user-collections-folders.postusercollections
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userCollections/{id}/relationships/videos
+      name: userCollections-id-relationships-videos
+      description: REST surface for userCollections-id-relationships-videos.
+      operations:
+      - method: DELETE
+        name: deleteusercollections
+        description: Delete from videos relationship ("to-many").
+        call: user-collections-folders.deleteusercollections
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getusercollections
+        description: Get videos relationship ("to-many").
+        call: user-collections-folders.getusercollections
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          sort: rest.query.sort
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusercollections
+        description: Add to videos relationship ("to-many").
+        call: user-collections-folders.postusercollections
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: user-collections-folders-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL User Collections API — Folders and Save for Later. One tool per consumed operation.
+    tools:
+    - name: tidal-getusercollectionfolders
+      description: Get multiple userCollectionFolders.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-folders.getusercollectionfolders
+      with:
+        include: tools.include
+        filter[id]: tools.filter[id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postusercollectionfolders
+      description: Create single userCollectionFolder.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: user-collections-folders.postusercollectionfolders
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteusercollectionfolders
+      description: Delete single userCollectionFolder.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: user-collections-folders.deleteusercollectionfolders
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollectionfolders
+      description: Get single userCollectionFolder.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-folders.getusercollectionfolders
+      with:
+        id: tools.id
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-patchusercollectionfolders
+      description: Update single userCollectionFolder.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: user-collections-folders.patchusercollectionfolders
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteusercollectionfolders
+      description: Delete from items relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: user-collections-folders.deleteusercollectionfolders
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollectionfolders
+      description: Get items relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-folders.getusercollectionfolders
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        sort: tools.sort
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postusercollectionfolders
+      description: Add to items relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: user-collections-folders.postusercollectionfolders
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollectionfolders
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-folders.getusercollectionfolders
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollectionsaveforlaters
+      description: Get single userCollectionSaveForLater.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-folders.getusercollectionsaveforlaters
+      with:
+        id: tools.id
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteusercollectionsaveforlaters
+      description: Delete from items relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: user-collections-folders.deleteusercollectionsaveforlaters
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollectionsaveforlaters
+      description: Get items relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-folders.getusercollectionsaveforlaters
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postusercollectionsaveforlaters
+      description: Add to items relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: user-collections-folders.postusercollectionsaveforlaters
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollectionsaveforlaters
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-folders.getusercollectionsaveforlaters
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollections
+      description: Get single userCollection.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-folders.getusercollections
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteusercollections
+      description: Delete from albums relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: user-collections-folders.deleteusercollections
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollections
+      description: Get albums relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-folders.getusercollections
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        sort: tools.sort
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postusercollections
+      description: Add to albums relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: user-collections-folders.postusercollections
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteusercollections
+      description: Delete from artists relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: user-collections-folders.deleteusercollections
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollections
+      description: Get artists relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-folders.getusercollections
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        sort: tools.sort
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postusercollections
+      description: Add to artists relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: user-collections-folders.postusercollections
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollections
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-folders.getusercollections
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteusercollections
+      description: Delete from playlists relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: user-collections-folders.deleteusercollections
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollections
+      description: Get playlists relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-folders.getusercollections
+      with:
+        id: tools.id
+        collectionView: tools.collectionView
+        page[cursor]: tools.page[cursor]
+        sort: tools.sort
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postusercollections
+      description: Add to playlists relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: user-collections-folders.postusercollections
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteusercollections
+      description: Delete from tracks relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: user-collections-folders.deleteusercollections
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollections
+      description: Get tracks relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-folders.getusercollections
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        sort: tools.sort
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postusercollections
+      description: Add to tracks relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: user-collections-folders.postusercollections
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteusercollections
+      description: Delete from videos relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: user-collections-folders.deleteusercollections
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusercollections
+      description: Get videos relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: user-collections-folders.getusercollections
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        sort: tools.sort
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postusercollections
+      description: Add to videos relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: user-collections-folders.postusercollections
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

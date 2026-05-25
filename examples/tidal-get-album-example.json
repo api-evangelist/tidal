@@ -1,0 +1,48 @@
+{
+  "_meta": {
+    "operation": "GET /v2/albums/{id}",
+    "description": "Retrieve a single TIDAL album by id with JSON:API attributes and a relationships envelope.",
+    "request": "GET https://openapi.tidal.com/v2/albums/350860190?countryCode=US",
+    "headers": {
+      "Authorization": "Bearer <access_token>",
+      "Accept": "application/vnd.api+json"
+    }
+  },
+  "data": {
+    "id": "350860190",
+    "type": "albums",
+    "attributes": {
+      "title": "Renaissance",
+      "barcodeId": "00602448237194",
+      "numberOfVolumes": 1,
+      "numberOfItems": 16,
+      "duration": "PT1H2M11S",
+      "explicit": true,
+      "releaseDate": "2022-07-29",
+      "copyright": "(C) 2022 Parkwood Entertainment / Columbia Records",
+      "popularity": 0.92,
+      "availability": ["STREAM", "DJ"],
+      "mediaTags": ["HIRES_LOSSLESS", "DOLBY_ATMOS"],
+      "type": "ALBUM",
+      "tidalUrl": "https://tidal.com/browse/album/350860190",
+      "imageLinks": [
+        {
+          "href": "https://resources.tidal.com/images/.../1280x1280.jpg",
+          "meta": { "width": 1280, "height": 1280 }
+        }
+      ]
+    },
+    "relationships": {
+      "artists": {
+        "links": { "self": "/v2/albums/350860190/relationships/artists", "related": "/v2/albums/350860190/artists" }
+      },
+      "items": {
+        "links": { "self": "/v2/albums/350860190/relationships/items", "related": "/v2/albums/350860190/items" }
+      },
+      "coverArt": {
+        "links": { "self": "/v2/albums/350860190/relationships/coverArt" }
+      }
+    },
+    "links": { "self": "/v2/albums/350860190" }
+  }
+}

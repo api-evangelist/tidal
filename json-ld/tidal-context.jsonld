@@ -1,0 +1,197 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "https://schema.org/",
+    "tidal": "https://openapi.tidal.com/v2/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "jsonapi": "https://jsonapi.org/format/#",
+
+    "Album": {
+      "@id": "schema:MusicAlbum",
+      "@context": {
+        "title": { "@id": "schema:name" },
+        "barcodeId": { "@id": "schema:gtin", "@type": "xsd:string" },
+        "numberOfVolumes": { "@id": "schema:numTracks", "@type": "xsd:integer" },
+        "numberOfItems": { "@id": "schema:numTracks", "@type": "xsd:integer" },
+        "duration": { "@id": "schema:duration" },
+        "explicit": { "@id": "schema:isExplicit", "@type": "xsd:boolean" },
+        "releaseDate": { "@id": "schema:datePublished", "@type": "xsd:date" },
+        "copyright": { "@id": "schema:copyrightNotice", "@type": "xsd:string" },
+        "popularity": { "@id": "tidal:popularity", "@type": "xsd:decimal" },
+        "type": { "@id": "schema:albumProductionType", "@type": "xsd:string" },
+        "tidalUrl": { "@id": "schema:url", "@type": "xsd:anyURI" },
+        "mediaTags": { "@id": "tidal:mediaTags", "@container": "@list" },
+        "availability": { "@id": "tidal:availability", "@container": "@list" }
+      }
+    },
+
+    "Artist": {
+      "@id": "schema:MusicGroup",
+      "@context": {
+        "name": { "@id": "schema:name" },
+        "handle": { "@id": "schema:alternateName" },
+        "spotlight": { "@id": "schema:description" },
+        "popularity": { "@id": "tidal:popularity", "@type": "xsd:decimal" },
+        "tidalUrl": { "@id": "schema:url", "@type": "xsd:anyURI" }
+      }
+    },
+
+    "Track": {
+      "@id": "schema:MusicRecording",
+      "@context": {
+        "title": { "@id": "schema:name" },
+        "isrc": { "@id": "schema:isrcCode", "@type": "xsd:string" },
+        "duration": { "@id": "schema:duration" },
+        "copyright": { "@id": "schema:copyrightNotice" },
+        "explicit": { "@id": "schema:isExplicit", "@type": "xsd:boolean" },
+        "popularity": { "@id": "tidal:popularity", "@type": "xsd:decimal" },
+        "trackNumber": { "@id": "schema:trackNumber", "@type": "xsd:integer" },
+        "volumeNumber": { "@id": "tidal:volumeNumber", "@type": "xsd:integer" },
+        "version": { "@id": "schema:version" },
+        "tidalUrl": { "@id": "schema:url", "@type": "xsd:anyURI" },
+        "mediaTags": { "@id": "tidal:mediaTags", "@container": "@list" }
+      }
+    },
+
+    "Video": {
+      "@id": "schema:MusicVideoObject",
+      "@context": {
+        "title": { "@id": "schema:name" },
+        "duration": { "@id": "schema:duration" },
+        "releaseDate": { "@id": "schema:datePublished", "@type": "xsd:date" },
+        "tidalUrl": { "@id": "schema:url", "@type": "xsd:anyURI" }
+      }
+    },
+
+    "Playlist": {
+      "@id": "schema:MusicPlaylist",
+      "@context": {
+        "name": { "@id": "schema:name" },
+        "description": { "@id": "schema:description" },
+        "duration": { "@id": "schema:duration" },
+        "numberOfItems": { "@id": "schema:numTracks", "@type": "xsd:integer" },
+        "createdAt": { "@id": "schema:dateCreated", "@type": "xsd:dateTime" },
+        "lastModifiedAt": { "@id": "schema:dateModified", "@type": "xsd:dateTime" },
+        "privacy": { "@id": "tidal:privacy" },
+        "playlistType": { "@id": "tidal:playlistType" },
+        "tidalUrl": { "@id": "schema:url", "@type": "xsd:anyURI" }
+      }
+    },
+
+    "Genre": {
+      "@id": "schema:MusicGenre",
+      "@context": {
+        "name": { "@id": "schema:name" }
+      }
+    },
+
+    "Lyrics": {
+      "@id": "schema:lyrics",
+      "@context": {
+        "text": { "@id": "tidal:lyricsText" },
+        "language": { "@id": "schema:inLanguage" }
+      }
+    },
+
+    "Credit": {
+      "@id": "tidal:Credit",
+      "@context": {
+        "category": { "@id": "tidal:creditCategory" },
+        "artist": { "@id": "schema:contributor", "@type": "schema:MusicGroup" }
+      }
+    },
+
+    "User": {
+      "@id": "schema:Person",
+      "@context": {
+        "country": { "@id": "schema:addressCountry" },
+        "username": { "@id": "schema:identifier" },
+        "email": { "@id": "schema:email", "@type": "xsd:string" },
+        "firstName": { "@id": "schema:givenName" },
+        "lastName": { "@id": "schema:familyName" },
+        "nickname": { "@id": "schema:alternateName" },
+        "tidalUrl": { "@id": "schema:url", "@type": "xsd:anyURI" }
+      }
+    },
+
+    "UserCollection": {
+      "@id": "schema:Collection",
+      "@context": {
+        "createdAt": { "@id": "schema:dateCreated", "@type": "xsd:dateTime" }
+      }
+    },
+
+    "Mix": {
+      "@id": "schema:MusicPlaylist",
+      "@context": {
+        "title": { "@id": "schema:name" },
+        "mixType": { "@id": "tidal:mixType" },
+        "imageLinks": { "@id": "schema:image" }
+      }
+    },
+
+    "TrackManifest": {
+      "@id": "tidal:TrackManifest",
+      "@context": {
+        "audioQuality": { "@id": "tidal:audioQuality", "@type": "xsd:string" },
+        "manifest": { "@id": "tidal:manifestBase64" },
+        "manifestMimeType": { "@id": "tidal:manifestMimeType" },
+        "manifestHash": { "@id": "tidal:manifestHash" }
+      }
+    },
+
+    "Purchase": {
+      "@id": "schema:Order",
+      "@context": {
+        "orderNumber": { "@id": "schema:orderNumber" },
+        "orderStatus": { "@id": "schema:orderStatus" },
+        "price": { "@id": "schema:price" },
+        "currency": { "@id": "schema:priceCurrency" }
+      }
+    },
+
+    "PriceConfiguration": {
+      "@id": "schema:PriceSpecification",
+      "@context": {
+        "price": { "@id": "schema:price", "@type": "xsd:decimal" },
+        "currency": { "@id": "schema:priceCurrency" },
+        "subject": { "@id": "schema:itemOffered" }
+      }
+    },
+
+    "Share": {
+      "@id": "schema:ShareAction",
+      "@context": {
+        "subject": { "@id": "schema:object" },
+        "tidalUrl": { "@id": "schema:url" }
+      }
+    },
+
+    "Comment": {
+      "@id": "schema:Comment",
+      "@context": {
+        "text": { "@id": "schema:text" },
+        "createdAt": { "@id": "schema:dateCreated", "@type": "xsd:dateTime" },
+        "owner": { "@id": "schema:author" }
+      }
+    },
+
+    "Reaction": {
+      "@id": "schema:ReactAction",
+      "@context": {
+        "type": { "@id": "tidal:reactionType" }
+      }
+    },
+
+    "ArtistClaim": {
+      "@id": "tidal:ArtistClaim",
+      "@context": {
+        "claimedArtist": { "@id": "schema:itemReviewed" },
+        "claimingUser": { "@id": "schema:agent" },
+        "status": { "@id": "schema:actionStatus" }
+      }
+    }
+  }
+}

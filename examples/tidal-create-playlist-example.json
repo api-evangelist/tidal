@@ -1,0 +1,45 @@
+{
+  "_meta": {
+    "operation": "POST /v2/playlists",
+    "description": "Create a new user-owned TIDAL playlist. Requires the playlists.write OAuth scope on an authorization-code user token.",
+    "request": "POST https://openapi.tidal.com/v2/playlists",
+    "headers": {
+      "Authorization": "Bearer <access_token>",
+      "Content-Type": "application/vnd.api+json",
+      "Accept": "application/vnd.api+json"
+    }
+  },
+  "request": {
+    "data": {
+      "type": "playlists",
+      "attributes": {
+        "name": "Late-night focus",
+        "description": "Instrumental tracks for deep work",
+        "privacy": "PRIVATE"
+      }
+    }
+  },
+  "response": {
+    "data": {
+      "id": "0b9c4...-uuid",
+      "type": "playlists",
+      "attributes": {
+        "name": "Late-night focus",
+        "description": "Instrumental tracks for deep work",
+        "privacy": "PRIVATE",
+        "playlistType": "USER",
+        "bounded": true,
+        "numberOfItems": 0,
+        "duration": "PT0S",
+        "createdAt": "2026-05-25T12:00:00Z",
+        "lastModifiedAt": "2026-05-25T12:00:00Z",
+        "tidalUrl": "https://tidal.com/browse/playlist/0b9c4...-uuid"
+      },
+      "relationships": {
+        "items": { "links": { "self": "/v2/playlists/0b9c4...-uuid/relationships/items" } },
+        "owners": { "links": { "self": "/v2/playlists/0b9c4...-uuid/relationships/owners" } }
+      },
+      "links": { "self": "/v2/playlists/0b9c4...-uuid" }
+    }
+  }
+}

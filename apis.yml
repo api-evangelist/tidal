@@ -1,0 +1,471 @@
+aid: tidal
+url: https://raw.githubusercontent.com/api-evangelist/tidal/refs/heads/main/apis.yml
+apis:
+- aid: tidal:tidal-catalog-api
+  name: TIDAL Catalog API
+  tags:
+  - Music
+  - Catalog
+  - Albums
+  - Artists
+  - Tracks
+  - Videos
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  properties:
+  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+    type: Documentation
+  - url: https://tidal-music.github.io/tidal-api-reference/
+    type: Documentation
+  - url: openapi/tidal-catalog-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/tidal-album-schema.json
+    type: JSONSchema
+  - url: json-schema/tidal-artist-schema.json
+    type: JSONSchema
+  - url: json-schema/tidal-track-schema.json
+    type: JSONSchema
+  - url: json-ld/tidal-context.jsonld
+    type: JSONLD
+  - type: NaftikoCapability
+    url: capabilities/catalog-albums.yaml
+  - type: NaftikoCapability
+    url: capabilities/catalog-artists.yaml
+  - type: NaftikoCapability
+    url: capabilities/catalog-tracks.yaml
+  - type: NaftikoCapability
+    url: capabilities/catalog-videos.yaml
+  description: Browse TIDAL's high-fidelity music catalog. Resource-oriented JSON:API surface for albums, artists,
+    tracks, videos, genres, lyrics, credits, artworks, providers, and biographies, with cursor pagination,
+    sparse fieldsets, sort, filter, and JSON:API `include` relationship traversal.
+- aid: tidal:tidal-search-api
+  name: TIDAL Search API
+  tags:
+  - Music
+  - Search
+  - Suggestions
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  properties:
+  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+    type: Documentation
+  - url: openapi/tidal-search-api-openapi.yml
+    type: OpenAPI
+  - type: NaftikoCapability
+    url: capabilities/search-search-results.yaml
+  - type: NaftikoCapability
+    url: capabilities/search-suggestions.yaml
+  - type: NaftikoCapability
+    url: capabilities/search-history.yaml
+  description: Search the TIDAL catalog with personalized search results, type-ahead suggestions, and per-user
+    search history. Supports filtering by entity type and respects user locale and country.
+- aid: tidal:tidal-playlists-api
+  name: TIDAL Playlists API
+  tags:
+  - Music
+  - Playlists
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  properties:
+  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+    type: Documentation
+  - url: openapi/tidal-playlists-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/tidal-playlist-schema.json
+    type: JSONSchema
+  - type: NaftikoCapability
+    url: capabilities/playlists-playlists.yaml
+  description: Create, read, update, delete, and reorder TIDAL playlists. Manage playlist items, cover art,
+    owners, and editorial vs. user-created classifications. Requires playlists.read and playlists.write scopes.
+- aid: tidal:tidal-users-api
+  name: TIDAL Users API
+  tags:
+  - Users
+  - Accounts
+  - Terms
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  properties:
+  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+    type: Documentation
+  - url: openapi/tidal-users-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/tidal-user-schema.json
+    type: JSONSchema
+  - type: NaftikoCapability
+    url: capabilities/users-users.yaml
+  - type: NaftikoCapability
+    url: capabilities/users-terms.yaml
+  - type: NaftikoCapability
+    url: capabilities/users-clients.yaml
+  description: User account management surface. Read user profile and country, manage accepted terms, list
+    registered installations and clients, submit user reports, and request data exports for GDPR/CCPA compliance.
+- aid: tidal:tidal-user-collections-api
+  name: TIDAL User Collections API
+  tags:
+  - Users
+  - Collections
+  - Library
+  - My Collection
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  properties:
+  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+    type: Documentation
+  - url: openapi/tidal-user-collections-api-openapi.yml
+    type: OpenAPI
+  - type: NaftikoCapability
+    url: capabilities/user-collections-albums.yaml
+  - type: NaftikoCapability
+    url: capabilities/user-collections-artists.yaml
+  - type: NaftikoCapability
+    url: capabilities/user-collections-tracks.yaml
+  - type: NaftikoCapability
+    url: capabilities/user-collections-playlists.yaml
+  - type: NaftikoCapability
+    url: capabilities/user-collections-videos.yaml
+  - type: NaftikoCapability
+    url: capabilities/user-collections-folders.yaml
+  description: "TIDAL's My Collection — the user's saved albums, artists, tracks, videos, playlists, folders,
+    and save-for-later items. Add, remove, organize into folders, and traverse the collection via JSON:API
+    relationships. Requires collection.read/write scopes."
+- aid: tidal:tidal-recommendations-api
+  name: TIDAL Recommendations API
+  tags:
+  - Music
+  - Recommendations
+  - Mixes
+  - Personalization
+  - Discovery
+  humanURL: https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  properties:
+  - url: https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+    type: Documentation
+  - url: openapi/tidal-recommendations-api-openapi.yml
+    type: OpenAPI
+  - type: NaftikoCapability
+    url: capabilities/recommendations-user-recommendations.yaml
+  - type: NaftikoCapability
+    url: capabilities/recommendations-daily-mixes.yaml
+  - type: NaftikoCapability
+    url: capabilities/recommendations-discovery-mixes.yaml
+  - type: NaftikoCapability
+    url: capabilities/recommendations-new-release-mixes.yaml
+  - type: NaftikoCapability
+    url: capabilities/recommendations-dynamic-pages.yaml
+  description: Personalized recommendations powered by TIDAL's algorithmic mixes. Daily Mix, Discovery Mix,
+    New Release Mix, and Offline Mix, plus dynamic editorial pages and modules curated for the user. Requires
+    recommendations.read scope.
+- aid: tidal:tidal-playback-api
+  name: TIDAL Playback API
+  tags:
+  - Music
+  - Playback
+  - Streaming
+  - Hi-Fi
+  - HiRes
+  - Manifests
+  - Downloads
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  properties:
+  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+    type: Documentation
+  - url: https://github.com/tidal-music/tidal-sdk
+    type: Documentation
+  - url: openapi/tidal-playback-api-openapi.yml
+    type: OpenAPI
+  - type: NaftikoCapability
+    url: capabilities/playback-play-queues.yaml
+  - type: NaftikoCapability
+    url: capabilities/playback-track-manifests.yaml
+  - type: NaftikoCapability
+    url: capabilities/playback-video-manifests.yaml
+  - type: NaftikoCapability
+    url: capabilities/playback-downloads.yaml
+  description: Playback prerequisites — play queues, encrypted track manifests (HLS/DASH with HI_RES_LOSSLESS,
+    LOSSLESS, HIGH, LOW quality tiers), video manifests, offline tasks, downloads, and usage rules. Per TIDAL
+    policy, audio bytes flow exclusively through the official TIDAL Player SDK; the Playback API only issues
+    signed manifests. Requires playback scope.
+- aid: tidal:tidal-social-api
+  name: TIDAL Social API
+  tags:
+  - Music
+  - Social
+  - Sharing
+  - Comments
+  - Reactions
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  properties:
+  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+    type: Documentation
+  - url: openapi/tidal-social-api-openapi.yml
+    type: OpenAPI
+  - type: NaftikoCapability
+    url: capabilities/social-shares.yaml
+  - type: NaftikoCapability
+    url: capabilities/social-comments.yaml
+  - type: NaftikoCapability
+    url: capabilities/social-reactions.yaml
+  - type: NaftikoCapability
+    url: capabilities/social-appreciations.yaml
+  description: TIDAL's social surface — shares, saved shares, DSP sharing links (deep links to TIDAL content
+    from other DSPs), comments, reactions, and artist appreciations across albums, artists, tracks, videos,
+    and playlists.
+- aid: tidal:tidal-commerce-api
+  name: TIDAL Commerce API
+  tags:
+  - Music
+  - Commerce
+  - Purchases
+  - Pricing
+  - Stripe
+  - Square
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  properties:
+  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+    type: Documentation
+  - url: openapi/tidal-commerce-api-openapi.yml
+    type: OpenAPI
+  - type: NaftikoCapability
+    url: capabilities/commerce-purchases.yaml
+  - type: NaftikoCapability
+    url: capabilities/commerce-price-configurations.yaml
+  - type: NaftikoCapability
+    url: capabilities/commerce-stripe-connections.yaml
+  description: TIDAL's marketplace and creator-commerce surface — direct fan purchases of music, artist
+    price configurations, Stripe and Square connections (reflecting TIDAL's Block / Square parentage), and
+    Stripe dashboard links for connected artists.
+- aid: tidal:tidal-claims-api
+  name: TIDAL Claims API
+  tags:
+  - Music
+  - Claims
+  - Artists
+  - Verification
+  - Rights
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  properties:
+  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+    type: Documentation
+  - url: openapi/tidal-claims-api-openapi.yml
+    type: OpenAPI
+  - type: NaftikoCapability
+    url: capabilities/claims-artist-claims.yaml
+  - type: NaftikoCapability
+    url: capabilities/claims-content-claims.yaml
+  - type: NaftikoCapability
+    url: capabilities/claims-manual-artist-claims.yaml
+  description: Artist verification and content rights claims for the TIDAL Artist platform. Artists claim
+    profiles, content owners assert ownership of catalog items, and TIDAL operations review manual claim
+    workflows.
+name: TIDAL
+tags:
+- Music
+- Streaming
+- Hi-Fi
+- HiRes Lossless
+- Audio
+- Block
+- Square
+kind: contract
+image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+access: 3rd-Party
+common:
+- type: Portal
+  url: https://tidal.com
+- type: Documentation
+  url: https://developer.tidal.com
+- type: Documentation
+  url: https://developer.tidal.com/documentation
+- type: Documentation
+  url: https://tidal-music.github.io/tidal-api-reference/
+- type: GettingStarted
+  url: https://developer.tidal.com/documentation/api-sdk/api-sdk-quick-start
+- type: Authentication
+  url: https://developer.tidal.com/documentation/api-sdk/api-sdk-authorization
+- type: SignUp
+  url: https://developer.tidal.com/dashboard
+- type: TermsOfService
+  url: https://developer.tidal.com/documentation/guidelines/guidelines-developer-terms
+- type: Documentation
+  url: https://developer.tidal.com/documentation/guidelines-developer-guidelines-2_0
+- type: Documentation
+  url: https://developer.tidal.com/documentation/guidelines/guidelines-design-guidelines
+- type: Documentation
+  url: https://developer.tidal.com/documentation/api-sdk/api-sdk-manage-apps
+- type: Blog
+  url: https://developer.tidal.com/blog
+- type: Blog
+  url: https://tidal.com/magazine
+- type: PrivacyPolicy
+  url: https://tidal.com/privacy
+- type: TermsOfService
+  url: https://tidal.com/terms
+- type: StatusPage
+  url: https://status.tidal.com
+- type: GitHubOrganization
+  url: https://github.com/tidal-music
+- type: SDK
+  url: https://github.com/tidal-music/tidal-sdk-web
+  name: TIDAL SDK for Web (TypeScript)
+- type: SDK
+  url: https://github.com/tidal-music/tidal-sdk-ios
+  name: TIDAL SDK for iOS (Swift)
+- type: SDK
+  url: https://github.com/tidal-music/tidal-sdk-android
+  name: TIDAL SDK for Android (Kotlin)
+- type: SDK
+  url: https://github.com/tidal-music/tidal-sdk
+  name: TIDAL SDK (overview)
+- type: Tool
+  url: https://github.com/tidal-music/embed-player
+  name: TIDAL Embed Player
+- type: Tool
+  url: https://github.com/tidal-music/tidal-algorithmic-mixes
+  name: TIDAL Algorithmic Mixes (Python)
+- type: Tool
+  url: https://github.com/tidal-music/networktime
+  name: networktime (SNTP client, Kotlin Multiplatform)
+- type: Tool
+  url: https://github.com/tidal-music/openapi-generator
+  name: OpenAPI Generator (TIDAL fork)
+- type: Tool
+  url: https://github.com/tidal-music/eslint-config-tidal
+  name: TIDAL ESLint Config
+- type: Forum
+  url: https://github.com/tidal-music/discussions
+  name: TIDAL Developer Discussions
+- type: Documentation
+  url: https://developer.tidal.com/documentation/open-source
+  name: Open source at TIDAL
+- url: https://tidal.com/pricing
+  data:
+  - id: free
+    name: Free
+    entries:
+    - geo: US
+      unit: 1
+      label: User
+      limit: 1
+      price: 0
+      metric: user
+      timeFrame: month
+      description: Ad-supported free tier with limited audio quality.
+    elements:
+    - name: Ad-supported listening
+    - name: Limited skips and shuffle-only on some content
+    - name: Standard audio quality
+    description: Free ad-supported listening.
+  - id: individual
+    name: Individual
+    entries:
+    - geo: US
+      unit: 1
+      label: User
+      limit: 1
+      price: 10.99
+      metric: user
+      timeFrame: month
+      description: Single-user Hi-Fi plan.
+    elements:
+    - name: HiRes Lossless (FLAC up to 192 kHz / 24-bit)
+    - name: Dolby Atmos Music
+    - name: Offline listening
+    - name: Ad-free
+    - name: DJ extensions and crossfade
+    description: Hi-Fi streaming for one listener.
+  - id: family
+    name: Family
+    entries:
+    - geo: US
+      unit: 1
+      label: Plan
+      limit: 6
+      price: 16.99
+      metric: user
+      timeFrame: month
+      description: Up to 6 family members on a single Hi-Fi plan.
+    elements:
+    - name: HiRes Lossless for up to 6 family members
+    - name: Dolby Atmos Music
+    - name: Offline listening per member
+    - name: Individual recommendations per profile
+    description: Hi-Fi streaming for the whole household.
+  - id: student
+    name: Student
+    entries:
+    - geo: US
+      unit: 1
+      label: User
+      limit: 1
+      price: 4.99
+      metric: user
+      timeFrame: month
+      description: Discounted Hi-Fi plan for verified students.
+    elements:
+    - name: HiRes Lossless
+    - name: Dolby Atmos Music
+    - name: SheerID verification required
+    description: Hi-Fi streaming for verified students.
+  - id: dj
+    name: DJ
+    entries:
+    - geo: US
+      unit: 1
+      label: User
+      limit: 1
+      price: 19.99
+      metric: user
+      timeFrame: month
+      description: Adds DJ Extensions to the Individual plan.
+    elements:
+    - name: HiRes Lossless
+    - name: DJ Extensions for Serato, Rekordbox, djay, VirtualDJ, Engine DJ
+    - name: Beatgrid, cue, and key metadata
+    description: Hi-Fi streaming with DJ software integrations.
+  name: Plans
+  type: Plans
+- url: plans/tidal-plans-pricing.yml
+  type: Plans
+- url: rate-limits/tidal-rate-limits.yml
+  type: RateLimits
+- url: finops/tidal-finops.yml
+  type: FinOps
+- type: Features
+  data:
+  - JSON:API-compliant catalog spanning albums, artists, tracks, videos, genres, lyrics, credits, and artwork
+  - HiRes Lossless audio (FLAC up to 192 kHz / 24-bit) and Dolby Atmos Music for premium tiers
+  - 100M+ track catalog with high-quality metadata, credits, and lyrics
+  - Personalized Daily Mixes, Discovery Mix, New Release Mix, and Offline Mix recommendations
+  - User Collections (My Collection) — albums, artists, playlists, tracks, videos, folders, save-for-later
+  - Playback via signed track and video manifests (HLS / DASH) restricted to the TIDAL Player SDK
+  - Search with personalized results, type-ahead suggestions, and per-user search history
+  - Social surface — shares, comments, reactions, appreciations, and DSP sharing deep-links
+  - Creator commerce — direct fan purchases, artist price configurations, Stripe and Square connections
+  - Artist platform — artist claims, content claims, and manual artist verification workflows
+  - OAuth 2.0 Authorization Code with PKCE (user-context) and Client Credentials (server-to-server)
+  - Granular OAuth scopes — collection.read/write, playlists.read/write, playback, recommendations.read,
+    search.read/write, user.read, entitlements.read
+  - Official SDKs for Web (TypeScript), iOS (Swift), and Android (Kotlin)
+  - Embed Player for in-page TIDAL playback on third-party sites
+  - Open-source algorithmic mixes (Python) and OpenAPI generator fork
+  - JSON:API features — cursor pagination, sparse fieldsets, sort, filter, compound documents via `include`
+  - Single canonical OpenAPI spec aggregating 240+ paths and 320+ operations published at developer.tidal.com
+  sources:
+  - https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - https://tidal-music.github.io/tidal-api-reference/
+  - https://github.com/tidal-music
+  - https://tidal.com/pricing
+  updated: '2026-05-25'
+created: '2026-05-25'
+modified: '2026-05-25'
+position: Consuming
+description: TIDAL is a high-fidelity music streaming service owned by Block (Square's parent, acquired 2021)
+  offering HiRes Lossless FLAC audio up to 192 kHz / 24-bit and Dolby Atmos Music across a 100M+ track catalog.
+  TIDAL's developer platform exposes a unified JSON:API web API at openapi.tidal.com/v2 covering catalog
+  metadata, personalized recommendations, playlists, user collections, playback manifests, search, social
+  features, creator commerce, and artist claims. Playback bytes are restricted to the official TIDAL Player
+  SDK for Web, iOS, and Android. All APIs use OAuth 2.0 — Authorization Code with PKCE for user-context flows
+  and Client Credentials for server-to-server use. TIDAL also operates the TIDAL Embed Player and the
+  open-source tidal-music GitHub organization.
+maintainers:
+- FN: Kin Lane
+  email: info@apievangelist.com
+  X: apievangelist
+  url: https://apievangelist.com
+specificationVersion: '0.16'

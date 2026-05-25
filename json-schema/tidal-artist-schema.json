@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.com/schemas/tidal/tidal-artist-schema.json",
+  "title": "TIDAL Artist",
+  "description": "JSON:API resource representing a TIDAL artist. Returned by GET /v2/artists and GET /v2/artists/{id} with relationships to albums, tracks, videos, biography, roles, similar artists, followers, and radio.",
+  "type": "object",
+  "required": ["id", "type", "attributes"],
+  "properties": {
+    "id": { "type": "string", "description": "Stable TIDAL artist identifier." },
+    "type": { "type": "string", "const": "artists" },
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Artist display name." },
+        "popularity": { "type": "number", "minimum": 0, "maximum": 1, "description": "Popularity in 0.0-1.0 range." },
+        "handle": { "type": "string", "description": "URL-safe artist handle." },
+        "spotlight": { "type": "string", "description": "Spotlight blurb." },
+        "tidalUrl": { "type": "string", "format": "uri" },
+        "imageLinks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "href": { "type": "string", "format": "uri" },
+              "meta": {
+                "type": "object",
+                "properties": {
+                  "width": { "type": "integer" },
+                  "height": { "type": "integer" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "albums": { "type": "object" },
+        "tracks": { "type": "object" },
+        "videos": { "type": "object" },
+        "biography": { "type": "object" },
+        "roles": { "type": "object" },
+        "similarArtists": { "type": "object" },
+        "followers": { "type": "object" },
+        "following": { "type": "object" },
+        "owners": { "type": "object" },
+        "profileArt": { "type": "object" },
+        "radio": { "type": "object" },
+        "trackProviders": { "type": "object" }
+      }
+    }
+  }
+}

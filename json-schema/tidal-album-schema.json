@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.com/schemas/tidal/tidal-album-schema.json",
+  "title": "TIDAL Album",
+  "description": "JSON:API resource object representing a TIDAL album. Returned by GET /v2/albums and GET /v2/albums/{id}. Attributes capture album metadata; relationships link to artists, items, genres, cover art, statistics, owners, and similar albums.",
+  "type": "object",
+  "required": ["id", "type", "attributes"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable TIDAL album identifier (numeric string in v2 JSON:API surface)."
+    },
+    "type": {
+      "type": "string",
+      "const": "albums",
+      "description": "JSON:API resource type discriminator."
+    },
+    "attributes": {
+      "type": "object",
+      "description": "Album attributes returned as JSON:API attributes.",
+      "properties": {
+        "title": { "type": "string", "description": "Album title." },
+        "barcodeId": { "type": "string", "description": "Universal Product Code / barcode identifier." },
+        "numberOfVolumes": { "type": "integer", "minimum": 1, "description": "Number of volumes (e.g., disc count)." },
+        "numberOfItems": { "type": "integer", "minimum": 0, "description": "Total number of items (tracks + videos) on the album." },
+        "duration": { "type": "string", "description": "ISO 8601 duration of the entire album, e.g. PT1H12M30S." },
+        "explicit": { "type": "boolean", "description": "Whether the album contains explicit content." },
+        "releaseDate": { "type": "string", "format": "date", "description": "Album release date in ISO 8601 format." },
+        "copyright": { "type": "string", "description": "Copyright statement." },
+        "popularity": { "type": "number", "minimum": 0, "maximum": 1, "description": "Popularity score in the range 0.0–1.0." },
+        "availability": {
+          "type": "array",
+          "description": "List of availability modes; common values include STREAM and DJ.",
+          "items": { "type": "string", "enum": ["STREAM", "DJ", "DOWNLOAD"] }
+        },
+        "mediaTags": {
+          "type": "array",
+          "description": "Media tags such as HIRES_LOSSLESS, LOSSLESS, DOLBY_ATMOS, SONY_360RA.",
+          "items": { "type": "string" }
+        },
+        "type": {
+          "type": "string",
+          "enum": ["ALBUM", "EP", "SINGLE", "COMPILATION", "LIVE", "REMIX", "SOUNDTRACK", "PODCAST"],
+          "description": "Album product type."
+        },
+        "tidalUrl": { "type": "string", "format": "uri", "description": "Canonical TIDAL web URL for the album." },
+        "imageLinks": {
+          "type": "array",
+          "description": "Cover art links at multiple resolutions.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "href": { "type": "string", "format": "uri" },
+              "meta": {
+                "type": "object",
+                "properties": {
+                  "width": { "type": "integer" },
+                  "height": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "videoLinks": {
+          "type": "array",
+          "description": "Trailer / promotional video links keyed by resolution.",
+          "items": { "type": "object" }
+        }
+      }
+    },
+    "relationships": {
+      "type": "object",
+      "description": "JSON:API relationships available for albums.",
+      "properties": {
+        "artists": { "$ref": "#/$defs/Relationship" },
+        "items": { "$ref": "#/$defs/Relationship" },
+        "genres": { "$ref": "#/$defs/Relationship" },
+        "coverArt": { "$ref": "#/$defs/Relationship" },
+        "providers": { "$ref": "#/$defs/Relationship" },
+        "owners": { "$ref": "#/$defs/Relationship" },
+        "albumStatistics": { "$ref": "#/$defs/Relationship" },
+        "priceConfig": { "$ref": "#/$defs/Relationship" },
+        "replacement": { "$ref": "#/$defs/Relationship" },
+        "shares": { "$ref": "#/$defs/Relationship" },
+        "similarAlbums": { "$ref": "#/$defs/Relationship" },
+        "suggestedCoverArts": { "$ref": "#/$defs/Relationship" },
+        "usageRules": { "$ref": "#/$defs/Relationship" }
+      }
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "self": { "type": "string", "description": "Canonical self link." }
+      }
+    }
+  },
+  "$defs": {
+    "Relationship": {
+      "type": "object",
+      "description": "Standard JSON:API relationship object.",
+      "properties": {
+        "data": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "type": { "type": "string" }
+              }
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "type": { "type": "string" }
+                }
+              }
+            },
+            { "type": "null" }
+          ]
+        },
+        "links": {
+          "type": "object",
+          "properties": {
+            "self": { "type": "string" },
+            "related": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

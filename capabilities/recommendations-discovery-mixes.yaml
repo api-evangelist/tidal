@@ -1,0 +1,303 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Recommendations API — Discovery and Offline Mixes
+  description: TIDAL Recommendations API — Discovery and Offline Mixes. 4 operations. Self-contained Naftiko capability covering
+    one TIDAL business surface.
+  tags:
+  - TIDAL
+  - Music
+  - userDiscoveryMixes
+  - userOfflineMixes
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: recommendations-discovery-mixes
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Recommendations API — Discovery and Offline Mixes business capability. Self-contained, no shared references.
+    resources:
+    - name: userDiscoveryMixes-id
+      path: /userDiscoveryMixes/{id}
+      operations:
+      - name: getuserdiscoverymixes
+        method: GET
+        description: Get single userDiscoveryMixe.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User discovery mixes id. Use `me` for the authenticated user's resource
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+    - name: userDiscoveryMixes-id-relationships-items
+      path: /userDiscoveryMixes/{id}/relationships/items
+      operations:
+      - name: getuserdiscoverymixes
+        method: GET
+        description: Get items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User discovery mixes id. Use `me` for the authenticated user's resource
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+    - name: userOfflineMixes-id
+      path: /userOfflineMixes/{id}
+      operations:
+      - name: getuserofflinemixes
+        method: GET
+        description: Get single userOfflineMixe.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User offline mixes id. Use `me` for the authenticated user's resource
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+    - name: userOfflineMixes-id-relationships-items
+      path: /userOfflineMixes/{id}/relationships/items
+      operations:
+      - name: getuserofflinemixes
+        method: GET
+        description: Get items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User offline mixes id. Use `me` for the authenticated user's resource
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: recommendations-discovery-mixes-rest
+    port: 8080
+    description: REST adapter for TIDAL Recommendations API — Discovery and Offline Mixes. One Spectral-compliant resource
+      per consumed operation, prefixed with /v2.
+    resources:
+    - path: /v2/userDiscoveryMixes/{id}
+      name: userDiscoveryMixes-id
+      description: REST surface for userDiscoveryMixes-id.
+      operations:
+      - method: GET
+        name: getuserdiscoverymixes
+        description: Get single userDiscoveryMixe.
+        call: recommendations-discovery-mixes.getuserdiscoverymixes
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userDiscoveryMixes/{id}/relationships/items
+      name: userDiscoveryMixes-id-relationships-items
+      description: REST surface for userDiscoveryMixes-id-relationships-items.
+      operations:
+      - method: GET
+        name: getuserdiscoverymixes
+        description: Get items relationship ("to-many").
+        call: recommendations-discovery-mixes.getuserdiscoverymixes
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userOfflineMixes/{id}
+      name: userOfflineMixes-id
+      description: REST surface for userOfflineMixes-id.
+      operations:
+      - method: GET
+        name: getuserofflinemixes
+        description: Get single userOfflineMixe.
+        call: recommendations-discovery-mixes.getuserofflinemixes
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userOfflineMixes/{id}/relationships/items
+      name: userOfflineMixes-id-relationships-items
+      description: REST surface for userOfflineMixes-id-relationships-items.
+      operations:
+      - method: GET
+        name: getuserofflinemixes
+        description: Get items relationship ("to-many").
+        call: recommendations-discovery-mixes.getuserofflinemixes
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: recommendations-discovery-mixes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Recommendations API — Discovery and Offline Mixes. One tool per consumed operation.
+    tools:
+    - name: tidal-getuserdiscoverymixes
+      description: Get single userDiscoveryMixe.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: recommendations-discovery-mixes.getuserdiscoverymixes
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getuserdiscoverymixes
+      description: Get items relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: recommendations-discovery-mixes.getuserdiscoverymixes
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getuserofflinemixes
+      description: Get single userOfflineMixe.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: recommendations-discovery-mixes.getuserofflinemixes
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getuserofflinemixes
+      description: Get items relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: recommendations-discovery-mixes.getuserofflinemixes
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.

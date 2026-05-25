@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "operation": "GET /v2/searchResults/{query}",
+    "description": "Search TIDAL for the term 'taylor swift'. Returns a JSON:API resource with relationships to matched artists, albums, tracks, videos, and playlists.",
+    "request": "GET https://openapi.tidal.com/v2/searchResults/taylor%20swift?countryCode=US&include=topHits",
+    "headers": {
+      "Authorization": "Bearer <access_token>",
+      "Accept": "application/vnd.api+json"
+    }
+  },
+  "data": {
+    "id": "taylor swift",
+    "type": "searchResults",
+    "attributes": {
+      "trackingId": "01HX..."
+    },
+    "relationships": {
+      "albums": { "links": { "self": "/v2/searchResults/taylor%20swift/relationships/albums" } },
+      "artists": { "links": { "self": "/v2/searchResults/taylor%20swift/relationships/artists" } },
+      "tracks": { "links": { "self": "/v2/searchResults/taylor%20swift/relationships/tracks" } },
+      "playlists": { "links": { "self": "/v2/searchResults/taylor%20swift/relationships/playlists" } },
+      "videos": { "links": { "self": "/v2/searchResults/taylor%20swift/relationships/videos" } },
+      "topHits": { "data": [{ "id": "1234567", "type": "artists" }] }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.com/schemas/tidal/tidal-user-schema.json",
+  "title": "TIDAL User",
+  "description": "JSON:API resource representing a TIDAL user. Returned by GET /v2/users/{id}. Requires user.read scope. Sensitive PII (email, country) is only readable for the authenticated user.",
+  "type": "object",
+  "required": ["id", "type", "attributes"],
+  "properties": {
+    "id": { "type": "string" },
+    "type": { "type": "string", "const": "users" },
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "country": { "type": "string", "description": "ISO 3166-1 alpha-2 country code of the user's account." },
+        "username": { "type": "string" },
+        "email": { "type": "string", "format": "email", "description": "Email address; only returned for the authenticated user." },
+        "emailVerified": { "type": "boolean" },
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "nickname": { "type": "string" },
+        "tidalUrl": { "type": "string", "format": "uri" }
+      }
+    },
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "userCollections": { "type": "object" },
+        "userRecommendations": { "type": "object" }
+      }
+    }
+  }
+}

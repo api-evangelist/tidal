@@ -1,0 +1,175 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Recommendations API — New Release Mixes
+  description: TIDAL Recommendations API — New Release Mixes. 2 operations. Self-contained Naftiko capability covering one
+    TIDAL business surface.
+  tags:
+  - TIDAL
+  - Music
+  - userNewReleaseMixes
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: recommendations-new-release-mixes
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Recommendations API — New Release Mixes business capability. Self-contained, no shared references.
+    resources:
+    - name: userNewReleaseMixes-id
+      path: /userNewReleaseMixes/{id}
+      operations:
+      - name: getusernewreleasemixes
+        method: GET
+        description: Get single userNewReleaseMixe.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User new release mixes id. Use `me` for the authenticated user's resource
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+    - name: userNewReleaseMixes-id-relationships-items
+      path: /userNewReleaseMixes/{id}/relationships/items
+      operations:
+      - name: getusernewreleasemixes
+        method: GET
+        description: Get items relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: User new release mixes id. Use `me` for the authenticated user's resource
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: locale
+          in: query
+          type: string
+          description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: items'
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: recommendations-new-release-mixes-rest
+    port: 8080
+    description: REST adapter for TIDAL Recommendations API — New Release Mixes. One Spectral-compliant resource per consumed
+      operation, prefixed with /v2.
+    resources:
+    - path: /v2/userNewReleaseMixes/{id}
+      name: userNewReleaseMixes-id
+      description: REST surface for userNewReleaseMixes-id.
+      operations:
+      - method: GET
+        name: getusernewreleasemixes
+        description: Get single userNewReleaseMixe.
+        call: recommendations-new-release-mixes.getusernewreleasemixes
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/userNewReleaseMixes/{id}/relationships/items
+      name: userNewReleaseMixes-id-relationships-items
+      description: REST surface for userNewReleaseMixes-id-relationships-items.
+      operations:
+      - method: GET
+        name: getusernewreleasemixes
+        description: Get items relationship ("to-many").
+        call: recommendations-new-release-mixes.getusernewreleasemixes
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          countryCode: rest.query.countryCode
+          locale: rest.query.locale
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: recommendations-new-release-mixes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Recommendations API — New Release Mixes. One tool per consumed operation.
+    tools:
+    - name: tidal-getusernewreleasemixes
+      description: Get single userNewReleaseMixe.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: recommendations-new-release-mixes.getusernewreleasemixes
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getusernewreleasemixes
+      description: Get items relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: recommendations-new-release-mixes.getusernewreleasemixes
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        countryCode: tools.countryCode
+        locale: tools.locale
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.

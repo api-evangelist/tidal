@@ -1,0 +1,133 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: TIDAL
+providerId: tidal
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: true
+tags:
+  - Music
+  - Streaming
+  - Hi-Fi
+  - Subscription
+description: Reconciled subscription plans for TIDAL's consumer music streaming product. TIDAL's developer
+  API is free for registered developers; this file captures the end-user subscription tiers backed by the
+  Commerce API and Plans surface.
+sources:
+  - https://tidal.com/pricing
+  - https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - https://developer.tidal.com/documentation/api-sdk/api-sdk-manage-apps
+plans:
+  - id: tidal-free
+    name: Free
+    type: tier
+    description: Ad-supported, limited audio quality. Available in supported markets.
+    entries:
+      - label: Subscription
+        name: subscription
+        type: flat
+        metric: user
+        timeFrame: month
+        geo: US
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+    features:
+      - Ad-supported listening
+      - Standard audio quality
+      - Limited skips on mobile
+  - id: tidal-individual
+    name: Individual
+    type: tier
+    description: Single-user Hi-Fi plan with HiRes Lossless FLAC and Dolby Atmos.
+    entries:
+      - label: Subscription
+        name: subscription
+        type: flat
+        metric: user
+        timeFrame: month
+        geo: US
+        unit: 1
+        price: '10.99'
+        userMultiplied: false
+    features:
+      - HiRes Lossless (FLAC up to 192 kHz / 24-bit)
+      - Dolby Atmos Music
+      - Offline listening
+      - Ad-free
+  - id: tidal-family
+    name: Family
+    type: tier
+    description: Up to six profiles on a single Family plan.
+    entries:
+      - label: Subscription
+        name: subscription
+        type: flat
+        metric: user
+        timeFrame: month
+        geo: US
+        unit: 6
+        price: '16.99'
+        userMultiplied: false
+    features:
+      - HiRes Lossless for up to 6 members
+      - Dolby Atmos Music
+      - Individual profiles and recommendations
+      - Offline listening per member
+  - id: tidal-student
+    name: Student
+    type: tier
+    description: Discounted Hi-Fi plan for SheerID-verified students.
+    entries:
+      - label: Subscription
+        name: subscription
+        type: flat
+        metric: user
+        timeFrame: month
+        geo: US
+        unit: 1
+        price: '4.99'
+        userMultiplied: false
+    features:
+      - HiRes Lossless
+      - Dolby Atmos
+      - SheerID student verification required
+  - id: tidal-dj
+    name: DJ
+    type: tier
+    description: Hi-Fi Individual plan with DJ Extensions for Serato, Rekordbox, djay, VirtualDJ, Engine DJ.
+    entries:
+      - label: Subscription
+        name: subscription
+        type: flat
+        metric: user
+        timeFrame: month
+        geo: US
+        unit: 1
+        price: '19.99'
+        userMultiplied: false
+    features:
+      - HiRes Lossless
+      - DJ Extensions (Serato, Rekordbox, djay, VirtualDJ, Engine DJ)
+      - Beatgrid, cue points, key metadata
+  - id: tidal-developer
+    name: Developer Access
+    type: tier
+    description: Free developer access to the TIDAL API. Apps register at developer.tidal.com/dashboard and
+      receive Client Credentials and PKCE-flow client IDs subject to TIDAL's Developer Terms and rate limits.
+    entries:
+      - label: API Access
+        name: api-access
+        type: flat
+        metric: app
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+    features:
+      - Free Client Credentials and Authorization Code with PKCE clients
+      - Access to catalog metadata, search, recommendations, playlists, user collections
+      - Playback restricted to the official TIDAL Player SDK
+      - Subject to Developer Terms and Design Guidelines

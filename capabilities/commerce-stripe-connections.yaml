@@ -1,0 +1,388 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Commerce API — Stripe and Square Connections
+  description: TIDAL Commerce API — Stripe and Square Connections. 7 operations. Self-contained Naftiko capability covering
+    one TIDAL business surface.
+  tags:
+  - TIDAL
+  - Music
+  - stripeConnections
+  - stripeDashboardLinks
+  - squareConnections
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: commerce-stripe-connections
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Commerce API — Stripe and Square Connections business capability. Self-contained, no shared references.
+    resources:
+    - name: squareConnections
+      path: /squareConnections
+      operations:
+      - name: postsquareconnections
+        method: POST
+        description: Create single squareConnection.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: squareConnections-id
+      path: /squareConnections/{id}
+      operations:
+      - name: getsquareconnections
+        method: GET
+        description: Get single squareConnection.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Square connection id. Use `me` for the authenticated user's resource
+          required: true
+    - name: stripeConnections
+      path: /stripeConnections
+      operations:
+      - name: getstripeconnections
+        method: GET
+        description: Get multiple stripeConnections.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: filter[owners.id]
+          in: query
+          type: array
+          description: User id. Use `me` for the authenticated user
+          required: false
+      - name: poststripeconnections
+        method: POST
+        description: Create single stripeConnection.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: stripeConnections-id-relationships-owners
+      path: /stripeConnections/{id}/relationships/owners
+      operations:
+      - name: getstripeconnections
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Stripe connection id. Use `me` for the authenticated user's resource
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: stripeDashboardLinks
+      path: /stripeDashboardLinks
+      operations:
+      - name: getstripedashboardlinks
+        method: GET
+        description: Get multiple stripeDashboardLinks.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: filter[owners.id]
+          in: query
+          type: array
+          description: User id. Use `me` for the authenticated user
+          required: false
+    - name: stripeDashboardLinks-id-relationships-owners
+      path: /stripeDashboardLinks/{id}/relationships/owners
+      operations:
+      - name: getstripedashboardlinks
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Stripe dashboard link id. Use `me` for the authenticated user's resource
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: commerce-stripe-connections-rest
+    port: 8080
+    description: REST adapter for TIDAL Commerce API — Stripe and Square Connections. One Spectral-compliant resource per
+      consumed operation, prefixed with /v2.
+    resources:
+    - path: /v2/squareConnections
+      name: squareConnections
+      description: REST surface for squareConnections.
+      operations:
+      - method: POST
+        name: postsquareconnections
+        description: Create single squareConnection.
+        call: commerce-stripe-connections.postsquareconnections
+        with:
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/squareConnections/{id}
+      name: squareConnections-id
+      description: REST surface for squareConnections-id.
+      operations:
+      - method: GET
+        name: getsquareconnections
+        description: Get single squareConnection.
+        call: commerce-stripe-connections.getsquareconnections
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/stripeConnections
+      name: stripeConnections
+      description: REST surface for stripeConnections.
+      operations:
+      - method: GET
+        name: getstripeconnections
+        description: Get multiple stripeConnections.
+        call: commerce-stripe-connections.getstripeconnections
+        with:
+          include: rest.query.include
+          filter[owners.id]: rest.query.filter[owners.id]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: poststripeconnections
+        description: Create single stripeConnection.
+        call: commerce-stripe-connections.poststripeconnections
+        with:
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/stripeConnections/{id}/relationships/owners
+      name: stripeConnections-id-relationships-owners
+      description: REST surface for stripeConnections-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getstripeconnections
+        description: Get owners relationship ("to-many").
+        call: commerce-stripe-connections.getstripeconnections
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/stripeDashboardLinks
+      name: stripeDashboardLinks
+      description: REST surface for stripeDashboardLinks.
+      operations:
+      - method: GET
+        name: getstripedashboardlinks
+        description: Get multiple stripeDashboardLinks.
+        call: commerce-stripe-connections.getstripedashboardlinks
+        with:
+          include: rest.query.include
+          filter[owners.id]: rest.query.filter[owners.id]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/stripeDashboardLinks/{id}/relationships/owners
+      name: stripeDashboardLinks-id-relationships-owners
+      description: REST surface for stripeDashboardLinks-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getstripedashboardlinks
+        description: Get owners relationship ("to-many").
+        call: commerce-stripe-connections.getstripedashboardlinks
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: commerce-stripe-connections-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Commerce API — Stripe and Square Connections. One tool per consumed operation.
+    tools:
+    - name: tidal-postsquareconnections
+      description: Create single squareConnection.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: commerce-stripe-connections.postsquareconnections
+      with:
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getsquareconnections
+      description: Get single squareConnection.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: commerce-stripe-connections.getsquareconnections
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getstripeconnections
+      description: Get multiple stripeConnections.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: commerce-stripe-connections.getstripeconnections
+      with:
+        include: tools.include
+        filter[owners.id]: tools.filter[owners.id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-poststripeconnections
+      description: Create single stripeConnection.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: commerce-stripe-connections.poststripeconnections
+      with:
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getstripeconnections
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: commerce-stripe-connections.getstripeconnections
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getstripedashboardlinks
+      description: Get multiple stripeDashboardLinks.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: commerce-stripe-connections.getstripedashboardlinks
+      with:
+        include: tools.include
+        filter[owners.id]: tools.filter[owners.id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getstripedashboardlinks
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: commerce-stripe-connections.getstripedashboardlinks
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.

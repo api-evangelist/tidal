@@ -1,0 +1,487 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Claims API — Artist Claims
+  description: TIDAL Claims API — Artist Claims. 9 operations. Self-contained Naftiko capability covering one TIDAL business
+    surface.
+  tags:
+  - TIDAL
+  - Music
+  - artistClaims
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: claims-artist-claims
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Claims API — Artist Claims business capability. Self-contained, no shared references.
+    resources:
+    - name: artistClaims
+      path: /artistClaims
+      operations:
+      - name: getartistclaims
+        method: GET
+        description: Get multiple artistClaims.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: acceptedArtists,
+            owners, recommendedArtists'
+          required: false
+        - name: filter[owners.id]
+          in: query
+          type: array
+          description: User id. Use `me` for the authenticated user
+          required: false
+      - name: postartistclaims
+        method: POST
+        description: Create single artistClaim.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: artistClaims-id
+      path: /artistClaims/{id}
+      operations:
+      - name: deleteartistclaims
+        method: DELETE
+        description: Delete single artistClaim.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist claim id
+          required: true
+      - name: getartistclaims
+        method: GET
+        description: Get single artistClaim.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist claim id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: acceptedArtists,
+            owners, recommendedArtists'
+          required: false
+      - name: patchartistclaims
+        method: PATCH
+        description: Update single artistClaim.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist claim id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: artistClaims-id-relationships-acceptedArtists
+      path: /artistClaims/{id}/relationships/acceptedArtists
+      operations:
+      - name: getartistclaims
+        method: GET
+        description: Get acceptedArtists relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist claim id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: acceptedArtists'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+      - name: patchartistclaims
+        method: PATCH
+        description: Update acceptedArtists relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist claim id
+          required: true
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: artistClaims-id-relationships-owners
+      path: /artistClaims/{id}/relationships/owners
+      operations:
+      - name: getartistclaims
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist claim id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: artistClaims-id-relationships-recommendedArtists
+      path: /artistClaims/{id}/relationships/recommendedArtists
+      operations:
+      - name: getartistclaims
+        method: GET
+        description: Get recommendedArtists relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Artist claim id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: recommendedArtists'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: claims-artist-claims-rest
+    port: 8080
+    description: REST adapter for TIDAL Claims API — Artist Claims. One Spectral-compliant resource per consumed operation,
+      prefixed with /v2.
+    resources:
+    - path: /v2/artistClaims
+      name: artistClaims
+      description: REST surface for artistClaims.
+      operations:
+      - method: GET
+        name: getartistclaims
+        description: Get multiple artistClaims.
+        call: claims-artist-claims.getartistclaims
+        with:
+          include: rest.query.include
+          filter[owners.id]: rest.query.filter[owners.id]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postartistclaims
+        description: Create single artistClaim.
+        call: claims-artist-claims.postartistclaims
+        with:
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artistClaims/{id}
+      name: artistClaims-id
+      description: REST surface for artistClaims-id.
+      operations:
+      - method: DELETE
+        name: deleteartistclaims
+        description: Delete single artistClaim.
+        call: claims-artist-claims.deleteartistclaims
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getartistclaims
+        description: Get single artistClaim.
+        call: claims-artist-claims.getartistclaims
+        with:
+          id: rest.path.id
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchartistclaims
+        description: Update single artistClaim.
+        call: claims-artist-claims.patchartistclaims
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artistClaims/{id}/relationships/acceptedArtists
+      name: artistClaims-id-relationships-acceptedArtists
+      description: REST surface for artistClaims-id-relationships-acceptedArtists.
+      operations:
+      - method: GET
+        name: getartistclaims
+        description: Get acceptedArtists relationship ("to-many").
+        call: claims-artist-claims.getartistclaims
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchartistclaims
+        description: Update acceptedArtists relationship ("to-many").
+        call: claims-artist-claims.patchartistclaims
+        with:
+          id: rest.path.id
+          countryCode: rest.query.countryCode
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artistClaims/{id}/relationships/owners
+      name: artistClaims-id-relationships-owners
+      description: REST surface for artistClaims-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getartistclaims
+        description: Get owners relationship ("to-many").
+        call: claims-artist-claims.getartistclaims
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/artistClaims/{id}/relationships/recommendedArtists
+      name: artistClaims-id-relationships-recommendedArtists
+      description: REST surface for artistClaims-id-relationships-recommendedArtists.
+      operations:
+      - method: GET
+        name: getartistclaims
+        description: Get recommendedArtists relationship ("to-many").
+        call: claims-artist-claims.getartistclaims
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: claims-artist-claims-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Claims API — Artist Claims. One tool per consumed operation.
+    tools:
+    - name: tidal-getartistclaims
+      description: Get multiple artistClaims.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: claims-artist-claims.getartistclaims
+      with:
+        include: tools.include
+        filter[owners.id]: tools.filter[owners.id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postartistclaims
+      description: Create single artistClaim.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: claims-artist-claims.postartistclaims
+      with:
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteartistclaims
+      description: Delete single artistClaim.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: claims-artist-claims.deleteartistclaims
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartistclaims
+      description: Get single artistClaim.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: claims-artist-claims.getartistclaims
+      with:
+        id: tools.id
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-patchartistclaims
+      description: Update single artistClaim.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: claims-artist-claims.patchartistclaims
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartistclaims
+      description: Get acceptedArtists relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: claims-artist-claims.getartistclaims
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-patchartistclaims
+      description: Update acceptedArtists relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: claims-artist-claims.patchartistclaims
+      with:
+        id: tools.id
+        countryCode: tools.countryCode
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartistclaims
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: claims-artist-claims.getartistclaims
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getartistclaims
+      description: Get recommendedArtists relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: claims-artist-claims.getartistclaims
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.

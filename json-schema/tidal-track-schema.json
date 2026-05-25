@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.com/schemas/tidal/tidal-track-schema.json",
+  "title": "TIDAL Track",
+  "description": "JSON:API resource representing a single TIDAL track. Returned by GET /v2/tracks and GET /v2/tracks/{id}. Audio media bytes are never returned here; obtain a signed manifest via the Playback API and play through the TIDAL Player SDK.",
+  "type": "object",
+  "required": ["id", "type", "attributes"],
+  "properties": {
+    "id": { "type": "string", "description": "Stable TIDAL track identifier." },
+    "type": { "type": "string", "const": "tracks" },
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "isrc": { "type": "string", "description": "International Standard Recording Code." },
+        "duration": { "type": "string", "description": "ISO 8601 duration, e.g. PT3M45S." },
+        "copyright": { "type": "string" },
+        "explicit": { "type": "boolean" },
+        "popularity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "trackNumber": { "type": "integer", "minimum": 1 },
+        "volumeNumber": { "type": "integer", "minimum": 1 },
+        "version": { "type": "string", "description": "Version qualifier such as Remastered, Live, Remix." },
+        "availability": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["STREAM", "DJ", "DOWNLOAD"] }
+        },
+        "mediaTags": {
+          "type": "array",
+          "description": "Quality tier tags. HIRES_LOSSLESS = FLAC up to 192kHz/24-bit, LOSSLESS = FLAC 16-bit/44.1kHz, DOLBY_ATMOS for spatial audio.",
+          "items": { "type": "string", "enum": ["HIRES_LOSSLESS","LOSSLESS","DOLBY_ATMOS","SONY_360RA","MQA"] }
+        },
+        "tidalUrl": { "type": "string", "format": "uri" }
+      }
+    },
+    "relationships": {
+      "type": "object",
+      "properties": {
+        "albums": { "type": "object" },
+        "artists": { "type": "object" },
+        "providers": { "type": "object" },
+        "genres": { "type": "object" },
+        "lyrics": { "type": "object" },
+        "credits": { "type": "object" },
+        "similarTracks": { "type": "object" },
+        "radio": { "type": "object" },
+        "trackStatistics": { "type": "object" },
+        "usageRules": { "type": "object" },
+        "owners": { "type": "object" }
+      }
+    }
+  }
+}

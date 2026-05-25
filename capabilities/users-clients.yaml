@@ -1,0 +1,678 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Users API — Clients and Installations
+  description: TIDAL Users API — Clients and Installations. 13 operations. Self-contained Naftiko capability covering one
+    TIDAL business surface.
+  tags:
+  - TIDAL
+  - Music
+  - clients
+  - installations
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: users-clients
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Users API — Clients and Installations business capability. Self-contained, no shared references.
+    resources:
+    - name: clients
+      path: /clients
+      operations:
+      - name: getclients
+        method: GET
+        description: Get multiple clients.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: filter[owners.id]
+          in: query
+          type: array
+          description: User id. Use `me` for the authenticated user
+          required: false
+      - name: postclients
+        method: POST
+        description: Create single client.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: clients-id
+      path: /clients/{id}
+      operations:
+      - name: deleteclients
+        method: DELETE
+        description: Delete single client.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: OAuth client identifier
+          required: true
+      - name: getclients
+        method: GET
+        description: Get single client.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: OAuth client identifier
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+      - name: patchclients
+        method: PATCH
+        description: Update single client.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: OAuth client identifier
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: clients-id-relationships-owners
+      path: /clients/{id}/relationships/owners
+      operations:
+      - name: getclients
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: OAuth client identifier
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: installations
+      path: /installations
+      operations:
+      - name: getinstallations
+        method: GET
+        description: Get multiple installations.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: offlineInventory,
+            owners'
+          required: false
+        - name: filter[clientProvidedInstallationId]
+          in: query
+          type: array
+          description: Client-provided installation identifier to filter by (e.g. `a468bee88def`)
+          required: false
+        - name: filter[id]
+          in: query
+          type: array
+          description: List of installation IDs (e.g. `a468bee88def`)
+          required: false
+        - name: filter[owners.id]
+          in: query
+          type: array
+          description: User ID to filter by. Use `me` for the authenticated user
+          required: false
+      - name: postinstallations
+        method: POST
+        description: Create single installation.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: installations-id
+      path: /installations/{id}
+      operations:
+      - name: getinstallations
+        method: GET
+        description: Get single installation.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Installation id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: offlineInventory,
+            owners'
+          required: false
+    - name: installations-id-relationships-offlineInventory
+      path: /installations/{id}/relationships/offlineInventory
+      operations:
+      - name: deleteinstallations
+        method: DELETE
+        description: Delete from offlineInventory relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Installation id
+          required: true
+      - name: getinstallations
+        method: GET
+        description: Get offlineInventory relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Installation id
+          required: true
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: offlineInventory'
+          required: false
+        - name: filter[id]
+          in: query
+          type: array
+          description: Offline item id (e.g. `1234`)
+          required: false
+        - name: filter[state]
+          in: query
+          type: array
+          description: 'One of: PENDING, STORED (e.g. `PENDING`)'
+          required: false
+        - name: filter[type]
+          in: query
+          type: array
+          description: 'One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. `tracks`)'
+          required: false
+      - name: postinstallations
+        method: POST
+        description: Add to offlineInventory relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Installation id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: installations-id-relationships-owners
+      path: /installations/{id}/relationships/owners
+      operations:
+      - name: getinstallations
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Installation id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: users-clients-rest
+    port: 8080
+    description: REST adapter for TIDAL Users API — Clients and Installations. One Spectral-compliant resource per consumed
+      operation, prefixed with /v2.
+    resources:
+    - path: /v2/clients
+      name: clients
+      description: REST surface for clients.
+      operations:
+      - method: GET
+        name: getclients
+        description: Get multiple clients.
+        call: users-clients.getclients
+        with:
+          include: rest.query.include
+          filter[owners.id]: rest.query.filter[owners.id]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postclients
+        description: Create single client.
+        call: users-clients.postclients
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/clients/{id}
+      name: clients-id
+      description: REST surface for clients-id.
+      operations:
+      - method: DELETE
+        name: deleteclients
+        description: Delete single client.
+        call: users-clients.deleteclients
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getclients
+        description: Get single client.
+        call: users-clients.getclients
+        with:
+          id: rest.path.id
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchclients
+        description: Update single client.
+        call: users-clients.patchclients
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/clients/{id}/relationships/owners
+      name: clients-id-relationships-owners
+      description: REST surface for clients-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getclients
+        description: Get owners relationship ("to-many").
+        call: users-clients.getclients
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/installations
+      name: installations
+      description: REST surface for installations.
+      operations:
+      - method: GET
+        name: getinstallations
+        description: Get multiple installations.
+        call: users-clients.getinstallations
+        with:
+          page[cursor]: rest.query.page[cursor]
+          include: rest.query.include
+          filter[clientProvidedInstallationId]: rest.query.filter[clientProvidedInstallationId]
+          filter[id]: rest.query.filter[id]
+          filter[owners.id]: rest.query.filter[owners.id]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postinstallations
+        description: Create single installation.
+        call: users-clients.postinstallations
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/installations/{id}
+      name: installations-id
+      description: REST surface for installations-id.
+      operations:
+      - method: GET
+        name: getinstallations
+        description: Get single installation.
+        call: users-clients.getinstallations
+        with:
+          id: rest.path.id
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/installations/{id}/relationships/offlineInventory
+      name: installations-id-relationships-offlineInventory
+      description: REST surface for installations-id-relationships-offlineInventory.
+      operations:
+      - method: DELETE
+        name: deleteinstallations
+        description: Delete from offlineInventory relationship ("to-many").
+        call: users-clients.deleteinstallations
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getinstallations
+        description: Get offlineInventory relationship ("to-many").
+        call: users-clients.getinstallations
+        with:
+          id: rest.path.id
+          page[cursor]: rest.query.page[cursor]
+          include: rest.query.include
+          filter[id]: rest.query.filter[id]
+          filter[state]: rest.query.filter[state]
+          filter[type]: rest.query.filter[type]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postinstallations
+        description: Add to offlineInventory relationship ("to-many").
+        call: users-clients.postinstallations
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/installations/{id}/relationships/owners
+      name: installations-id-relationships-owners
+      description: REST surface for installations-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getinstallations
+        description: Get owners relationship ("to-many").
+        call: users-clients.getinstallations
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: users-clients-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Users API — Clients and Installations. One tool per consumed operation.
+    tools:
+    - name: tidal-getclients
+      description: Get multiple clients.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-clients.getclients
+      with:
+        include: tools.include
+        filter[owners.id]: tools.filter[owners.id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postclients
+      description: Create single client.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: users-clients.postclients
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteclients
+      description: Delete single client.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: users-clients.deleteclients
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getclients
+      description: Get single client.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-clients.getclients
+      with:
+        id: tools.id
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-patchclients
+      description: Update single client.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: users-clients.patchclients
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getclients
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-clients.getclients
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getinstallations
+      description: Get multiple installations.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-clients.getinstallations
+      with:
+        page[cursor]: tools.page[cursor]
+        include: tools.include
+        filter[clientProvidedInstallationId]: tools.filter[clientProvidedInstallationId]
+        filter[id]: tools.filter[id]
+        filter[owners.id]: tools.filter[owners.id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postinstallations
+      description: Create single installation.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: users-clients.postinstallations
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getinstallations
+      description: Get single installation.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-clients.getinstallations
+      with:
+        id: tools.id
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deleteinstallations
+      description: Delete from offlineInventory relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: users-clients.deleteinstallations
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getinstallations
+      description: Get offlineInventory relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-clients.getinstallations
+      with:
+        id: tools.id
+        page[cursor]: tools.page[cursor]
+        include: tools.include
+        filter[id]: tools.filter[id]
+        filter[state]: tools.filter[state]
+        filter[type]: tools.filter[type]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postinstallations
+      description: Add to offlineInventory relationship ("to-many").
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: users-clients.postinstallations
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getinstallations
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-clients.getinstallations
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.

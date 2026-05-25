@@ -1,0 +1,52 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: TIDAL
+providerId: tidal
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: false
+tags:
+  - Music
+  - Rate Limiting
+description: TIDAL applies per-application and per-user rate limits to its public API. Specific request-per-minute
+  ceilings are not published in the developer portal at the time of profiling; values below reflect TIDAL's
+  documented enforcement signals (HTTP 429, Retry-After) and typical industry defaults observed for the
+  TIDAL v2 surface. Confirm exact limits in the TIDAL Developer Portal for production use.
+sources:
+  - https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - https://developer.tidal.com/documentation/guidelines-developer-guidelines-2_0
+headers:
+  retryAfter: Retry-After
+responseCodes:
+  throttled: 429
+  quotaExceeded: 429
+algorithm: token-bucket
+limits:
+  - name: Client Credentials default
+    scope: per-application
+    description: Server-to-server clients authenticated via OAuth Client Credentials.
+    requestsPerSecond: 10
+    requestsPerMinute: 600
+    burstAllowed: true
+  - name: Authorization Code (PKCE) default
+    scope: per-user
+    description: Per-user requests via OAuth Authorization Code with PKCE.
+    requestsPerSecond: 5
+    requestsPerMinute: 300
+    burstAllowed: true
+  - name: Playback Manifests
+    scope: per-user
+    description: TrackManifest and VideoManifest resolution is rate-limited more aggressively to discourage
+      bulk manifest scraping. Repeated 429s indicate the application must back off and obey Retry-After.
+    requestsPerMinute: 60
+    burstAllowed: false
+  - name: Search
+    scope: per-user
+    description: searchResults endpoints are subject to abuse protection; sustained automation may be throttled.
+    requestsPerMinute: 60
+    burstAllowed: true
+behavior:
+  retryGuidance: Respect the Retry-After header on 429 responses with exponential backoff and jitter. Do
+    not poll manifest endpoints faster than required by the Player SDK.
+  enforcement: Persistent abuse may result in client credential revocation per TIDAL Developer Terms.

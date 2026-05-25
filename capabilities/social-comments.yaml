@@ -1,0 +1,444 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Social API — Comments
+  description: TIDAL Social API — Comments. 8 operations. Self-contained Naftiko capability covering one TIDAL business surface.
+  tags:
+  - TIDAL
+  - Music
+  - comments
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: social-comments
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Social API — Comments business capability. Self-contained, no shared references.
+    resources:
+    - name: comments
+      path: /comments
+      operations:
+      - name: getcomments
+        method: GET
+        description: Get multiple comments.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+        - name: sort
+          in: query
+          type: array
+          description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+          required: false
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: ownerProfiles,
+            owners, parentComment'
+          required: false
+        - name: filter[parentComment.id]
+          in: query
+          type: array
+          description: Filter by parent comment ID to get replies (e.g. `550e8400-e29b-41d4-a716-446655440000`)
+          required: false
+        - name: filter[subject.id]
+          in: query
+          type: array
+          description: Filter by subject resource ID (e.g. `12345`)
+          required: false
+        - name: filter[subject.type]
+          in: query
+          type: array
+          description: Filter by subject resource type (e.g. `albums`)
+          required: false
+      - name: postcomments
+        method: POST
+        description: Create single comment.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: comments-id
+      path: /comments/{id}
+      operations:
+      - name: deletecomments
+        method: DELETE
+        description: Delete single comment.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Comment Id
+          required: true
+      - name: getcomments
+        method: GET
+        description: Get single comment.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Comment Id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: ownerProfiles,
+            owners, parentComment'
+          required: false
+      - name: patchcomments
+        method: PATCH
+        description: Update single comment.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Comment Id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: JSON:API document request body.
+          required: true
+    - name: comments-id-relationships-ownerProfiles
+      path: /comments/{id}/relationships/ownerProfiles
+      operations:
+      - name: getcomments
+        method: GET
+        description: Get ownerProfiles relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Comment Id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: ownerProfiles'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: comments-id-relationships-owners
+      path: /comments/{id}/relationships/owners
+      operations:
+      - name: getcomments
+        method: GET
+        description: Get owners relationship ("to-many").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Comment Id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+          required: false
+        - name: page[cursor]
+          in: query
+          type: string
+          description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not
+            specified
+          required: false
+    - name: comments-id-relationships-parentComment
+      path: /comments/{id}/relationships/parentComment
+      operations:
+      - name: getcomments
+        method: GET
+        description: Get parentComment relationship ("to-one").
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Comment Id
+          required: true
+        - name: include
+          in: query
+          type: array
+          description: 'Allows the client to customize which related resources should be returned. Available options: parentComment'
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: social-comments-rest
+    port: 8080
+    description: REST adapter for TIDAL Social API — Comments. One Spectral-compliant resource per consumed operation, prefixed
+      with /v2.
+    resources:
+    - path: /v2/comments
+      name: comments
+      description: REST surface for comments.
+      operations:
+      - method: GET
+        name: getcomments
+        description: Get multiple comments.
+        call: social-comments.getcomments
+        with:
+          page[cursor]: rest.query.page[cursor]
+          sort: rest.query.sort
+          include: rest.query.include
+          filter[parentComment.id]: rest.query.filter[parentComment.id]
+          filter[subject.id]: rest.query.filter[subject.id]
+          filter[subject.type]: rest.query.filter[subject.type]
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postcomments
+        description: Create single comment.
+        call: social-comments.postcomments
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/comments/{id}
+      name: comments-id
+      description: REST surface for comments-id.
+      operations:
+      - method: DELETE
+        name: deletecomments
+        description: Delete single comment.
+        call: social-comments.deletecomments
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getcomments
+        description: Get single comment.
+        call: social-comments.getcomments
+        with:
+          id: rest.path.id
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchcomments
+        description: Update single comment.
+        call: social-comments.patchcomments
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/comments/{id}/relationships/ownerProfiles
+      name: comments-id-relationships-ownerProfiles
+      description: REST surface for comments-id-relationships-ownerProfiles.
+      operations:
+      - method: GET
+        name: getcomments
+        description: Get ownerProfiles relationship ("to-many").
+        call: social-comments.getcomments
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/comments/{id}/relationships/owners
+      name: comments-id-relationships-owners
+      description: REST surface for comments-id-relationships-owners.
+      operations:
+      - method: GET
+        name: getcomments
+        description: Get owners relationship ("to-many").
+        call: social-comments.getcomments
+        with:
+          id: rest.path.id
+          include: rest.query.include
+          page[cursor]: rest.query.page[cursor]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/comments/{id}/relationships/parentComment
+      name: comments-id-relationships-parentComment
+      description: REST surface for comments-id-relationships-parentComment.
+      operations:
+      - method: GET
+        name: getcomments
+        description: Get parentComment relationship ("to-one").
+        call: social-comments.getcomments
+        with:
+          id: rest.path.id
+          include: rest.query.include
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: social-comments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Social API — Comments. One tool per consumed operation.
+    tools:
+    - name: tidal-getcomments
+      description: Get multiple comments.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: social-comments.getcomments
+      with:
+        page[cursor]: tools.page[cursor]
+        sort: tools.sort
+        include: tools.include
+        filter[parentComment.id]: tools.filter[parentComment.id]
+        filter[subject.id]: tools.filter[subject.id]
+        filter[subject.type]: tools.filter[subject.type]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-postcomments
+      description: Create single comment.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: social-comments.postcomments
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deletecomments
+      description: Delete single comment.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: social-comments.deletecomments
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getcomments
+      description: Get single comment.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: social-comments.getcomments
+      with:
+        id: tools.id
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-patchcomments
+      description: Update single comment.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: social-comments.patchcomments
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getcomments
+      description: Get ownerProfiles relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: social-comments.getcomments
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getcomments
+      description: Get owners relationship ("to-many").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: social-comments.getcomments
+      with:
+        id: tools.id
+        include: tools.include
+        page[cursor]: tools.page[cursor]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-getcomments
+      description: Get parentComment relationship ("to-one").
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: social-comments.getcomments
+      with:
+        id: tools.id
+        include: tools.include
+      outputParameters:
+      - type: object
+        mapping: $.

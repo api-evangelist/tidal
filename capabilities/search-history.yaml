@@ -1,0 +1,132 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: TIDAL Search API — Search History
+  description: TIDAL Search API — Search History. 2 operations. Self-contained Naftiko capability covering one TIDAL business
+    surface.
+  tags:
+  - TIDAL
+  - Music
+  - searchHistoryEntries
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    TIDAL_ACCESS_TOKEN: TIDAL_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: search-history
+    baseUri: https://openapi.tidal.com
+    description: TIDAL Search API — Search History business capability. Self-contained, no shared references.
+    resources:
+    - name: searchHistoryEntries
+      path: /searchHistoryEntries
+      operations:
+      - name: getsearchhistoryentries
+        method: GET
+        description: Get multiple searchHistoryEntries.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: countryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          required: false
+        - name: filter[id]
+          in: query
+          type: array
+          description: Opaque identifier for a search history entry (e.g. `MjcyNjg5OTAjamF5`)
+          required: false
+    - name: searchHistoryEntries-id
+      path: /searchHistoryEntries/{id}
+      operations:
+      - name: deletesearchhistoryentries
+        method: DELETE
+        description: Delete single searchHistoryEntrie.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: Opaque identifier for a search history entry
+          required: true
+    authentication:
+      type: bearer
+      value: '{{env.TIDAL_ACCESS_TOKEN}}'
+      placement: header
+      header: Authorization
+      prefix: 'Bearer '
+  exposes:
+  - type: rest
+    namespace: search-history-rest
+    port: 8080
+    description: REST adapter for TIDAL Search API — Search History. One Spectral-compliant resource per consumed operation,
+      prefixed with /v2.
+    resources:
+    - path: /v2/searchHistoryEntries
+      name: searchHistoryEntries
+      description: REST surface for searchHistoryEntries.
+      operations:
+      - method: GET
+        name: getsearchhistoryentries
+        description: Get multiple searchHistoryEntries.
+        call: search-history.getsearchhistoryentries
+        with:
+          countryCode: rest.query.countryCode
+          filter[id]: rest.query.filter[id]
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/searchHistoryEntries/{id}
+      name: searchHistoryEntries-id
+      description: REST surface for searchHistoryEntries-id.
+      operations:
+      - method: DELETE
+        name: deletesearchhistoryentries
+        description: Delete single searchHistoryEntrie.
+        call: search-history.deletesearchhistoryentries
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: search-history-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for TIDAL Search API — Search History. One tool per consumed operation.
+    tools:
+    - name: tidal-getsearchhistoryentries
+      description: Get multiple searchHistoryEntries.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: search-history.getsearchhistoryentries
+      with:
+        countryCode: tools.countryCode
+        filter[id]: tools.filter[id]
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: tidal-deletesearchhistoryentries
+      description: Delete single searchHistoryEntrie.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: search-history.deletesearchhistoryentries
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
