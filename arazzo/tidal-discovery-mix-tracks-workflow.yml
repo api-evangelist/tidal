@@ -1,0 +1,146 @@
+arazzo: 1.0.1
+info:
+  title: TIDAL Discovery Mix Tracks
+  summary: Read the user's discovery mix, enumerate its items, then resolve the first track.
+  description: >-
+    A personalized recommendations flow spanning the TIDAL recommendations and
+    catalog JSON:APIs. It reads the authenticated user's userDiscoveryMixes
+    resource, follows the items relationship to enumerate the recommended track
+    identifiers, then reads the first recommended track from the catalog and
+    follows its artists relationship to resolve the performing artist. Each step
+    inlines its parameters, the inline Bearer Authorization header, the
+    documented success status, and the runtime expressions that chain
+    identifiers between the two specs.
+  version: 1.0.0
+sourceDescriptions:
+- name: recommendationsApi
+  url: ../openapi/tidal-recommendations-api-openapi.yml
+  type: openapi
+- name: catalogApi
+  url: ../openapi/tidal-catalog-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: discovery-mix-tracks
+  summary: Read the user's discovery mix and resolve its first track.
+  description: >-
+    Reads the user's discovery mix, follows the items relationship for
+    recommended track ids, and reads the first track plus its artist.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    properties:
+      accessToken:
+        type: string
+        description: OAuth 2.0 bearer access token with recommendations.read scope.
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code (e.g. US).
+      locale:
+        type: string
+        description: BCP 47 locale (e.g. en-US).
+  steps:
+  - stepId: getDiscoveryMix
+    description: >-
+      Read the authenticated user's userDiscoveryMixes resource, using `me` to
+      target the caller, including the items relationship.
+    operationPath: '{$sourceDescriptions.recommendationsApi.url}#/paths/~1userDiscoveryMixes~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: me
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    - name: locale
+      in: query
+      value: $inputs.locale
+    - name: include
+      in: query
+      value: items
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      mixId: $response.body#/data/id
+  - stepId: getMixItems
+    description: >-
+      Follow the discovery mix items relationship to enumerate the recommended
+      track resource identifiers.
+    operationPath: '{$sourceDescriptions.recommendationsApi.url}#/paths/~1userDiscoveryMixes~1{id}~1relationships~1items/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: me
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    - name: locale
+      in: query
+      value: $inputs.locale
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      itemIds: $response.body#/data
+      firstTrackId: $response.body#/data/0/id
+    onSuccess:
+    - name: haveItems
+      type: goto
+      stepId: getTrack
+      criteria:
+      - context: $response.body
+        condition: $.data.length > 0
+        type: jsonpath
+  - stepId: getTrack
+    description: >-
+      Read the first recommended track from the catalog, including its artists
+      relationship.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getMixItems.outputs.firstTrackId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    - name: include
+      in: query
+      value: artists
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      trackId: $response.body#/data/id
+      trackTitle: $response.body#/data/attributes/title
+  - stepId: getTrackArtists
+    description: >-
+      Follow the track artists relationship to resolve the performing artist for
+      the first recommended track.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}~1relationships~1artists/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getTrack.outputs.trackId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      artistIds: $response.body#/data
+  outputs:
+    mixId: $steps.getDiscoveryMix.outputs.mixId
+    recommendedTrackIds: $steps.getMixItems.outputs.itemIds
+    trackId: $steps.getTrack.outputs.trackId
+    trackTitle: $steps.getTrack.outputs.trackTitle
+    artistIds: $steps.getTrackArtists.outputs.artistIds

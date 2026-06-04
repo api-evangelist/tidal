@@ -1,0 +1,144 @@
+arazzo: 1.0.1
+info:
+  title: TIDAL Search and Save Track to Collection
+  summary: Search for a track, confirm it, then add it to the user's collection.
+  description: >-
+    A save-to-favourites flow spanning the TIDAL search, catalog, and user
+    collections JSON:APIs. It reads a searchResult for the query, follows the
+    tracks relationship to obtain a matched track id, confirms the track exists
+    in the catalog, and adds it to the authenticated user's userCollectionTracks
+    items relationship. Each step inlines its parameters, the inline Bearer
+    Authorization header, the JSON:API request body where applicable, the
+    documented success status, and the runtime expressions that chain the track
+    id across specs.
+  version: 1.0.0
+sourceDescriptions:
+- name: searchApi
+  url: ../openapi/tidal-search-api-openapi.yml
+  type: openapi
+- name: catalogApi
+  url: ../openapi/tidal-catalog-api-openapi.yml
+  type: openapi
+- name: userCollectionsApi
+  url: ../openapi/tidal-user-collections-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: search-and-save-track
+  summary: Find a track by search and save it to the user's collection.
+  description: >-
+    Searches the catalog, resolves the first matched track, confirms it, and
+    adds it to the authenticated user's collection of tracks.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    - query
+    properties:
+      accessToken:
+        type: string
+        description: OAuth 2.0 bearer access token with collection.write scope.
+      query:
+        type: string
+        description: The free-text search query used as the searchResult resource id.
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code (e.g. US).
+  steps:
+  - stepId: runSearch
+    description: >-
+      Read the searchResult for the query including its tracks relationship so a
+      matched track id is available.
+    operationPath: '{$sourceDescriptions.searchApi.url}#/paths/~1searchResults~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $inputs.query
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    - name: include
+      in: query
+      value: tracks
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      searchId: $response.body#/data/id
+  - stepId: getSearchTracks
+    description: >-
+      Follow the searchResult tracks relationship to obtain the first matched
+      track identifier.
+    operationPath: '{$sourceDescriptions.searchApi.url}#/paths/~1searchResults~1{id}~1relationships~1tracks/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $inputs.query
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstTrackId: $response.body#/data/0/id
+    onSuccess:
+    - name: haveTrack
+      type: goto
+      stepId: confirmTrack
+      criteria:
+      - context: $response.body
+        condition: $.data.length > 0
+        type: jsonpath
+  - stepId: confirmTrack
+    description: >-
+      Confirm the matched track exists in the catalog before saving it to the
+      user's collection.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getSearchTracks.outputs.firstTrackId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      trackId: $response.body#/data/id
+      trackTitle: $response.body#/data/attributes/title
+  - stepId: saveToCollection
+    description: >-
+      Add the confirmed track to the authenticated user's userCollectionTracks
+      items relationship, using `me` to target the caller's collection.
+    operationPath: '{$sourceDescriptions.userCollectionsApi.url}#/paths/~1userCollectionTracks~1{id}~1relationships~1items/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: me
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    requestBody:
+      contentType: application/vnd.api+json
+      payload:
+        data:
+        - id: $steps.confirmTrack.outputs.trackId
+          type: tracks
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      items: $response.body#/data
+  outputs:
+    trackId: $steps.confirmTrack.outputs.trackId
+    trackTitle: $steps.confirmTrack.outputs.trackTitle
+    items: $steps.saveToCollection.outputs.items

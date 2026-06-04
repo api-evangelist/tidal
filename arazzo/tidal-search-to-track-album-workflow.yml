@@ -1,0 +1,163 @@
+arazzo: 1.0.1
+info:
+  title: TIDAL Search to Track and Album
+  summary: Run a catalog search, pick a matching track, then resolve that track and its album.
+  description: >-
+    A discovery flow over the TIDAL JSON:API. It reads a single searchResult for
+    the supplied query, follows the searchResult tracks relationship to obtain
+    matching track identifiers, retrieves the first track in full, follows the
+    track albums relationship to find the album it belongs to, and finally reads
+    that album. Each step spells out its request inline — path and query
+    parameters, the inline Bearer Authorization header, the documented success
+    status, and the JSON:API runtime expressions used to chain identifiers — so
+    the flow can be read and executed without opening the underlying OpenAPI
+    descriptions.
+  version: 1.0.0
+sourceDescriptions:
+- name: searchApi
+  url: ../openapi/tidal-search-api-openapi.yml
+  type: openapi
+- name: catalogApi
+  url: ../openapi/tidal-catalog-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: search-to-track-album
+  summary: Search the catalog and resolve a matched track and its album.
+  description: >-
+    Reads a searchResult, follows its tracks relationship, gets the first matched
+    track, follows the track to its album, and reads that album.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    - query
+    properties:
+      accessToken:
+        type: string
+        description: OAuth 2.0 bearer access token for the TIDAL API.
+      query:
+        type: string
+        description: The free-text search query used as the searchResult resource id.
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code (e.g. US).
+  steps:
+  - stepId: runSearch
+    description: >-
+      Read the searchResult for the supplied query, including its tracks
+      relationship so matched track identifiers are available.
+    operationPath: '{$sourceDescriptions.searchApi.url}#/paths/~1searchResults~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $inputs.query
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    - name: include
+      in: query
+      value: tracks
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      searchId: $response.body#/data/id
+  - stepId: getSearchTracks
+    description: >-
+      Follow the searchResult tracks relationship to obtain the list of track
+      resource identifiers that matched the query.
+    operationPath: '{$sourceDescriptions.searchApi.url}#/paths/~1searchResults~1{id}~1relationships~1tracks/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $inputs.query
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstTrackId: $response.body#/data/0/id
+    onSuccess:
+    - name: haveTrack
+      type: goto
+      stepId: getTrack
+      criteria:
+      - context: $response.body
+        condition: $.data.length > 0
+        type: jsonpath
+  - stepId: getTrack
+    description: >-
+      Retrieve the first matched track in full, including its albums
+      relationship so the parent album can be resolved.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getSearchTracks.outputs.firstTrackId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    - name: include
+      in: query
+      value: albums
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      trackId: $response.body#/data/id
+      trackTitle: $response.body#/data/attributes/title
+  - stepId: getTrackAlbums
+    description: >-
+      Follow the track albums relationship to obtain the identifier of the album
+      that contains the track.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}~1relationships~1albums/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getTrack.outputs.trackId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      albumId: $response.body#/data/0/id
+  - stepId: getAlbum
+    description: >-
+      Read the album that contains the matched track, including its artists and
+      items so the full album context is returned.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1albums~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getTrackAlbums.outputs.albumId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    - name: include
+      in: query
+      value: artists
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      albumId: $response.body#/data/id
+      albumTitle: $response.body#/data/attributes/title
+  outputs:
+    trackId: $steps.getTrack.outputs.trackId
+    trackTitle: $steps.getTrack.outputs.trackTitle
+    albumId: $steps.getAlbum.outputs.albumId
+    albumTitle: $steps.getAlbum.outputs.albumTitle

@@ -1,0 +1,102 @@
+arazzo: 1.0.1
+info:
+  title: TIDAL Create Playlist and Add Tracks
+  summary: Create a new playlist, then add a track to its items relationship.
+  description: >-
+    A playlist authoring flow over the TIDAL playlists JSON:API. It creates a
+    playlist from a supplied name, access type, and description, then adds a
+    track to the new playlist's items relationship using the JSON:API
+    relationship add operation. Each step inlines its request — the JSON:API
+    request body with the correct resource type, the inline Bearer Authorization
+    header, the documented success status, and the runtime expression that
+    carries the new playlist id from creation into the add step.
+  version: 1.0.0
+sourceDescriptions:
+- name: playlistsApi
+  url: ../openapi/tidal-playlists-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-playlist-and-add-tracks
+  summary: Create a playlist and add a track to it.
+  description: >-
+    Creates a playlist, captures its id, and adds a track resource to the
+    playlist's items relationship.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    - name
+    - trackId
+    properties:
+      accessToken:
+        type: string
+        description: OAuth 2.0 bearer access token with playlists.write scope.
+      name:
+        type: string
+        description: The display name for the new playlist.
+      description:
+        type: string
+        description: Optional description for the new playlist.
+      accessType:
+        type: string
+        description: Playlist access type, PUBLIC or UNLISTED.
+      trackId:
+        type: string
+        description: The catalog track id to add as the first playlist item.
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code (e.g. US).
+  steps:
+  - stepId: createPlaylist
+    description: >-
+      Create a new playlist with the supplied name, access type, and
+      description, returning the created playlist resource.
+    operationPath: '{$sourceDescriptions.playlistsApi.url}#/paths/~1playlists/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    requestBody:
+      contentType: application/vnd.api+json
+      payload:
+        data:
+          type: playlists
+          attributes:
+            name: $inputs.name
+            description: $inputs.description
+            accessType: $inputs.accessType
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      playlistId: $response.body#/data/id
+  - stepId: addTrack
+    description: >-
+      Add the supplied track to the new playlist's items relationship using the
+      JSON:API relationship add operation.
+    operationPath: '{$sourceDescriptions.playlistsApi.url}#/paths/~1playlists~1{id}~1relationships~1items/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.createPlaylist.outputs.playlistId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    requestBody:
+      contentType: application/vnd.api+json
+      payload:
+        data:
+        - id: $inputs.trackId
+          type: tracks
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      items: $response.body#/data
+  outputs:
+    playlistId: $steps.createPlaylist.outputs.playlistId
+    items: $steps.addTrack.outputs.items

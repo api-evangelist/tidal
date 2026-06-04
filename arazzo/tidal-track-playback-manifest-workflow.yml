@@ -1,0 +1,126 @@
+arazzo: 1.0.1
+info:
+  title: TIDAL Track Playback Manifest
+  summary: Resolve a track by ISRC, confirm it, then fetch its playback manifest.
+  description: >-
+    A playback preparation flow spanning the TIDAL catalog and playback
+    JSON:APIs. It looks up a track by its ISRC using the tracks collection
+    filter, confirms the matched track, and requests a streaming manifest for it
+    from the playback trackManifests resource using the required manifestType,
+    formats, uriScheme, usage, and adaptive parameters. Each step inlines its
+    parameters, the inline Bearer Authorization header, the documented success
+    status, and the runtime expressions that carry the track id into the
+    manifest request.
+  version: 1.0.0
+sourceDescriptions:
+- name: catalogApi
+  url: ../openapi/tidal-catalog-api-openapi.yml
+  type: openapi
+- name: playbackApi
+  url: ../openapi/tidal-playback-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: track-playback-manifest
+  summary: Find a track by ISRC and fetch its playback manifest.
+  description: >-
+    Filters the tracks collection by ISRC, confirms the first match, and
+    requests an HLS playback manifest for it.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    - isrc
+    properties:
+      accessToken:
+        type: string
+        description: OAuth 2.0 bearer access token with the playback scope.
+      isrc:
+        type: string
+        description: The International Standard Recording Code to resolve (e.g. QMJMT1701237).
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code (e.g. US).
+  steps:
+  - stepId: findByIsrc
+    description: >-
+      Look up tracks matching the supplied ISRC using the tracks collection
+      filter, returning candidate track resources.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: filter[isrc]
+      in: query
+      value: $inputs.isrc
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstTrackId: $response.body#/data/0/id
+    onSuccess:
+    - name: haveTrack
+      type: goto
+      stepId: getTrack
+      criteria:
+      - context: $response.body
+        condition: $.data.length > 0
+        type: jsonpath
+  - stepId: getTrack
+    description: >-
+      Read the matched track in full to confirm it before requesting a playback
+      manifest.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.findByIsrc.outputs.firstTrackId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      trackId: $response.body#/data/id
+      trackTitle: $response.body#/data/attributes/title
+  - stepId: getManifest
+    description: >-
+      Request an adaptive HLS playback manifest for the confirmed track,
+      supplying the required manifestType, formats, uriScheme, usage, and
+      adaptive parameters.
+    operationPath: '{$sourceDescriptions.playbackApi.url}#/paths/~1trackManifests~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getTrack.outputs.trackId
+    - name: manifestType
+      in: query
+      value: HLS
+    - name: formats
+      in: query
+      value: AACLC
+    - name: uriScheme
+      in: query
+      value: HTTPS
+    - name: usage
+      in: query
+      value: PLAYBACK
+    - name: adaptive
+      in: query
+      value: true
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      manifestId: $response.body#/data/id
+  outputs:
+    trackId: $steps.getTrack.outputs.trackId
+    trackTitle: $steps.getTrack.outputs.trackTitle
+    manifestId: $steps.getManifest.outputs.manifestId

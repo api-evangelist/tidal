@@ -1,0 +1,144 @@
+arazzo: 1.0.1
+info:
+  title: TIDAL Browse Collection Tracks
+  summary: Read the user's saved tracks, then enrich the first track with its catalog detail.
+  description: >-
+    A library browsing flow spanning the TIDAL user collections and catalog
+    JSON:APIs. It reads the authenticated user's userCollectionTracks resource,
+    follows its items relationship to enumerate saved track identifiers, then
+    reads the first saved track from the catalog and follows its albums
+    relationship to resolve the parent album. Each step inlines its parameters,
+    the inline Bearer Authorization header, the documented success status, and
+    the runtime expressions that chain identifiers between the two specs.
+  version: 1.0.0
+sourceDescriptions:
+- name: userCollectionsApi
+  url: ../openapi/tidal-user-collections-api-openapi.yml
+  type: openapi
+- name: catalogApi
+  url: ../openapi/tidal-catalog-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: browse-collection-tracks
+  summary: List the user's saved tracks and enrich the first one.
+  description: >-
+    Reads the user's collection of tracks, follows the items relationship to get
+    saved track ids, and reads the first track plus its album from the catalog.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    properties:
+      accessToken:
+        type: string
+        description: OAuth 2.0 bearer access token with collection.read scope.
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code (e.g. US).
+      locale:
+        type: string
+        description: BCP 47 locale (e.g. en-US).
+  steps:
+  - stepId: getCollectionTracks
+    description: >-
+      Read the authenticated user's userCollectionTracks resource, using `me` to
+      target the caller, including the items relationship.
+    operationPath: '{$sourceDescriptions.userCollectionsApi.url}#/paths/~1userCollectionTracks~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: me
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    - name: locale
+      in: query
+      value: $inputs.locale
+    - name: include
+      in: query
+      value: items
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      collectionId: $response.body#/data/id
+  - stepId: getCollectionItems
+    description: >-
+      Follow the items relationship to enumerate the saved track resource
+      identifiers in the user's collection.
+    operationPath: '{$sourceDescriptions.userCollectionsApi.url}#/paths/~1userCollectionTracks~1{id}~1relationships~1items/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: me
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    - name: locale
+      in: query
+      value: $inputs.locale
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      itemIds: $response.body#/data
+      firstTrackId: $response.body#/data/0/id
+    onSuccess:
+    - name: haveItems
+      type: goto
+      stepId: getTrack
+      criteria:
+      - context: $response.body
+        condition: $.data.length > 0
+        type: jsonpath
+  - stepId: getTrack
+    description: >-
+      Read the first saved track from the catalog, including its albums
+      relationship for enrichment.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getCollectionItems.outputs.firstTrackId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    - name: include
+      in: query
+      value: albums
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      trackId: $response.body#/data/id
+      trackTitle: $response.body#/data/attributes/title
+  - stepId: getTrackAlbums
+    description: >-
+      Follow the track albums relationship to resolve the album that contains
+      the first saved track.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}~1relationships~1albums/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getTrack.outputs.trackId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      albumId: $response.body#/data/0/id
+  outputs:
+    collectionItemIds: $steps.getCollectionItems.outputs.itemIds
+    trackId: $steps.getTrack.outputs.trackId
+    trackTitle: $steps.getTrack.outputs.trackTitle
+    albumId: $steps.getTrackAlbums.outputs.albumId

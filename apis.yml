@@ -266,6 +266,36 @@ kind: contract
 image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
 common:
+- type: ArazzoWorkflows
+  url: arazzo/
+  workflows:
+  - url: arazzo/tidal-album-tracklist-workflow.yml
+    name: TIDAL Album Tracklist Explorer
+    summary: Read an album, enumerate its items, then resolve the first track and its artist.
+  - url: arazzo/tidal-artist-discography-workflow.yml
+    name: TIDAL Artist Discography Explorer
+    summary: Resolve an artist, then walk their albums, top tracks, and similar artists.
+  - url: arazzo/tidal-browse-collection-tracks-workflow.yml
+    name: TIDAL Browse Collection Tracks
+    summary: Read the user's saved tracks, then enrich the first track with its catalog detail.
+  - url: arazzo/tidal-create-playlist-and-add-tracks-workflow.yml
+    name: TIDAL Create Playlist and Add Tracks
+    summary: Create a new playlist, then add a track to its items relationship.
+  - url: arazzo/tidal-discovery-mix-tracks-workflow.yml
+    name: TIDAL Discovery Mix Tracks
+    summary: Read the user's discovery mix, enumerate its items, then resolve the first track.
+  - url: arazzo/tidal-search-and-save-track-to-collection-workflow.yml
+    name: TIDAL Search and Save Track to Collection
+    summary: Search for a track, confirm it, then add it to the user's collection.
+  - url: arazzo/tidal-search-to-track-album-workflow.yml
+    name: TIDAL Search to Track and Album
+    summary: Run a catalog search, pick a matching track, then resolve that track and its album.
+  - url: arazzo/tidal-track-playback-manifest-workflow.yml
+    name: TIDAL Track Playback Manifest
+    summary: Resolve a track by ISRC, confirm it, then fetch its playback manifest.
+  - url: arazzo/tidal-video-explorer-workflow.yml
+    name: TIDAL Video Explorer
+    summary: Read a music video, resolve its artist, and surface similar videos.
 - type: Portal
   url: https://tidal.com
 - type: Documentation

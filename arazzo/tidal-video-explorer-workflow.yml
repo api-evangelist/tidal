@@ -1,0 +1,104 @@
+arazzo: 1.0.1
+info:
+  title: TIDAL Video Explorer
+  summary: Read a music video, resolve its artist, and surface similar videos.
+  description: >-
+    A video discovery flow over the TIDAL catalog JSON:API. It reads a single
+    video with its artists, follows the video artists relationship to resolve
+    the performing artist, and follows the similarVideos relationship to surface
+    related videos for further exploration. Each step inlines its path and query
+    parameters, the inline Bearer Authorization header, the documented success
+    status, and the JSON:API runtime expressions used to chain identifiers.
+  version: 1.0.0
+sourceDescriptions:
+- name: catalogApi
+  url: ../openapi/tidal-catalog-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: video-explorer
+  summary: Read a video, its artist, and similar videos.
+  description: >-
+    Reads a video, follows the artists relationship to resolve the performer,
+    and follows the similarVideos relationship for related content.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    - videoId
+    properties:
+      accessToken:
+        type: string
+        description: OAuth 2.0 bearer access token for the TIDAL API.
+      videoId:
+        type: string
+        description: The catalog video id (e.g. 75623239).
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code (e.g. US).
+  steps:
+  - stepId: getVideo
+    description: >-
+      Read the video resource, including its artists relationship for context.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1videos~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $inputs.videoId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    - name: include
+      in: query
+      value: artists
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      videoId: $response.body#/data/id
+      videoTitle: $response.body#/data/attributes/title
+  - stepId: getVideoArtists
+    description: >-
+      Follow the video artists relationship to resolve the performing artist
+      resource identifiers.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1videos~1{id}~1relationships~1artists/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getVideo.outputs.videoId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      artistIds: $response.body#/data
+      firstArtistId: $response.body#/data/0/id
+  - stepId: getSimilarVideos
+    description: >-
+      Follow the similarVideos relationship to surface related videos for
+      further exploration.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1videos~1{id}~1relationships~1similarVideos/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getVideo.outputs.videoId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      similarVideoIds: $response.body#/data
+  outputs:
+    videoId: $steps.getVideo.outputs.videoId
+    videoTitle: $steps.getVideo.outputs.videoTitle
+    artistIds: $steps.getVideoArtists.outputs.artistIds
+    similarVideoIds: $steps.getSimilarVideos.outputs.similarVideoIds

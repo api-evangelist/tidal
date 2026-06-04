@@ -1,0 +1,138 @@
+arazzo: 1.0.1
+info:
+  title: TIDAL Album Tracklist Explorer
+  summary: Read an album, enumerate its items, then resolve the first track and its artist.
+  description: >-
+    An album drill-down over the TIDAL catalog JSON:API. It reads a single album
+    with its artists, follows the album items relationship to enumerate the
+    tracks and videos on the record, reads the first item as a track, and
+    follows the track artists relationship to resolve the performing artist.
+    Each step inlines its path and query parameters, the inline Bearer
+    Authorization header, the documented success status, and the JSON:API
+    runtime expressions used to chain identifiers.
+  version: 1.0.0
+sourceDescriptions:
+- name: catalogApi
+  url: ../openapi/tidal-catalog-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: album-tracklist
+  summary: Read an album, its items, and the first track's artist.
+  description: >-
+    Reads an album, follows its items relationship, reads the first item as a
+    track, and follows the track artists relationship.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    - albumId
+    properties:
+      accessToken:
+        type: string
+        description: OAuth 2.0 bearer access token for the TIDAL API.
+      albumId:
+        type: string
+        description: The catalog album id (e.g. 251380836).
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code (e.g. US).
+  steps:
+  - stepId: getAlbum
+    description: >-
+      Read the album resource, including its artists and items relationships for
+      context.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1albums~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $inputs.albumId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    - name: include
+      in: query
+      value: artists
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      albumId: $response.body#/data/id
+      albumTitle: $response.body#/data/attributes/title
+  - stepId: getAlbumItems
+    description: >-
+      Follow the album items relationship to enumerate the track and video
+      resource identifiers on the album.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1albums~1{id}~1relationships~1items/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getAlbum.outputs.albumId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      itemIds: $response.body#/data
+      firstItemId: $response.body#/data/0/id
+    onSuccess:
+    - name: haveItems
+      type: goto
+      stepId: getFirstTrack
+      criteria:
+      - context: $response.body
+        condition: $.data.length > 0
+        type: jsonpath
+  - stepId: getFirstTrack
+    description: >-
+      Read the first album item as a track, including its artists relationship.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getAlbumItems.outputs.firstItemId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    - name: include
+      in: query
+      value: artists
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      trackId: $response.body#/data/id
+      trackTitle: $response.body#/data/attributes/title
+  - stepId: getTrackArtists
+    description: >-
+      Follow the track artists relationship to resolve the performing artist
+      identifiers for the first track.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}~1relationships~1artists/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getFirstTrack.outputs.trackId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      artistIds: $response.body#/data
+      firstArtistId: $response.body#/data/0/id
+  outputs:
+    albumId: $steps.getAlbum.outputs.albumId
+    albumTitle: $steps.getAlbum.outputs.albumTitle
+    itemIds: $steps.getAlbumItems.outputs.itemIds
+    trackId: $steps.getFirstTrack.outputs.trackId
+    artistIds: $steps.getTrackArtists.outputs.artistIds

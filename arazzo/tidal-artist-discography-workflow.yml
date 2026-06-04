@@ -1,0 +1,130 @@
+arazzo: 1.0.1
+info:
+  title: TIDAL Artist Discography Explorer
+  summary: Resolve an artist, then walk their albums, top tracks, and similar artists.
+  description: >-
+    An artist-centric exploration of the TIDAL catalog JSON:API. It reads a
+    single artist, follows the artist albums relationship to list their albums,
+    follows the artist tracks relationship to list their tracks, and follows the
+    similarArtists relationship to surface related artists for further discovery.
+    Every step inlines its path and query parameters, the inline Bearer
+    Authorization header, the documented success status, and the JSON:API
+    runtime expressions used to chain identifiers.
+  version: 1.0.0
+sourceDescriptions:
+- name: catalogApi
+  url: ../openapi/tidal-catalog-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: artist-discography
+  summary: Explore an artist's albums, tracks, and similar artists.
+  description: >-
+    Reads an artist, then follows the albums, tracks, and similarArtists
+    relationships to build a picture of the artist's catalog and neighbours.
+  inputs:
+    type: object
+    required:
+    - accessToken
+    - artistId
+    properties:
+      accessToken:
+        type: string
+        description: OAuth 2.0 bearer access token for the TIDAL API.
+      artistId:
+        type: string
+        description: The catalog artist id (e.g. 1566).
+      countryCode:
+        type: string
+        description: ISO 3166-1 alpha-2 country code (e.g. US).
+  steps:
+  - stepId: getArtist
+    description: >-
+      Retrieve the artist resource, including the albums relationship so the
+      discography can be enumerated.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1artists~1{id}/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $inputs.artistId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    - name: include
+      in: query
+      value: albums
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      artistId: $response.body#/data/id
+      artistName: $response.body#/data/attributes/name
+  - stepId: getArtistAlbums
+    description: >-
+      Follow the artist albums relationship to list the album resource
+      identifiers attributed to the artist.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1artists~1{id}~1relationships~1albums/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getArtist.outputs.artistId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      albumIds: $response.body#/data
+      firstAlbumId: $response.body#/data/0/id
+  - stepId: getArtistTracks
+    description: >-
+      Follow the artist tracks relationship to list the artist's tracks,
+      collapsing similar entries by fingerprint as required by the operation.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1artists~1{id}~1relationships~1tracks/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getArtist.outputs.artistId
+    - name: collapseBy
+      in: query
+      value: FINGERPRINT
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      trackIds: $response.body#/data
+      firstTrackId: $response.body#/data/0/id
+  - stepId: getSimilarArtists
+    description: >-
+      Follow the similarArtists relationship to surface related artists for
+      further exploration.
+    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1artists~1{id}~1relationships~1similarArtists/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: "Bearer $inputs.accessToken"
+    - name: id
+      in: path
+      value: $steps.getArtist.outputs.artistId
+    - name: countryCode
+      in: query
+      value: $inputs.countryCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      similarArtistIds: $response.body#/data
+  outputs:
+    artistId: $steps.getArtist.outputs.artistId
+    artistName: $steps.getArtist.outputs.artistName
+    albumIds: $steps.getArtistAlbums.outputs.albumIds
+    trackIds: $steps.getArtistTracks.outputs.trackIds
+    similarArtistIds: $steps.getSimilarArtists.outputs.similarArtistIds
