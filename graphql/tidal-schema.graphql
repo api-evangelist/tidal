@@ -1,0 +1,908 @@
+"""
+TIDAL GraphQL Schema
+Conceptual schema derived from the TIDAL REST API covering catalog, playlists,
+user library, search, recommendations, playback, social, commerce, and claims.
+"""
+
+# ─── Scalars ────────────────────────────────────────────────────────────────
+
+scalar DateTime
+scalar URL
+scalar ISRC
+scalar UPC
+scalar CountryCode
+scalar LanguageCode
+scalar CursorString
+scalar JSONObject
+
+# ─── Enums ──────────────────────────────────────────────────────────────────
+
+enum AudioQuality {
+  HI_RES_LOSSLESS
+  LOSSLESS
+  HIGH
+  LOW
+}
+
+enum AudioMode {
+  STEREO
+  DOLBY_ATMOS
+  SONY_360RA
+}
+
+enum MediaType {
+  TRACK
+  VIDEO
+  ALBUM
+  ARTIST
+  PLAYLIST
+}
+
+enum PlaylistType {
+  USER
+  EDITORIAL
+  MIX
+  ARTIST
+}
+
+enum ClaimStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REVOKED
+}
+
+enum ShareType {
+  TRACK
+  VIDEO
+  ALBUM
+  ARTIST
+  PLAYLIST
+}
+
+enum ReactionType {
+  LIKE
+  LOVE
+  WOW
+  FIRE
+  CRY
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+enum ManifestType {
+  HLS
+  DASH
+  BTS
+}
+
+enum ExplicitContent {
+  EXPLICIT
+  CLEAN
+  UNKNOWN
+}
+
+# ─── Pagination ──────────────────────────────────────────────────────────────
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: CursorString
+  endCursor: CursorString
+  totalItems: Int
+}
+
+# ─── Image / Artwork ─────────────────────────────────────────────────────────
+
+type ImageSize {
+  width: Int!
+  height: Int!
+  url: URL!
+}
+
+type Artwork {
+  id: ID!
+  vibrantColor: String
+  sizes: [ImageSize!]!
+}
+
+# ─── Country / Locale ────────────────────────────────────────────────────────
+
+type Country {
+  code: CountryCode!
+  name: String!
+}
+
+# ─── Credit / Contributor ────────────────────────────────────────────────────
+
+type CreditRole {
+  id: ID!
+  name: String!
+}
+
+type Credit {
+  id: ID!
+  artist: Artist!
+  roles: [CreditRole!]!
+}
+
+# ─── Genre ───────────────────────────────────────────────────────────────────
+
+type Genre {
+  id: ID!
+  name: String!
+  image: Artwork
+  tracks(first: Int, after: CursorString): TrackConnection
+  albums(first: Int, after: CursorString): AlbumConnection
+}
+
+type GenreConnection {
+  edges: [GenreEdge!]!
+  pageInfo: PageInfo!
+}
+
+type GenreEdge {
+  node: Genre!
+  cursor: CursorString!
+}
+
+# ─── Provider ────────────────────────────────────────────────────────────────
+
+type Provider {
+  id: ID!
+  name: String!
+  url: URL
+}
+
+# ─── Lyrics ──────────────────────────────────────────────────────────────────
+
+type LyricLine {
+  startMs: Int!
+  endMs: Int
+  text: String!
+  words: [LyricWord!]
+}
+
+type LyricWord {
+  startMs: Int!
+  endMs: Int
+  text: String!
+}
+
+type Lyrics {
+  trackId: ID!
+  source: String
+  lastUpdated: DateTime
+  lines: [LyricLine!]!
+  subtitles: String
+}
+
+# ─── Artist ──────────────────────────────────────────────────────────────────
+
+type ArtistBiography {
+  text: String!
+  source: String
+  lastUpdated: DateTime
+}
+
+type Artist {
+  id: ID!
+  name: String!
+  isrc: String
+  image: Artwork
+  popularity: Int
+  biography: ArtistBiography
+  url: URL
+  verified: Boolean!
+  genres: [Genre!]
+  similarArtists(first: Int, after: CursorString): ArtistConnection
+  albums(first: Int, after: CursorString): AlbumConnection
+  topTracks(first: Int, countryCode: CountryCode): TrackConnection
+  videos(first: Int, after: CursorString): VideoConnection
+  credits: [Credit!]
+}
+
+type ArtistConnection {
+  edges: [ArtistEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ArtistEdge {
+  node: Artist!
+  cursor: CursorString!
+}
+
+# ─── Album ───────────────────────────────────────────────────────────────────
+
+type Album {
+  id: ID!
+  title: String!
+  upc: UPC
+  releaseDate: DateTime
+  duration: Int
+  numberOfTracks: Int
+  numberOfVideos: Int
+  numberOfVolumes: Int
+  explicit: ExplicitContent!
+  audioQuality: AudioQuality
+  audioModes: [AudioMode!]
+  popularity: Int
+  image: Artwork
+  url: URL
+  artists: [Artist!]!
+  genres: [Genre!]
+  tracks(first: Int, after: CursorString): TrackConnection
+  videos(first: Int, after: CursorString): VideoConnection
+  credits: [Credit!]
+  providers: [Provider!]
+  similarAlbums(first: Int, after: CursorString): AlbumConnection
+}
+
+type AlbumConnection {
+  edges: [AlbumEdge!]!
+  pageInfo: PageInfo!
+}
+
+type AlbumEdge {
+  node: Album!
+  cursor: CursorString!
+}
+
+# ─── Track ───────────────────────────────────────────────────────────────────
+
+type Track {
+  id: ID!
+  title: String!
+  isrc: ISRC
+  duration: Int!
+  trackNumber: Int
+  volumeNumber: Int
+  explicit: ExplicitContent!
+  audioQuality: AudioQuality
+  audioModes: [AudioMode!]
+  popularity: Int
+  url: URL
+  album: Album
+  artists: [Artist!]!
+  genres: [Genre!]
+  lyrics: Lyrics
+  credits: [Credit!]
+  providers: [Provider!]
+  mix: Mix
+}
+
+type TrackConnection {
+  edges: [TrackEdge!]!
+  pageInfo: PageInfo!
+}
+
+type TrackEdge {
+  node: Track!
+  cursor: CursorString!
+  index: Int
+}
+
+# ─── Video ───────────────────────────────────────────────────────────────────
+
+type Video {
+  id: ID!
+  title: String!
+  isrc: ISRC
+  duration: Int!
+  explicit: ExplicitContent!
+  releaseDate: DateTime
+  url: URL
+  image: Artwork
+  quality: String
+  artists: [Artist!]!
+  album: Album
+  genres: [Genre!]
+  credits: [Credit!]
+  similarVideos(first: Int, after: CursorString): VideoConnection
+}
+
+type VideoConnection {
+  edges: [VideoEdge!]!
+  pageInfo: PageInfo!
+}
+
+type VideoEdge {
+  node: Video!
+  cursor: CursorString!
+}
+
+# ─── Playlist ────────────────────────────────────────────────────────────────
+
+type Playlist {
+  id: ID!
+  title: String!
+  description: String
+  type: PlaylistType!
+  numberOfTracks: Int!
+  duration: Int
+  created: DateTime
+  lastUpdated: DateTime
+  url: URL
+  image: Artwork
+  owner: User
+  tracks(first: Int, after: CursorString): TrackConnection
+  followers: Int
+  isPublic: Boolean!
+}
+
+type PlaylistConnection {
+  edges: [PlaylistEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PlaylistEdge {
+  node: Playlist!
+  cursor: CursorString!
+}
+
+# ─── Mix (Algorithmic) ───────────────────────────────────────────────────────
+
+type Mix {
+  id: ID!
+  title: String!
+  subTitle: String
+  mixType: String
+  image: Artwork
+  tracks(first: Int, after: CursorString): TrackConnection
+}
+
+type MixConnection {
+  edges: [MixEdge!]!
+  pageInfo: PageInfo!
+}
+
+type MixEdge {
+  node: Mix!
+  cursor: CursorString!
+}
+
+# ─── User ────────────────────────────────────────────────────────────────────
+
+type UserProfile {
+  id: ID!
+  username: String
+  firstName: String
+  lastName: String
+  email: String
+  image: Artwork
+  country: CountryCode!
+  created: DateTime
+  newsletter: Boolean
+}
+
+type User {
+  id: ID!
+  username: String
+  firstName: String
+  lastName: String
+  image: Artwork
+  country: CountryCode!
+}
+
+type Installation {
+  id: ID!
+  deviceType: String
+  clientName: String
+  lastSeen: DateTime
+}
+
+type TermsAcceptance {
+  termsId: ID!
+  version: String!
+  accepted: Boolean!
+  acceptedAt: DateTime
+}
+
+type DataExportRequest {
+  id: ID!
+  status: String!
+  requestedAt: DateTime!
+  downloadUrl: URL
+  expiresAt: DateTime
+}
+
+# ─── User Collection ──────────────────────────────────────────────────────────
+
+type CollectionFolder {
+  id: ID!
+  name: String!
+  created: DateTime
+  lastModified: DateTime
+  items(first: Int, after: CursorString): CollectionItemConnection
+}
+
+type CollectionItem {
+  id: ID!
+  addedAt: DateTime!
+  mediaType: MediaType!
+  track: Track
+  album: Album
+  artist: Artist
+  playlist: Playlist
+  video: Video
+}
+
+type CollectionItemConnection {
+  edges: [CollectionItemEdge!]!
+  pageInfo: PageInfo!
+}
+
+type CollectionItemEdge {
+  node: CollectionItem!
+  cursor: CursorString!
+}
+
+type UserCollection {
+  tracks(first: Int, after: CursorString): CollectionItemConnection
+  albums(first: Int, after: CursorString): CollectionItemConnection
+  artists(first: Int, after: CursorString): CollectionItemConnection
+  playlists(first: Int, after: CursorString): CollectionItemConnection
+  videos(first: Int, after: CursorString): CollectionItemConnection
+  folders: [CollectionFolder!]
+  saveForLater(first: Int, after: CursorString): CollectionItemConnection
+}
+
+# ─── Search ───────────────────────────────────────────────────────────────────
+
+type SearchResults {
+  tracks: TrackConnection
+  albums: AlbumConnection
+  artists: ArtistConnection
+  playlists: PlaylistConnection
+  videos: VideoConnection
+  topHit: SearchHit
+}
+
+type SearchHit {
+  mediaType: MediaType!
+  track: Track
+  album: Album
+  artist: Artist
+  playlist: Playlist
+  video: Video
+}
+
+type SearchSuggestion {
+  query: String!
+  highlights: [String!]
+}
+
+type SearchHistory {
+  id: ID!
+  query: String!
+  searchedAt: DateTime!
+}
+
+# ─── Recommendations ──────────────────────────────────────────────────────────
+
+type RecommendationModule {
+  id: ID!
+  title: String!
+  subTitle: String
+  moduleType: String
+  items: [RecommendationItem!]!
+}
+
+type RecommendationItem {
+  mediaType: MediaType!
+  track: Track
+  album: Album
+  artist: Artist
+  playlist: Playlist
+  mix: Mix
+}
+
+type DiscoveryPage {
+  id: ID!
+  title: String!
+  modules: [RecommendationModule!]!
+}
+
+# ─── Playback ─────────────────────────────────────────────────────────────────
+
+type PlaybackManifest {
+  id: ID!
+  mimeType: String!
+  manifestType: ManifestType!
+  manifest: String!
+  audioQuality: AudioQuality
+  audioMode: AudioMode
+  sampleRate: Int
+  bitDepth: Int
+  bitRate: Int
+}
+
+type VideoManifest {
+  id: ID!
+  mimeType: String!
+  manifestType: ManifestType!
+  manifest: String!
+  videoQuality: String
+}
+
+type PlaybackInfo {
+  track: Track
+  manifest: PlaybackManifest
+}
+
+type OfflineTask {
+  id: ID!
+  status: String!
+  track: Track
+  quality: AudioQuality
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UsageRule {
+  id: ID!
+  name: String!
+  value: String!
+}
+
+# ─── Social ───────────────────────────────────────────────────────────────────
+
+type Share {
+  id: ID!
+  shareType: ShareType!
+  url: URL!
+  deepLink: URL
+  track: Track
+  album: Album
+  artist: Artist
+  playlist: Playlist
+  video: Video
+  sharedAt: DateTime!
+  sharedBy: User
+}
+
+type ShareConnection {
+  edges: [ShareEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ShareEdge {
+  node: Share!
+  cursor: CursorString!
+}
+
+type Comment {
+  id: ID!
+  text: String!
+  author: User!
+  mediaType: MediaType!
+  mediaId: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  reactions: [Reaction!]
+  replyCount: Int!
+  replies(first: Int, after: CursorString): CommentConnection
+}
+
+type CommentConnection {
+  edges: [CommentEdge!]!
+  pageInfo: PageInfo!
+}
+
+type CommentEdge {
+  node: Comment!
+  cursor: CursorString!
+}
+
+type Reaction {
+  id: ID!
+  reactionType: ReactionType!
+  user: User!
+  createdAt: DateTime!
+}
+
+type Appreciation {
+  id: ID!
+  artist: Artist!
+  user: User!
+  createdAt: DateTime!
+}
+
+type DSPShareLink {
+  id: ID!
+  targetDSP: String!
+  mediaType: MediaType!
+  mediaId: ID!
+  deepLink: URL!
+}
+
+# ─── Commerce ─────────────────────────────────────────────────────────────────
+
+type PriceEntry {
+  currency: String!
+  amount: Float!
+  formatted: String!
+}
+
+type ArtistPriceConfig {
+  artistId: ID!
+  basePrice: PriceEntry!
+  customPrices: [PriceEntry!]
+  updatedAt: DateTime!
+}
+
+type Purchase {
+  id: ID!
+  status: String!
+  track: Track
+  album: Album
+  price: PriceEntry!
+  purchasedAt: DateTime!
+  buyer: User
+  seller: Artist
+}
+
+type PurchaseConnection {
+  edges: [PurchaseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PurchaseEdge {
+  node: Purchase!
+  cursor: CursorString!
+}
+
+type StripeConnection {
+  artistId: ID!
+  stripeAccountId: String!
+  connected: Boolean!
+  dashboardUrl: URL
+}
+
+type SquareConnection {
+  artistId: ID!
+  squareMerchantId: String!
+  connected: Boolean!
+}
+
+# ─── Claims ───────────────────────────────────────────────────────────────────
+
+type ArtistClaim {
+  id: ID!
+  artist: Artist!
+  claimant: User!
+  status: ClaimStatus!
+  submittedAt: DateTime!
+  reviewedAt: DateTime
+  notes: String
+}
+
+type ContentClaim {
+  id: ID!
+  mediaType: MediaType!
+  mediaId: ID!
+  claimant: User!
+  status: ClaimStatus!
+  submittedAt: DateTime!
+  reviewedAt: DateTime
+  notes: String
+}
+
+type ClaimConnection {
+  edges: [ClaimEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ClaimEdge {
+  node: ArtistClaim!
+  cursor: CursorString!
+}
+
+# ─── Input Types ──────────────────────────────────────────────────────────────
+
+input CreatePlaylistInput {
+  title: String!
+  description: String
+  isPublic: Boolean
+}
+
+input UpdatePlaylistInput {
+  title: String
+  description: String
+  isPublic: Boolean
+}
+
+input AddPlaylistItemInput {
+  playlistId: ID!
+  trackIds: [ID!]!
+  insertAfterIndex: Int
+}
+
+input RemovePlaylistItemInput {
+  playlistId: ID!
+  indices: [Int!]!
+}
+
+input AddToCollectionInput {
+  mediaType: MediaType!
+  mediaId: ID!
+  folderId: ID
+}
+
+input RemoveFromCollectionInput {
+  mediaType: MediaType!
+  mediaId: ID!
+}
+
+input CreateFolderInput {
+  name: String!
+}
+
+input SearchInput {
+  query: String!
+  countryCode: CountryCode
+  limit: Int
+  offset: Int
+  types: [MediaType!]
+}
+
+input PostCommentInput {
+  mediaType: MediaType!
+  mediaId: ID!
+  text: String!
+  parentCommentId: ID
+}
+
+input SubmitArtistClaimInput {
+  artistId: ID!
+  verificationDocumentUrl: URL
+  notes: String
+}
+
+input SubmitContentClaimInput {
+  mediaType: MediaType!
+  mediaId: ID!
+  ownershipDocumentUrl: URL
+  notes: String
+}
+
+# ─── Root Query ───────────────────────────────────────────────────────────────
+
+type Query {
+  # Catalog
+  track(id: ID!): Track
+  trackByISRC(isrc: ISRC!, countryCode: CountryCode): Track
+  tracks(ids: [ID!]!, countryCode: CountryCode): [Track]
+  album(id: ID!): Album
+  albumByUPC(upc: UPC!, countryCode: CountryCode): Album
+  albums(ids: [ID!]!, countryCode: CountryCode): [Album]
+  artist(id: ID!): Artist
+  artists(ids: [ID!]!, countryCode: CountryCode): [Artist]
+  video(id: ID!): Video
+  videos(ids: [ID!]!, countryCode: CountryCode): [Video]
+  genre(id: ID!): Genre
+  genres(countryCode: CountryCode, first: Int, after: CursorString): GenreConnection
+  lyrics(trackId: ID!, countryCode: CountryCode): Lyrics
+
+  # Playlists
+  playlist(id: ID!): Playlist
+  playlists(ids: [ID!]!): [Playlist]
+  featuredPlaylists(countryCode: CountryCode, first: Int, after: CursorString): PlaylistConnection
+
+  # Search
+  search(input: SearchInput!): SearchResults
+  searchSuggestions(query: String!, countryCode: CountryCode, limit: Int): [SearchSuggestion!]!
+  searchHistory(first: Int): [SearchHistory!]!
+
+  # Mixes
+  mix(id: ID!): Mix
+  recommendedMixes(first: Int, after: CursorString): MixConnection
+
+  # Recommendations
+  discoveryPage(countryCode: CountryCode): DiscoveryPage
+
+  # User (authenticated)
+  me: UserProfile
+  myInstallations: [Installation!]!
+  myTerms: [TermsAcceptance!]!
+  myCollection: UserCollection
+  myPlaylists(first: Int, after: CursorString): PlaylistConnection
+  myShares(first: Int, after: CursorString): ShareConnection
+
+  # Playback (authenticated)
+  trackPlaybackManifest(trackId: ID!, audioQuality: AudioQuality, countryCode: CountryCode): PlaybackManifest
+  videoPlaybackManifest(videoId: ID!, videoQuality: String, countryCode: CountryCode): VideoManifest
+  offlineTasks(first: Int, after: CursorString): [OfflineTask!]!
+  usageRules(trackId: ID!): [UsageRule!]!
+
+  # Social
+  share(id: ID!): Share
+  comments(mediaType: MediaType!, mediaId: ID!, first: Int, after: CursorString): CommentConnection
+  comment(id: ID!): Comment
+
+  # Commerce
+  artistPriceConfig(artistId: ID!): ArtistPriceConfig
+  myPurchases(first: Int, after: CursorString): PurchaseConnection
+  stripeConnection(artistId: ID!): StripeConnection
+  squareConnection(artistId: ID!): SquareConnection
+
+  # Claims
+  myArtistClaims(first: Int, after: CursorString): ClaimConnection
+  artistClaim(id: ID!): ArtistClaim
+  contentClaim(id: ID!): ContentClaim
+}
+
+# ─── Root Mutation ───────────────────────────────────────────────────────────
+
+type Mutation {
+  # Playlists
+  createPlaylist(input: CreatePlaylistInput!): Playlist!
+  updatePlaylist(id: ID!, input: UpdatePlaylistInput!): Playlist!
+  deletePlaylist(id: ID!): Boolean!
+  addPlaylistItems(input: AddPlaylistItemInput!): Playlist!
+  removePlaylistItems(input: RemovePlaylistItemInput!): Playlist!
+  reorderPlaylistItems(playlistId: ID!, fromIndex: Int!, toIndex: Int!): Playlist!
+  updatePlaylistCoverArt(playlistId: ID!, artworkId: ID!): Playlist!
+
+  # Collection
+  addToCollection(input: AddToCollectionInput!): CollectionItem!
+  removeFromCollection(input: RemoveFromCollectionInput!): Boolean!
+  createCollectionFolder(input: CreateFolderInput!): CollectionFolder!
+  renameCollectionFolder(id: ID!, name: String!): CollectionFolder!
+  deleteCollectionFolder(id: ID!): Boolean!
+  moveToFolder(itemIds: [ID!]!, folderId: ID!): [CollectionItem!]!
+  saveForLater(mediaType: MediaType!, mediaId: ID!): CollectionItem!
+
+  # Search
+  clearSearchHistory: Boolean!
+  deleteSearchHistoryEntry(id: ID!): Boolean!
+
+  # Social
+  postComment(input: PostCommentInput!): Comment!
+  deleteComment(id: ID!): Boolean!
+  addReaction(commentId: ID!, reactionType: ReactionType!): Reaction!
+  removeReaction(commentId: ID!, reactionType: ReactionType!): Boolean!
+  appreciateArtist(artistId: ID!): Appreciation!
+  removeArtistAppreciation(artistId: ID!): Boolean!
+  createShare(mediaType: ShareType!, mediaId: ID!): Share!
+  deleteShare(id: ID!): Boolean!
+  createDSPShareLink(mediaType: MediaType!, mediaId: ID!, targetDSP: String!): DSPShareLink!
+
+  # Commerce
+  purchaseTrack(trackId: ID!, currency: String!): Purchase!
+  purchaseAlbum(albumId: ID!, currency: String!): Purchase!
+  setArtistPriceConfig(artistId: ID!, input: JSONObject!): ArtistPriceConfig!
+  connectStripe(artistId: ID!, authorizationCode: String!): StripeConnection!
+  disconnectStripe(artistId: ID!): Boolean!
+  connectSquare(artistId: ID!, authorizationCode: String!): SquareConnection!
+  disconnectSquare(artistId: ID!): Boolean!
+
+  # Claims
+  submitArtistClaim(input: SubmitArtistClaimInput!): ArtistClaim!
+  submitContentClaim(input: SubmitContentClaimInput!): ContentClaim!
+  withdrawClaim(id: ID!, claimType: String!): Boolean!
+
+  # User
+  acceptTerms(termsId: ID!, version: String!): TermsAcceptance!
+  requestDataExport: DataExportRequest!
+  submitUserReport(reportedUserId: ID!, reason: String!, details: String): Boolean!
+  deregisterInstallation(installationId: ID!): Boolean!
+
+  # Playback
+  createOfflineTask(trackId: ID!, quality: AudioQuality!): OfflineTask!
+  deleteOfflineTask(id: ID!): Boolean!
+}
+
+# ─── Subscription ─────────────────────────────────────────────────────────────
+
+type Subscription {
+  playlistUpdated(playlistId: ID!): Playlist!
+  collectionUpdated: UserCollection!
+  newComment(mediaType: MediaType!, mediaId: ID!): Comment!
+  offlineTaskUpdated(taskId: ID!): OfflineTask!
+  purchaseCompleted: Purchase!
+  claimStatusChanged(claimId: ID!): ArtistClaim!
+}
