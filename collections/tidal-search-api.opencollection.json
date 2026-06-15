@@ -1,0 +1,607 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Search API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "searchHistoryEntries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple searchHistoryEntries.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchHistoryEntries",
+            "params": [
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "filter[id]",
+                "value": "",
+                "type": "query",
+                "description": "Opaque identifier for a search history entry (e.g. `MjcyNjg5OTAjamF5`)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple searchHistoryEntries by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Delete single searchHistoryEntrie.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://openapi.tidal.com/v2/searchHistoryEntries/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "MjcyNjg5OTAjamF5",
+                "type": "path",
+                "description": "Opaque identifier for a search history entry"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes existing searchHistoryEntrie."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "searchResults",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get single searchResult.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchResults/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello",
+                "type": "path",
+                "description": "Search query string used as the resource identifier"
+              },
+              {
+                "name": "explicitFilter",
+                "value": "INCLUDE",
+                "type": "query",
+                "description": "Explicit filter. Valid values: INCLUDE or EXCLUDE"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "albums",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single searchResult by id."
+        },
+        {
+          "info": {
+            "name": "Get albums relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchResults/:id/relationships/albums",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello",
+                "type": "path",
+                "description": "Search query string used as the resource identifier"
+              },
+              {
+                "name": "explicitFilter",
+                "value": "INCLUDE",
+                "type": "query",
+                "description": "Explicit filter. Valid values: INCLUDE or EXCLUDE"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "albums",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: albums"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves albums relationship."
+        },
+        {
+          "info": {
+            "name": "Get artists relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchResults/:id/relationships/artists",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello",
+                "type": "path",
+                "description": "Search query string used as the resource identifier"
+              },
+              {
+                "name": "explicitFilter",
+                "value": "INCLUDE",
+                "type": "query",
+                "description": "Explicit filter. Valid values: INCLUDE or EXCLUDE"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "artists",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: artists"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves artists relationship."
+        },
+        {
+          "info": {
+            "name": "Get playlists relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchResults/:id/relationships/playlists",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello",
+                "type": "path",
+                "description": "Search query string used as the resource identifier"
+              },
+              {
+                "name": "explicitFilter",
+                "value": "INCLUDE",
+                "type": "query",
+                "description": "Explicit filter. Valid values: INCLUDE or EXCLUDE"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "playlists",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: playlists"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves playlists relationship."
+        },
+        {
+          "info": {
+            "name": "Get topHits relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchResults/:id/relationships/topHits",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello",
+                "type": "path",
+                "description": "Search query string used as the resource identifier"
+              },
+              {
+                "name": "explicitFilter",
+                "value": "INCLUDE",
+                "type": "query",
+                "description": "Explicit filter. Valid values: INCLUDE or EXCLUDE"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "topHits",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: topHits"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves topHits relationship."
+        },
+        {
+          "info": {
+            "name": "Get tracks relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchResults/:id/relationships/tracks",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello",
+                "type": "path",
+                "description": "Search query string used as the resource identifier"
+              },
+              {
+                "name": "explicitFilter",
+                "value": "INCLUDE",
+                "type": "query",
+                "description": "Explicit filter. Valid values: INCLUDE or EXCLUDE"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "tracks",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: tracks"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves tracks relationship."
+        },
+        {
+          "info": {
+            "name": "Get videos relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchResults/:id/relationships/videos",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello",
+                "type": "path",
+                "description": "Search query string used as the resource identifier"
+              },
+              {
+                "name": "explicitFilter",
+                "value": "INCLUDE",
+                "type": "query",
+                "description": "Explicit filter. Valid values: INCLUDE or EXCLUDE"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "videos",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: videos"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves videos relationship."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "searchSuggestions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get single searchSuggestion.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchSuggestions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello",
+                "type": "path",
+                "description": "Search query string used as the resource identifier"
+              },
+              {
+                "name": "explicitFilter",
+                "value": "INCLUDE",
+                "type": "query",
+                "description": "Explicit filter. Valid values: INCLUDE or EXCLUDE"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "directHits",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: directHits, history"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single searchSuggestion by id."
+        },
+        {
+          "info": {
+            "name": "Get directHits relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchSuggestions/:id/relationships/directHits",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello",
+                "type": "path",
+                "description": "Search query string used as the resource identifier"
+              },
+              {
+                "name": "explicitFilter",
+                "value": "INCLUDE",
+                "type": "query",
+                "description": "Explicit filter. Valid values: INCLUDE or EXCLUDE"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "directHits",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: directHits"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves directHits relationship."
+        },
+        {
+          "info": {
+            "name": "Get history relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchSuggestions/:id/relationships/history",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello",
+                "type": "path",
+                "description": "Search query string used as the resource identifier"
+              },
+              {
+                "name": "explicitFilter",
+                "value": "INCLUDE",
+                "type": "query",
+                "description": "Explicit filter. Valid values: INCLUDE or EXCLUDE"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "history",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: history"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves history relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

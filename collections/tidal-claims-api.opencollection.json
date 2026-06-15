@@ -1,0 +1,598 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Claims API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "artistClaims",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple artistClaims.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artistClaims",
+            "params": [
+              {
+                "name": "include",
+                "value": "acceptedArtists",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists"
+              },
+              {
+                "name": "filter[owners.id]",
+                "value": "",
+                "type": "query",
+                "description": "User id. Use `me` for the authenticated user"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple artistClaims by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Create single artistClaim.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.tidal.com/v2/artistClaims",
+            "params": [
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new artistClaim."
+        },
+        {
+          "info": {
+            "name": "Get single artistClaim.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artistClaims/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                "type": "path",
+                "description": "Artist claim id"
+              },
+              {
+                "name": "include",
+                "value": "acceptedArtists",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single artistClaim by id."
+        },
+        {
+          "info": {
+            "name": "Update single artistClaim.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.tidal.com/v2/artistClaims/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                "type": "path",
+                "description": "Artist claim id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates existing artistClaim."
+        },
+        {
+          "info": {
+            "name": "Delete single artistClaim.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://openapi.tidal.com/v2/artistClaims/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                "type": "path",
+                "description": "Artist claim id"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes existing artistClaim."
+        },
+        {
+          "info": {
+            "name": "Get acceptedArtists relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artistClaims/:id/relationships/acceptedArtists",
+            "params": [
+              {
+                "name": "id",
+                "value": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                "type": "path",
+                "description": "Artist claim id"
+              },
+              {
+                "name": "include",
+                "value": "acceptedArtists",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: acceptedArtists"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves acceptedArtists relationship."
+        },
+        {
+          "info": {
+            "name": "Update acceptedArtists relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.tidal.com/v2/artistClaims/:id/relationships/acceptedArtists",
+            "params": [
+              {
+                "name": "id",
+                "value": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                "type": "path",
+                "description": "Artist claim id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates acceptedArtists relationship."
+        },
+        {
+          "info": {
+            "name": "Get owners relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artistClaims/:id/relationships/owners",
+            "params": [
+              {
+                "name": "id",
+                "value": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                "type": "path",
+                "description": "Artist claim id"
+              },
+              {
+                "name": "include",
+                "value": "owners",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: owners"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves owners relationship."
+        },
+        {
+          "info": {
+            "name": "Get recommendedArtists relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artistClaims/:id/relationships/recommendedArtists",
+            "params": [
+              {
+                "name": "id",
+                "value": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                "type": "path",
+                "description": "Artist claim id"
+              },
+              {
+                "name": "include",
+                "value": "recommendedArtists",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: recommendedArtists"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves recommendedArtists relationship."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "contentClaims",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple contentClaims.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/contentClaims",
+            "params": [
+              {
+                "name": "include",
+                "value": "claimedResource",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners"
+              },
+              {
+                "name": "filter[owners.id]",
+                "value": "",
+                "type": "query",
+                "description": "User id. Use `me` for the authenticated user"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple contentClaims by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Create single contentClaim.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.tidal.com/v2/contentClaims",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new contentClaim."
+        },
+        {
+          "info": {
+            "name": "Get single contentClaim.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/contentClaims/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                "type": "path",
+                "description": "Content claim id"
+              },
+              {
+                "name": "include",
+                "value": "claimedResource",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single contentClaim by id."
+        },
+        {
+          "info": {
+            "name": "Get claimedResource relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/contentClaims/:id/relationships/claimedResource",
+            "params": [
+              {
+                "name": "id",
+                "value": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                "type": "path",
+                "description": "Content claim id"
+              },
+              {
+                "name": "include",
+                "value": "claimedResource",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: claimedResource"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves claimedResource relationship."
+        },
+        {
+          "info": {
+            "name": "Get claimingArtist relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/contentClaims/:id/relationships/claimingArtist",
+            "params": [
+              {
+                "name": "id",
+                "value": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                "type": "path",
+                "description": "Content claim id"
+              },
+              {
+                "name": "include",
+                "value": "claimingArtist",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: claimingArtist"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves claimingArtist relationship."
+        },
+        {
+          "info": {
+            "name": "Get owners relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/contentClaims/:id/relationships/owners",
+            "params": [
+              {
+                "name": "id",
+                "value": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                "type": "path",
+                "description": "Content claim id"
+              },
+              {
+                "name": "include",
+                "value": "owners",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: owners"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves owners relationship."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "manualArtistClaims",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create single manualArtistClaim.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.tidal.com/v2/manualArtistClaims",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new manualArtistClaim."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

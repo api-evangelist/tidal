@@ -1,0 +1,1035 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Recommendations API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "dynamicModules",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple dynamicModules.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/dynamicModules",
+            "params": [
+              {
+                "name": "refreshId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "deviceType",
+                "value": "PHONE",
+                "type": "query",
+                "description": "The type of device making the request"
+              },
+              {
+                "name": "systemType",
+                "value": "IOS",
+                "type": "query",
+                "description": "The system type of the device making the request"
+              },
+              {
+                "name": "clientVersion",
+                "value": "2026.0.1",
+                "type": "query",
+                "description": "Client version number"
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              },
+              {
+                "name": "filter[id]",
+                "value": "",
+                "type": "query",
+                "description": "DynamicModules Id (e.g. `nejMcAhh5N8S3EQ4LaqysVdI0cZZ`)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple dynamicModules by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Get items relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/dynamicModules/:id/relationships/items",
+            "params": [
+              {
+                "name": "id",
+                "value": "nejMcAhh5N8S3EQ4LaqysVdI0cZZ",
+                "type": "path",
+                "description": "DynamicModules Id"
+              },
+              {
+                "name": "refreshId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "deviceType",
+                "value": "PHONE",
+                "type": "query",
+                "description": "The type of device making the request"
+              },
+              {
+                "name": "systemType",
+                "value": "IOS",
+                "type": "query",
+                "description": "The system type of the device making the request"
+              },
+              {
+                "name": "clientVersion",
+                "value": "2026.0.1",
+                "type": "query",
+                "description": "Client version number"
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves items relationship."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "dynamicPages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple dynamicPages.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/dynamicPages",
+            "params": [
+              {
+                "name": "refreshId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "deviceType",
+                "value": "PHONE",
+                "type": "query",
+                "description": "The type of device making the request"
+              },
+              {
+                "name": "systemType",
+                "value": "IOS",
+                "type": "query",
+                "description": "The system type of the device making the request"
+              },
+              {
+                "name": "clientVersion",
+                "value": "2026.0.1",
+                "type": "query",
+                "description": "Client version number"
+              },
+              {
+                "name": "include",
+                "value": "dynamicModules",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: dynamicModules, subject"
+              },
+              {
+                "name": "filter[pageType]",
+                "value": "",
+                "type": "query",
+                "description": "type of the page (e.g. `ARTIST`)"
+              },
+              {
+                "name": "filter[subject.id]",
+                "value": "",
+                "type": "query",
+                "description": "the subject id, eg. artistId (e.g. `67890`)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple dynamicPages by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Get dynamicModules relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/dynamicPages/:id/relationships/dynamicModules",
+            "params": [
+              {
+                "name": "id",
+                "value": "nejMcAhh5N8S3EQ4LaqysVdI0cZZ",
+                "type": "path",
+                "description": "DynamicPages Id"
+              },
+              {
+                "name": "refreshId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "deviceType",
+                "value": "PHONE",
+                "type": "query",
+                "description": "The type of device making the request"
+              },
+              {
+                "name": "systemType",
+                "value": "IOS",
+                "type": "query",
+                "description": "The system type of the device making the request"
+              },
+              {
+                "name": "clientVersion",
+                "value": "2026.0.1",
+                "type": "query",
+                "description": "Client version number"
+              },
+              {
+                "name": "include",
+                "value": "dynamicModules",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: dynamicModules"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves dynamicModules relationship."
+        },
+        {
+          "info": {
+            "name": "Get subject relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/dynamicPages/:id/relationships/subject",
+            "params": [
+              {
+                "name": "id",
+                "value": "nejMcAhh5N8S3EQ4LaqysVdI0cZZ",
+                "type": "path",
+                "description": "DynamicPages Id"
+              },
+              {
+                "name": "include",
+                "value": "subject",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: subject"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves subject relationship."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "userDailyMixes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get single userDailyMixe.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userDailyMixes/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User daily mixes id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single userDailyMixe by id."
+        },
+        {
+          "info": {
+            "name": "Get items relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userDailyMixes/:id/relationships/items",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User daily mixes id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves items relationship."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "userDiscoveryMixes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get single userDiscoveryMixe.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userDiscoveryMixes/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User discovery mixes id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single userDiscoveryMixe by id."
+        },
+        {
+          "info": {
+            "name": "Get items relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userDiscoveryMixes/:id/relationships/items",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User discovery mixes id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves items relationship."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "userNewReleaseMixes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get single userNewReleaseMixe.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userNewReleaseMixes/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User new release mixes id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single userNewReleaseMixe by id."
+        },
+        {
+          "info": {
+            "name": "Get items relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userNewReleaseMixes/:id/relationships/items",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User new release mixes id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves items relationship."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "userOfflineMixes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get single userOfflineMixe.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userOfflineMixes/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User offline mixes id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single userOfflineMixe by id."
+        },
+        {
+          "info": {
+            "name": "Get items relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userOfflineMixes/:id/relationships/items",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User offline mixes id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves items relationship."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "userRecommendations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get single userRecommendation.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userRecommendations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User recommendations id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "discoveryMixes",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: discoveryMixes, myMixes, newArrivalMixes, offlineMixes"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deprecated. Use the dedicated mix resources instead: userDiscoveryMixes, userDailyMixes, userNewReleaseMixes, or userOfflineMixes."
+        },
+        {
+          "info": {
+            "name": "Get discoveryMixes relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userRecommendations/:id/relationships/discoveryMixes",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User recommendations id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "discoveryMixes",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: discoveryMixes"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deprecated. Use the userDiscoveryMixes resource and its items relationship instead."
+        },
+        {
+          "info": {
+            "name": "Get myMixes relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userRecommendations/:id/relationships/myMixes",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User recommendations id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "myMixes",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: myMixes"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deprecated. Use the userDailyMixes resource and its items relationship instead."
+        },
+        {
+          "info": {
+            "name": "Get newArrivalMixes relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userRecommendations/:id/relationships/newArrivalMixes",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User recommendations id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "newArrivalMixes",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: newArrivalMixes"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deprecated. Use the userNewReleaseMixes resource and its items relationship instead."
+        },
+        {
+          "info": {
+            "name": "Get offlineMixes relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userRecommendations/:id/relationships/offlineMixes",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User recommendations id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "offlineMixes",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: offlineMixes"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deprecated. Use the userOfflineMixes resource and its items relationship instead."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
