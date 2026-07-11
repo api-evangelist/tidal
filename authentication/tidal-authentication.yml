@@ -1,0 +1,50 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/tidal-catalog-api-openapi.yml, openapi/tidal-claims-api-openapi.yml, openapi/tidal-commerce-api-openapi.yml,
+  openapi/tidal-playback-api-openapi.yml, openapi/tidal-playlists-api-openapi.yml, openapi/tidal-recommendations-api-openapi.yml,
+  openapi/tidal-search-api-openapi.yml, openapi/tidal-social-api-openapi.yml, openapi/tidal-user-collections-api-openapi.yml,
+  openapi/tidal-users-api-openapi.yml
+summary:
+  types:
+  - oauth2
+  oauth2_flows:
+  - authorizationCode
+  - clientCredentials
+schemes:
+- name: Authorization_Code_PKCE
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://login.tidal.com/authorize
+    tokenUrl: https://auth.tidal.com/v1/oauth2/token
+    scopes: 12
+  description: See https://developer.tidal.com/documentation/authorization/authorization-authorization-code
+  sources:
+  - openapi/tidal-catalog-api-openapi.yml
+  - openapi/tidal-claims-api-openapi.yml
+  - openapi/tidal-commerce-api-openapi.yml
+  - openapi/tidal-playback-api-openapi.yml
+  - openapi/tidal-playlists-api-openapi.yml
+  - openapi/tidal-recommendations-api-openapi.yml
+  - openapi/tidal-search-api-openapi.yml
+  - openapi/tidal-social-api-openapi.yml
+  - openapi/tidal-user-collections-api-openapi.yml
+  - openapi/tidal-users-api-openapi.yml
+- name: Client_Credentials
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://auth.tidal.com/v1/oauth2/token
+    scopes: 0
+  description: See https://developer.tidal.com/documentation/authorization/authorization-client-credentials
+  sources:
+  - openapi/tidal-catalog-api-openapi.yml
+  - openapi/tidal-claims-api-openapi.yml
+  - openapi/tidal-commerce-api-openapi.yml
+  - openapi/tidal-playback-api-openapi.yml
+  - openapi/tidal-playlists-api-openapi.yml
+  - openapi/tidal-recommendations-api-openapi.yml
+  - openapi/tidal-search-api-openapi.yml
+  - openapi/tidal-social-api-openapi.yml
+  - openapi/tidal-user-collections-api-openapi.yml
+  - openapi/tidal-users-api-openapi.yml
