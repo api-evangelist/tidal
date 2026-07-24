@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms searchResults API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,25 +8,53 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: searchResults
 paths:
-  /users/{id}:
+  /searchResults/{id}:
     get:
-      description: Retrieves single user by id.
+      description: Retrieves single searchResult by id.
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
-        example: me
+      - description: Search query string used as the resource identifier
+        example: hello
         in: path
         name: id
         required: true
         schema:
           type: string
+      - description: 'Explicit filter. Valid values: INCLUDE or EXCLUDE'
+        example: INCLUDE
+        in: query
+        name: explicitFilter
+        required: false
+        schema:
+          type: string
+          enum:
+          - INCLUDE
+          - EXCLUDE
+          default: INCLUDE
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos'
+        example: albums
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: albums
       responses:
         '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/SearchResults_Single_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -45,12 +73,481 @@ paths:
         '503':
           $ref: '#/components/responses/Default503Response'
       security:
+      - Client_Credentials: []
       - Authorization_Code_PKCE:
         - r_usr
-        - user.read
-      summary: Get single user.
+        - search.read
+      summary: Get single searchResult.
       tags:
-      - users
+      - searchResults
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /searchResults/{id}/relationships/albums:
+    get:
+      description: Retrieves albums relationship.
+      parameters:
+      - description: Search query string used as the resource identifier
+        example: hello
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Explicit filter. Valid values: INCLUDE or EXCLUDE'
+        example: INCLUDE
+        in: query
+        name: explicitFilter
+        required: false
+        schema:
+          type: string
+          enum:
+          - INCLUDE
+          - EXCLUDE
+          default: INCLUDE
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: albums'
+        example: albums
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: albums
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SearchResults_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE:
+        - r_usr
+        - search.read
+      summary: Get albums relationship ("to-many").
+      tags:
+      - searchResults
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /searchResults/{id}/relationships/artists:
+    get:
+      description: Retrieves artists relationship.
+      parameters:
+      - description: Search query string used as the resource identifier
+        example: hello
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Explicit filter. Valid values: INCLUDE or EXCLUDE'
+        example: INCLUDE
+        in: query
+        name: explicitFilter
+        required: false
+        schema:
+          type: string
+          enum:
+          - INCLUDE
+          - EXCLUDE
+          default: INCLUDE
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: artists'
+        example: artists
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: artists
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SearchResults_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE:
+        - r_usr
+        - search.read
+      summary: Get artists relationship ("to-many").
+      tags:
+      - searchResults
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /searchResults/{id}/relationships/playlists:
+    get:
+      description: Retrieves playlists relationship.
+      parameters:
+      - description: Search query string used as the resource identifier
+        example: hello
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Explicit filter. Valid values: INCLUDE or EXCLUDE'
+        example: INCLUDE
+        in: query
+        name: explicitFilter
+        required: false
+        schema:
+          type: string
+          enum:
+          - INCLUDE
+          - EXCLUDE
+          default: INCLUDE
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: playlists'
+        example: playlists
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: playlists
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SearchResults_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE:
+        - r_usr
+        - search.read
+      summary: Get playlists relationship ("to-many").
+      tags:
+      - searchResults
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /searchResults/{id}/relationships/topHits:
+    get:
+      description: Retrieves topHits relationship.
+      parameters:
+      - description: Search query string used as the resource identifier
+        example: hello
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Explicit filter. Valid values: INCLUDE or EXCLUDE'
+        example: INCLUDE
+        in: query
+        name: explicitFilter
+        required: false
+        schema:
+          type: string
+          enum:
+          - INCLUDE
+          - EXCLUDE
+          default: INCLUDE
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: topHits'
+        example: topHits
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: topHits
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SearchResults_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE:
+        - r_usr
+        - search.read
+      summary: Get topHits relationship ("to-many").
+      tags:
+      - searchResults
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /searchResults/{id}/relationships/tracks:
+    get:
+      description: Retrieves tracks relationship.
+      parameters:
+      - description: Search query string used as the resource identifier
+        example: hello
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Explicit filter. Valid values: INCLUDE or EXCLUDE'
+        example: INCLUDE
+        in: query
+        name: explicitFilter
+        required: false
+        schema:
+          type: string
+          enum:
+          - INCLUDE
+          - EXCLUDE
+          default: INCLUDE
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: tracks'
+        example: tracks
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: tracks
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SearchResults_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE:
+        - r_usr
+        - search.read
+      summary: Get tracks relationship ("to-many").
+      tags:
+      - searchResults
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /searchResults/{id}/relationships/videos:
+    get:
+      description: Retrieves videos relationship.
+      parameters:
+      - description: Search query string used as the resource identifier
+        example: hello
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Explicit filter. Valid values: INCLUDE or EXCLUDE'
+        example: INCLUDE
+        in: query
+        name: explicitFilter
+        required: false
+        schema:
+          type: string
+          enum:
+          - INCLUDE
+          - EXCLUDE
+          default: INCLUDE
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: videos'
+        example: videos
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: videos
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SearchResults_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE:
+        - r_usr
+        - search.read
+      summary: Get videos relationship ("to-many").
+      tags:
+      - searchResults
       x-path-item-properties:
         required-access-tier: THIRD_PARTY
 components:
@@ -980,6 +1477,25 @@ components:
           minLength: 1
           type: string
       description: Copyright information
+    SearchResults_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    UserCollectionFolders_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/UserCollectionFolders_Items_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Appreciations_Resource_Object:
       required:
       - id
@@ -997,12 +1513,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    UserCollectionFolders_Relationships:
-      properties:
-        items:
-          $ref: '#/components/schemas/UserCollectionFolders_Items_Multi_Relationship_Data_Document'
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Playlists_Items_Multi_Relationship_Data_Document:
       required:
       - links
@@ -1030,6 +1540,18 @@ components:
           type: string
         legacySource:
           $ref: '#/components/schemas/LegacySource'
+    SearchResults_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/SearchResults_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     TrackSourceFiles_Resource_Object:
       required:
       - id
@@ -1089,18 +1611,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Users_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     UsageRules_Resource_Object:
       required:
       - id
@@ -1118,12 +1628,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Shares_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        sharedResources:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Terms_Resource_Object:
       required:
       - id
@@ -1141,6 +1645,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserCollectionAlbums_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1149,6 +1659,32 @@ components:
         addedAt:
           type: string
           format: date-time
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
     Tracks_Resource_Object:
       required:
       - id
@@ -1184,32 +1720,22 @@ components:
           type: string
           description: Resource type
           example: tracks
-    File_Status:
+    UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
-      - moderationFileStatus
-      - technicalFileStatus
+      - id
+      - type
       type: object
       properties:
-        moderationFileStatus:
+        id:
           type: string
-          description: Moderation status for file
-          enum:
-          - NOT_MODERATED
-          - SCANNING
-          - FLAGGED
-          - TAKEN_DOWN
-          - OK
-          - ERROR
-        technicalFileStatus:
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
+        type:
           type: string
-          description: Technical status for file
-          enum:
-          - UPLOAD_REQUESTED
-          - PROCESSING
-          - OK
-          - ERROR
-          - DELETED
-      description: File status
+          description: Resource type
+          example: tracks
     Users_Resource_Object:
       required:
       - id
@@ -1224,22 +1750,6 @@ components:
           example: '12345'
         type:
           minLength: 1
-          type: string
-          description: Resource type
-          example: tracks
-    UserCollectionSaveForLaters_Items_Resource_Identifier:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
-        type:
           type: string
           description: Resource type
           example: tracks

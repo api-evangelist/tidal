@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms squareConnections API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,13 +8,66 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: squareConnections
 paths:
-  /users/{id}:
-    get:
-      description: Retrieves single user by id.
+  /squareConnections:
+    post:
+      description: Creates a new squareConnection.
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
+      - deprecated: true
+        description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/SquareConnectionsCreateOperation_Payload'
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SquareConnections_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Create single squareConnection.
+      tags:
+      - squareConnections
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /squareConnections/{id}:
+    get:
+      description: Retrieves single squareConnection by id.
+      parameters:
+      - description: Square connection id. Use `me` for the authenticated user's resource
         example: me
         in: path
         name: id
@@ -26,7 +79,7 @@ paths:
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/SquareConnections_Single_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -47,12 +100,11 @@ paths:
       security:
       - Authorization_Code_PKCE:
         - r_usr
-        - user.read
-      summary: Get single user.
+      summary: Get single squareConnection.
       tags:
-      - users
+      - squareConnections
       x-path-item-properties:
-        required-access-tier: THIRD_PARTY
+        required-access-tier: INTERNAL
 components:
   schemas:
     TrackFiles_Attributes:
@@ -828,6 +880,15 @@ components:
           type: string
           description: Resource type
           example: tracks
+    SquareConnectionsCreateOperation_Payload_Data:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - squareConnections
     Albums_Relationships:
       properties:
         albumStatistics:
@@ -1089,18 +1150,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Users_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     UsageRules_Resource_Object:
       required:
       - id
@@ -1118,12 +1167,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Shares_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        sharedResources:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Terms_Resource_Object:
       required:
       - id
@@ -1141,6 +1184,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserCollectionAlbums_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1149,6 +1198,32 @@ components:
         addedAt:
           type: string
           format: date-time
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
     Tracks_Resource_Object:
       required:
       - id
@@ -1184,32 +1259,22 @@ components:
           type: string
           description: Resource type
           example: tracks
-    File_Status:
+    UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
-      - moderationFileStatus
-      - technicalFileStatus
+      - id
+      - type
       type: object
       properties:
-        moderationFileStatus:
+        id:
           type: string
-          description: Moderation status for file
-          enum:
-          - NOT_MODERATED
-          - SCANNING
-          - FLAGGED
-          - TAKEN_DOWN
-          - OK
-          - ERROR
-        technicalFileStatus:
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
+        type:
           type: string
-          description: Technical status for file
-          enum:
-          - UPLOAD_REQUESTED
-          - PROCESSING
-          - OK
-          - ERROR
-          - DELETED
-      description: File status
+          description: Resource type
+          example: tracks
     Users_Resource_Object:
       required:
       - id
@@ -1224,22 +1289,6 @@ components:
           example: '12345'
         type:
           minLength: 1
-          type: string
-          description: Resource type
-          example: tracks
-    UserCollectionSaveForLaters_Items_Resource_Identifier:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
-        type:
           type: string
           description: Resource type
           example: tracks
@@ -2327,6 +2376,22 @@ components:
         meta:
           $ref: '#/components/schemas/File_Upload_Link_Meta'
       description: Upload link
+    SquareConnectionsCreateOperation_Payload_Meta:
+      required:
+      - platform
+      type: object
+      properties:
+        platform:
+          type: string
+          description: Client platform initiating Square onboarding.
+          enum:
+          - WEB
+          - ANDROID
+          - IOS
+        redirectUrl:
+          type: string
+          description: Optional post-finalize redirect URL. Otherwise uses platform default.
+          example: tidal://square-auth/return?flow=onboarding&ref=abc
     SearchHistoryEntries_Resource_Object:
       required:
       - id
@@ -2717,57 +2782,6 @@ components:
           type: string
         legacySource:
           $ref: '#/components/schemas/LegacySource'
-    UserCollections_Tracks_Resource_Identifier:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollections_Tracks_Resource_Identifier_Meta'
-        type:
-          type: string
-          description: Resource type
-          example: tracks
-    UserCollectionArtists_Items_Resource_Identifier_Meta:
-      required:
-      - addedAt
-      type: object
-      properties:
-        addedAt:
-          type: string
-          format: date-time
-    Highlight:
-      type: object
-      properties:
-        length:
-          type: integer
-          format: int32
-        start:
-          type: integer
-          format: int32
-    Shares_Attributes:
-      required:
-      - code
-      - createdAt
-      type: object
-      properties:
-        code:
-          type: string
-          description: Share code
-        createdAt:
-          type: string
-          description: Datetime of share creation (ISO 8601)
-          format: date-time
-        externalLinks:
-          type: array
-          description: Links external to TIDAL API
-          items:
-            $ref: '#/components/schemas/External_Link'
     SquareConnections_Attributes:
       required:
       - status
@@ -2797,6 +2811,57 @@ components:
           - ACCEPTED
           - REJECTED
           - SUSPENDED
+    UserCollectionArtists_Items_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
+    Highlight:
+      type: object
+      properties:
+        length:
+          type: integer
+          format: int32
+        start:
+          type: integer
+          format: int32
+    UserCollections_Tracks_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollections_Tracks_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
+    Shares_Attributes:
+      required:
+      - code
+      - createdAt
+      type: object
+      properties:
+        code:
+          type: string
+          description: Share code
+        createdAt:
+          type: string
+          description: Datetime of share creation (ISO 8601)
+          format: date-time
+        externalLinks:
+          type: array
+          description: Links external to TIDAL API
+          items:
+            $ref: '#/components/schemas/External_Link'
     PlayQueues_Past_Resource_Identifier_Meta:
       required:
       - batchId
@@ -2850,6 +2915,18 @@ components:
           $ref: '#/components/schemas/Artwork_SourceFile'
         visualMetadata:
           $ref: '#/components/schemas/Artwork_VisualMetadata'
+    SquareConnections_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/SquareConnections_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     UserCollectionPlaylists_Attributes:
       type: object
     Reactions_Attributes:
@@ -3288,6 +3365,16 @@ components:
           - IN_PROGRESS
           - RESOLVED
           - REJECTED
+    SquareConnectionsCreateOperation_Payload:
+      required:
+      - data
+      - meta
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/SquareConnectionsCreateOperation_Payload_Data'
+        meta:
+          $ref: '#/components/schemas/SquareConnectionsCreateOperation_Payload_Meta'
     UserCollectionSaveForLaters_Resource_Object:
       required:
       - id

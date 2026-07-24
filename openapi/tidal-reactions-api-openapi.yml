@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms reactions API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,25 +8,84 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: reactions
 paths:
-  /users/{id}:
+  /reactions:
     get:
-      description: Retrieves single user by id.
+      description: Retrieves multiple reactions by available filters, or without if applicable.
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
-        example: me
-        in: path
-        name: id
-        required: true
+      - in: query
+        name: stats
+        required: false
         schema:
           type: string
+          enum:
+          - ALL
+          - COUNTS_BY_TYPE
+          - TOTAL_COUNT
+      - in: query
+        name: statsOnly
+        required: false
+        schema:
+          type: boolean
+      - in: query
+        name: viewerContext
+        required: false
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners'
+        example: ownerProfiles
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: ownerProfiles
+      - description: Filter by emoji (e.g. `👍`)
+        in: query
+        name: filter[emoji]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Filter by subject resource ID (e.g. `12345`)
+        in: query
+        name: filter[subject.id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Filter by subject resource type (e.g. `albums`)
+        in: query
+        name: filter[subject.type]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - albums
+            - tracks
+            - artists
+            - videos
+            - playlists
+            - comments
       responses:
         '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/Reactions_Multi_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -45,14 +104,211 @@ paths:
         '503':
           $ref: '#/components/responses/Default503Response'
       security:
-      - Authorization_Code_PKCE:
-        - r_usr
-        - user.read
-      summary: Get single user.
+      - Authorization_Code_PKCE: []
+      summary: Get multiple reactions.
       tags:
-      - users
+      - reactions
       x-path-item-properties:
-        required-access-tier: THIRD_PARTY
+        required-access-tier: INTERNAL
+    post:
+      description: Creates a new reaction.
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/ReactionsCreateOperation_Payload'
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Reactions_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Create single reaction.
+      tags:
+      - reactions
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /reactions/{id}:
+    delete:
+      description: Deletes existing reaction.
+      parameters:
+      - description: Reaction Id
+        example: nejMcAhh5N8S3EQ4LaqysVdI0cZZ
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Delete single reaction.
+      tags:
+      - reactions
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /reactions/{id}/relationships/ownerProfiles:
+    get:
+      description: Retrieves ownerProfiles relationship.
+      parameters:
+      - description: Reaction Id
+        example: nejMcAhh5N8S3EQ4LaqysVdI0cZZ
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: ownerProfiles'
+        example: ownerProfiles
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: ownerProfiles
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Reactions_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE: []
+      summary: Get ownerProfiles relationship ("to-many").
+      tags:
+      - reactions
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /reactions/{id}/relationships/owners:
+    get:
+      description: Retrieves owners relationship.
+      parameters:
+      - description: Reaction Id
+        example: nejMcAhh5N8S3EQ4LaqysVdI0cZZ
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Reactions_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE: []
+      summary: Get owners relationship ("to-many").
+      tags:
+      - reactions
+      x-path-item-properties:
+        required-access-tier: INTERNAL
 components:
   schemas:
     TrackFiles_Attributes:
@@ -828,6 +1084,22 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Reactions_Multi_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reactions_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Reactions_Multi_Resource_Data_Document_Meta'
     Albums_Relationships:
       properties:
         albumStatistics:
@@ -862,6 +1134,21 @@ components:
           $ref: '#/components/schemas/UserCollectionTracks_Items_Multi_Relationship_Data_Document'
         owners:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    ReactionStats:
+      type: object
+      properties:
+        countsByType:
+          type: object
+          additionalProperties:
+            type: integer
+            description: Count of reactions by type
+            format: int32
+          description: Count of reactions by type
+        totalCount:
+          type: integer
+          description: Total number of reactions
+          format: int32
+      description: Reaction statistics
     Artists_TrackProviders_Multi_Relationship_Data_Document:
       required:
       - links
@@ -1089,18 +1376,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Users_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     UsageRules_Resource_Object:
       required:
       - id
@@ -1118,12 +1393,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Shares_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        sharedResources:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Terms_Resource_Object:
       required:
       - id
@@ -1141,6 +1410,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserCollectionAlbums_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1149,6 +1424,32 @@ components:
         addedAt:
           type: string
           format: date-time
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
     Tracks_Resource_Object:
       required:
       - id
@@ -1184,32 +1485,22 @@ components:
           type: string
           description: Resource type
           example: tracks
-    File_Status:
+    UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
-      - moderationFileStatus
-      - technicalFileStatus
+      - id
+      - type
       type: object
       properties:
-        moderationFileStatus:
+        id:
           type: string
-          description: Moderation status for file
-          enum:
-          - NOT_MODERATED
-          - SCANNING
-          - FLAGGED
-          - TAKEN_DOWN
-          - OK
-          - ERROR
-        technicalFileStatus:
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
+        type:
           type: string
-          description: Technical status for file
-          enum:
-          - UPLOAD_REQUESTED
-          - PROCESSING
-          - OK
-          - ERROR
-          - DELETED
-      description: File status
+          description: Resource type
+          example: tracks
     Users_Resource_Object:
       required:
       - id
@@ -1224,22 +1515,6 @@ components:
           example: '12345'
         type:
           minLength: 1
-          type: string
-          description: Resource type
-          example: tracks
-    UserCollectionSaveForLaters_Items_Resource_Identifier:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
-        type:
           type: string
           description: Resource type
           example: tracks
@@ -1838,6 +2113,21 @@ components:
           type: boolean
           description: Is the artist spotlighted?
           example: true
+    ReactionsCreateOperation_Payload_Data:
+      required:
+      - attributes
+      - relationships
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/ReactionsCreateOperation_Payload_Data_Attributes'
+        relationships:
+          $ref: '#/components/schemas/ReactionsCreateOperation_Payload_Data_Relationships'
+        type:
+          type: string
+          enum:
+          - reactions
     ArtistClaims_Resource_Object:
       required:
       - id
@@ -1874,6 +2164,20 @@ components:
           type: string
           description: Resource type
           example: tracks
+    CurrentUserReaction:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: When the reaction was created
+          format: date-time
+        emoji:
+          type: string
+          description: User's emoji reaction
+        id:
+          type: string
+          description: Reaction ID
+      description: Current user's reaction
     Tracks_Relationships:
       properties:
         albums:
@@ -2223,6 +2527,13 @@ components:
           description: URL to download the content from
         meta:
           $ref: '#/components/schemas/Download_Link_Meta'
+    ReactionsCreateOperation_Payload_Data_Attributes:
+      required:
+      - emoji
+      type: object
+      properties:
+        emoji:
+          type: string
     UserCollectionPlaylists_Resource_Object:
       required:
       - id
@@ -2512,6 +2823,24 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Reactions_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Reactions_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    UserCollectionSaveForLaters_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Albums_SuggestedCoverArts_Resource_Identifier_Meta:
       required:
       - backgroundColor
@@ -2524,12 +2853,11 @@ components:
         foregroundColor:
           type: string
           description: Foreground color for the suggested artwork
-    UserCollectionSaveForLaters_Relationships:
+    StripeDashboardLinks_Attributes:
+      type: object
       properties:
-        items:
-          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document'
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        dashboardLink:
+          $ref: '#/components/schemas/Link_Object'
     Installations_Resource_Object:
       required:
       - id
@@ -2549,11 +2877,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    StripeDashboardLinks_Attributes:
-      type: object
-      properties:
-        dashboardLink:
-          $ref: '#/components/schemas/Link_Object'
     UserCollectionSaveForLaters_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -3116,6 +3439,13 @@ components:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
         history:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    ReactionsCreateOperation_Payload_Data_Relationships_Subject:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ReactionsCreateOperation_Payload_Data_Relationships_Subject_Data'
     Single_Relationship_Data_Document:
       required:
       - links
@@ -3540,6 +3870,13 @@ components:
         addedAt:
           type: string
           format: date-time
+    ReactionsCreateOperation_Payload_Data_Relationships:
+      required:
+      - subject
+      type: object
+      properties:
+        subject:
+          $ref: '#/components/schemas/ReactionsCreateOperation_Payload_Data_Relationships_Subject'
     Shares_Resource_Object:
       required:
       - id
@@ -3783,6 +4120,27 @@ components:
           type: integer
           description: Unique listeners
           format: int32
+    Reactions_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    Reactions_Multi_Resource_Data_Document_Meta:
+      type: object
+      properties:
+        currentUserReaction:
+          $ref: '#/components/schemas/CurrentUserReaction'
+        stats:
+          $ref: '#/components/schemas/ReactionStats'
+      description: Reaction response metadata with stats and current user reaction
     Providers_Attributes:
       required:
       - name
@@ -4391,6 +4749,13 @@ components:
           type: array
           items:
             type: string
+    ReactionsCreateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ReactionsCreateOperation_Payload_Data'
     Purchases_Relationships:
       properties:
         owners:
@@ -4403,6 +4768,23 @@ components:
           $ref: '#/components/schemas/UserCollectionAlbums_Items_Multi_Relationship_Data_Document'
         owners:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    ReactionsCreateOperation_Payload_Data_Relationships_Subject_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - albums
+          - tracks
+          - artists
+          - videos
+          - playlists
+          - comments
     UserCollectionVideos_Relationships:
       properties:
         items:

@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms userCollections API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,25 +8,51 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: userCollections
 paths:
-  /users/{id}:
+  /userCollections/{id}:
     get:
-      description: Retrieves single user by id.
+      deprecated: true
+      description: 'Deprecated. Use the dedicated collection resources instead: userCollectionAlbums, userCollectionArtists, userCollectionTracks, userCollectionVideos, or userCollectionPlaylists.'
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
-        example: me
+      - description: User collection id
+        example: '123456'
         in: path
         name: id
         required: true
         schema:
           type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+        example: en-US
+        in: query
+        name: locale
+        required: false
+        schema:
+          type: string
+          default: en-US
+      - description: 'Allows the client to customize which related resources should be returned. Available options: albums, artists, owners, playlists, tracks, videos'
+        example: albums
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: albums
       responses:
         '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/UserCollections_Single_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -46,11 +72,1067 @@ paths:
           $ref: '#/components/responses/Default503Response'
       security:
       - Authorization_Code_PKCE:
+        - collection.read
         - r_usr
-        - user.read
-      summary: Get single user.
+      summary: Get single userCollection.
       tags:
-      - users
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /userCollections/{id}/relationships/albums:
+    delete:
+      deprecated: true
+      description: Deprecated. Use the userCollectionAlbums resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UserCollectionsAlbumsRelationshipRemoveOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.write
+        - w_usr
+      summary: Delete from albums relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    get:
+      deprecated: true
+      description: Deprecated. Use the userCollectionAlbums resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+        in: query
+        name: sort
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: albums.addedAt
+            enum:
+            - albums.addedAt
+            - -albums.addedAt
+            - albums.artists.name
+            - -albums.artists.name
+            - albums.releaseDate
+            - -albums.releaseDate
+            - albums.title
+            - -albums.title
+            default: -albums.addedAt
+            x-enum-varnames:
+            - AlbumsAddedAtAsc
+            - AlbumsAddedAtDesc
+            - AlbumsArtistsNameAsc
+            - AlbumsArtistsNameDesc
+            - AlbumsReleaseDateAsc
+            - AlbumsReleaseDateDesc
+            - AlbumsTitleAsc
+            - AlbumsTitleDesc
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+        example: en-US
+        in: query
+        name: locale
+        required: false
+        schema:
+          type: string
+          default: en-US
+      - description: 'Allows the client to customize which related resources should be returned. Available options: albums'
+        example: albums
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: albums
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/UserCollections_Albums_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.read
+        - r_usr
+      summary: Get albums relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    post:
+      deprecated: true
+      description: Deprecated. Use the userCollectionAlbums resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UserCollectionsAlbumsRelationshipAddOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/UserCollectionsAddMultiDataRelationship409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.write
+        - w_usr
+      summary: Add to albums relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /userCollections/{id}/relationships/artists:
+    delete:
+      deprecated: true
+      description: Deprecated. Use the userCollectionArtists resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UserCollectionsArtistsRelationshipRemoveOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.write
+        - w_usr
+      summary: Delete from artists relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    get:
+      deprecated: true
+      description: Deprecated. Use the userCollectionArtists resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+        in: query
+        name: sort
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: artists.addedAt
+            enum:
+            - artists.addedAt
+            - -artists.addedAt
+            - artists.name
+            - -artists.name
+            default: -artists.addedAt
+            x-enum-varnames:
+            - ArtistsAddedAtAsc
+            - ArtistsAddedAtDesc
+            - ArtistsNameAsc
+            - ArtistsNameDesc
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+        example: en-US
+        in: query
+        name: locale
+        required: false
+        schema:
+          type: string
+          default: en-US
+      - description: 'Allows the client to customize which related resources should be returned. Available options: artists'
+        example: artists
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: artists
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/UserCollections_Artists_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.read
+        - r_usr
+      summary: Get artists relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    post:
+      deprecated: true
+      description: Deprecated. Use the userCollectionArtists resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UserCollectionsArtistsRelationshipAddOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/UserCollectionsAddMultiDataRelationship409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.write
+        - w_usr
+      summary: Add to artists relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /userCollections/{id}/relationships/owners:
+    get:
+      description: Retrieves owners relationship.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/UserCollections_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.read
+        - r_usr
+      summary: Get owners relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /userCollections/{id}/relationships/playlists:
+    delete:
+      deprecated: true
+      description: Deprecated. Use the userCollectionPlaylists resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UserCollectionsPlaylistsRelationshipRemoveOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.write
+        - w_usr
+      summary: Delete from playlists relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    get:
+      deprecated: true
+      description: Deprecated. Use the userCollectionPlaylists resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: collectionView
+        required: false
+        schema:
+          type: string
+          enum:
+          - FOLDERS
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+        in: query
+        name: sort
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: playlists.addedAt
+            enum:
+            - playlists.addedAt
+            - -playlists.addedAt
+            - playlists.lastUpdatedAt
+            - -playlists.lastUpdatedAt
+            - playlists.name
+            - -playlists.name
+            default: -playlists.addedAt
+            x-enum-varnames:
+            - PlaylistsAddedAtAsc
+            - PlaylistsAddedAtDesc
+            - PlaylistsLastUpdatedAtAsc
+            - PlaylistsLastUpdatedAtDesc
+            - PlaylistsNameAsc
+            - PlaylistsNameDesc
+      - description: 'Allows the client to customize which related resources should be returned. Available options: playlists'
+        example: playlists
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: playlists
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/UserCollections_Playlists_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.read
+        - r_usr
+      summary: Get playlists relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    post:
+      deprecated: true
+      description: Deprecated. Use the userCollectionPlaylists resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UserCollectionsPlaylistsRelationshipAddOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/UserCollectionsAddMultiDataRelationship409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.write
+        - w_usr
+      summary: Add to playlists relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /userCollections/{id}/relationships/tracks:
+    delete:
+      deprecated: true
+      description: Deprecated. Use the userCollectionTracks resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UserCollectionsTracksRelationshipRemoveOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.write
+        - w_usr
+      summary: Delete from tracks relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    get:
+      deprecated: true
+      description: Deprecated. Use the userCollectionTracks resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+        in: query
+        name: sort
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: tracks.addedAt
+            enum:
+            - tracks.addedAt
+            - -tracks.addedAt
+            - tracks.albums.title
+            - -tracks.albums.title
+            - tracks.artists.name
+            - -tracks.artists.name
+            - tracks.duration
+            - -tracks.duration
+            - tracks.title
+            - -tracks.title
+            default: -tracks.addedAt
+            x-enum-varnames:
+            - TracksAddedAtAsc
+            - TracksAddedAtDesc
+            - TracksAlbumsTitleAsc
+            - TracksAlbumsTitleDesc
+            - TracksArtistsNameAsc
+            - TracksArtistsNameDesc
+            - TracksDurationAsc
+            - TracksDurationDesc
+            - TracksTitleAsc
+            - TracksTitleDesc
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+        example: en-US
+        in: query
+        name: locale
+        required: false
+        schema:
+          type: string
+          default: en-US
+      - description: 'Allows the client to customize which related resources should be returned. Available options: tracks'
+        example: tracks
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: tracks
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/UserCollections_Tracks_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.read
+        - r_usr
+      summary: Get tracks relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    post:
+      deprecated: true
+      description: Deprecated. Use the userCollectionTracks resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UserCollectionsTracksRelationshipAddOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/UserCollectionsAddMultiDataRelationship409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.write
+        - w_usr
+      summary: Add to tracks relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /userCollections/{id}/relationships/videos:
+    delete:
+      deprecated: true
+      description: Deprecated. Use the userCollectionVideos resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UserCollectionsVideosRelationshipRemoveOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.write
+        - w_usr
+      summary: Delete from videos relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    get:
+      deprecated: true
+      description: Deprecated. Use the userCollectionVideos resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+        in: query
+        name: sort
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: videos.addedAt
+            enum:
+            - videos.addedAt
+            - -videos.addedAt
+            - videos.artists.name
+            - -videos.artists.name
+            - videos.duration
+            - -videos.duration
+            - videos.title
+            - -videos.title
+            default: -videos.addedAt
+            x-enum-varnames:
+            - VideosAddedAtAsc
+            - VideosAddedAtDesc
+            - VideosArtistsNameAsc
+            - VideosArtistsNameDesc
+            - VideosDurationAsc
+            - VideosDurationDesc
+            - VideosTitleAsc
+            - VideosTitleDesc
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+        example: en-US
+        in: query
+        name: locale
+        required: false
+        schema:
+          type: string
+          default: en-US
+      - description: 'Allows the client to customize which related resources should be returned. Available options: videos'
+        example: videos
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: videos
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/UserCollections_Videos_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.read
+        - r_usr
+      summary: Get videos relationship ("to-many").
+      tags:
+      - userCollections
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    post:
+      deprecated: true
+      description: Deprecated. Use the userCollectionVideos resource and its items relationship instead.
+      parameters:
+      - description: User collection id
+        example: '123456'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UserCollectionsVideosRelationshipAddOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/UserCollectionsAddMultiDataRelationship409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - collection.write
+        - w_usr
+      summary: Add to videos relationship ("to-many").
+      tags:
+      - userCollections
       x-path-item-properties:
         required-access-tier: THIRD_PARTY
 components:
@@ -286,6 +1368,17 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollectionsVideosRelationshipRemoveOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionsVideosRelationshipRemoveOperation_Payload_Data'
     SearchSuggestions_Suggestions:
       required:
       - query
@@ -346,14 +1439,18 @@ components:
         addedAt:
           type: string
           format: date-time
-    UserCollections_Artists_Resource_Identifier_Meta:
+    UserCollectionsArtistsRelationshipRemoveOperation_Payload_Data:
       required:
-      - addedAt
+      - id
+      - type
       type: object
       properties:
-        addedAt:
+        id:
           type: string
-          format: date-time
+        type:
+          type: string
+          enum:
+          - artists
     UserDailyMixes_Resource_Object:
       required:
       - id
@@ -373,6 +1470,14 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollections_Artists_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
     UserCollectionVideos_Attributes:
       required:
       - numberOfItems
@@ -552,6 +1657,17 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollectionsVideosRelationshipAddOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionsVideosRelationshipAddOperation_Payload_Data'
     Artwork_File:
       required:
       - href
@@ -828,6 +1944,32 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollectionsTracksRelationshipAddOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        meta:
+          $ref: '#/components/schemas/UserCollectionsTracksRelationshipAddOperation_Payload_Data_Meta'
+        type:
+          type: string
+          enum:
+          - tracks
+    UserCollectionsAlbumsRelationshipRemoveOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - albums
     Albums_Relationships:
       properties:
         albumStatistics:
@@ -862,6 +2004,12 @@ components:
           $ref: '#/components/schemas/UserCollectionTracks_Items_Multi_Relationship_Data_Document'
         owners:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    UserCollectionsAlbumsRelationshipAddOperation_Payload_Data_Meta:
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
     Artists_TrackProviders_Multi_Relationship_Data_Document:
       required:
       - links
@@ -1030,6 +2178,17 @@ components:
           type: string
         legacySource:
           $ref: '#/components/schemas/LegacySource'
+    UserCollectionsAlbumsRelationshipAddOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionsAlbumsRelationshipAddOperation_Payload_Data'
     TrackSourceFiles_Resource_Object:
       required:
       - id
@@ -1089,18 +2248,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Users_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     UsageRules_Resource_Object:
       required:
       - id
@@ -1118,12 +2265,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Shares_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        sharedResources:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Terms_Resource_Object:
       required:
       - id
@@ -1141,6 +2282,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserCollectionAlbums_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1149,6 +2296,32 @@ components:
         addedAt:
           type: string
           format: date-time
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
     Tracks_Resource_Object:
       required:
       - id
@@ -1184,32 +2357,22 @@ components:
           type: string
           description: Resource type
           example: tracks
-    File_Status:
+    UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
-      - moderationFileStatus
-      - technicalFileStatus
+      - id
+      - type
       type: object
       properties:
-        moderationFileStatus:
+        id:
           type: string
-          description: Moderation status for file
-          enum:
-          - NOT_MODERATED
-          - SCANNING
-          - FLAGGED
-          - TAKEN_DOWN
-          - OK
-          - ERROR
-        technicalFileStatus:
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
+        type:
           type: string
-          description: Technical status for file
-          enum:
-          - UPLOAD_REQUESTED
-          - PROCESSING
-          - OK
-          - ERROR
-          - DELETED
-      description: File status
+          description: Resource type
+          example: tracks
     Users_Resource_Object:
       required:
       - id
@@ -1224,22 +2387,6 @@ components:
           example: '12345'
         type:
           minLength: 1
-          type: string
-          description: Resource type
-          example: tracks
-    UserCollectionSaveForLaters_Items_Resource_Identifier:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
-        type:
           type: string
           description: Resource type
           example: tracks
@@ -1272,6 +2419,17 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollectionsArtistsRelationshipAddOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionsArtistsRelationshipAddOperation_Payload_Data'
     ManualArtistClaims_Resource_Object:
       required:
       - id
@@ -1615,6 +2773,17 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollectionsArtistsRelationshipRemoveOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionsArtistsRelationshipRemoveOperation_Payload_Data'
     SearchHistoryEntries_Attributes:
       required:
       - highlights
@@ -1760,6 +2929,19 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollections_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     UserCollectionSaveForLaters_Attributes:
       required:
       - numberOfItems
@@ -1874,6 +3056,18 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollectionsPlaylistsRelationshipAddOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - playlists
     Tracks_Relationships:
       properties:
         albums:
@@ -2223,6 +3417,18 @@ components:
           description: URL to download the content from
         meta:
           $ref: '#/components/schemas/Download_Link_Meta'
+    UserCollectionsVideosRelationshipAddOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - videos
     UserCollectionPlaylists_Resource_Object:
       required:
       - id
@@ -2244,6 +3450,12 @@ components:
           example: tracks
     UserRecommendations_Attributes:
       type: object
+    UserCollectionsArtistsRelationshipAddOperation_Payload_Data_Meta:
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
     Artists_Following_Resource_Identifier:
       required:
       - id
@@ -2612,6 +3824,20 @@ components:
         addedAt:
           type: string
           format: date-time
+    UserCollectionsArtistsRelationshipAddOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        meta:
+          $ref: '#/components/schemas/UserCollectionsArtistsRelationshipAddOperation_Payload_Data_Meta'
+        type:
+          type: string
+          enum:
+          - artists
     Users_Attributes:
       required:
       - country
@@ -2688,6 +3914,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollectionsTracksRelationshipAddOperation_Payload_Data_Meta:
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
     File_Upload_Link_Meta:
       required:
       - method
@@ -2768,6 +4000,18 @@ components:
           description: Links external to TIDAL API
           items:
             $ref: '#/components/schemas/External_Link'
+    UserCollectionsPlaylistsRelationshipRemoveOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - playlists
     SquareConnections_Attributes:
       required:
       - status
@@ -3138,6 +4382,18 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    UserCollections_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserCollections_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     ArtistClaims_Attributes:
       required:
       - artistId
@@ -3442,6 +4698,18 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollectionsVideosRelationshipRemoveOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - videos
     UserDiscoveryMixes_Attributes:
       type: object
     UserCollections_Albums_Multi_Relationship_Data_Document:
@@ -3532,6 +4800,18 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollectionsTracksRelationshipRemoveOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - tracks
     UserCollections_Albums_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -3783,6 +5063,20 @@ components:
           type: integer
           description: Unique listeners
           format: int32
+    UserCollectionsAlbumsRelationshipAddOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        meta:
+          $ref: '#/components/schemas/UserCollectionsAlbumsRelationshipAddOperation_Payload_Data_Meta'
+        type:
+          type: string
+          enum:
+          - albums
     Providers_Attributes:
       required:
       - name
@@ -3833,6 +5127,17 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    UserCollectionsTracksRelationshipRemoveOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionsTracksRelationshipRemoveOperation_Payload_Data'
     UserRecommendations_Relationships:
       properties:
         discoveryMixes:
@@ -4309,6 +5614,17 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollectionsPlaylistsRelationshipAddOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionsPlaylistsRelationshipAddOperation_Payload_Data'
     UserCollections_Tracks_Multi_Relationship_Data_Document:
       required:
       - links
@@ -4474,10 +5790,43 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollectionsAlbumsRelationshipRemoveOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionsAlbumsRelationshipRemoveOperation_Payload_Data'
     AlbumStatistics_Relationships:
       properties:
         owners:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    UserCollectionsPlaylistsRelationshipRemoveOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionsPlaylistsRelationshipRemoveOperation_Payload_Data'
+    UserCollectionsTracksRelationshipAddOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionsTracksRelationshipAddOperation_Payload_Data'
     UserDataExportRequests_Resource_Object:
       required:
       - id

@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms appreciations API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,25 +8,24 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: appreciations
 paths:
-  /users/{id}:
-    get:
-      description: Retrieves single user by id.
+  /appreciations:
+    post:
+      description: Creates a new appreciation.
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
-        example: me
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/AppreciationsCreateOperation_Payload'
       responses:
-        '200':
+        '201':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/Appreciations_Single_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -36,8 +35,12 @@ paths:
           $ref: '#/components/responses/Default405Response'
         '406':
           $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
         '415':
           $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
         '429':
           $ref: '#/components/responses/Default429Response'
         '500':
@@ -46,13 +49,12 @@ paths:
           $ref: '#/components/responses/Default503Response'
       security:
       - Authorization_Code_PKCE:
-        - r_usr
-        - user.read
-      summary: Get single user.
+        - w_usr
+      summary: Create single appreciation.
       tags:
-      - users
+      - appreciations
       x-path-item-properties:
-        required-access-tier: THIRD_PARTY
+        required-access-tier: INTERNAL
 components:
   schemas:
     TrackFiles_Attributes:
@@ -338,6 +340,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TrackInfo'
+    AppreciationsCreateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AppreciationsCreateOperation_Payload_Data'
+        meta:
+          $ref: '#/components/schemas/AppreciationsCreateOperation_Payload_Meta'
     UserCollections_Tracks_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1089,18 +1100,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Users_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     UsageRules_Resource_Object:
       required:
       - id
@@ -1118,12 +1117,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Shares_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        sharedResources:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Terms_Resource_Object:
       required:
       - id
@@ -1141,6 +1134,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserCollectionAlbums_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1149,6 +1148,32 @@ components:
         addedAt:
           type: string
           format: date-time
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
     Tracks_Resource_Object:
       required:
       - id
@@ -1184,32 +1209,22 @@ components:
           type: string
           description: Resource type
           example: tracks
-    File_Status:
+    UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
-      - moderationFileStatus
-      - technicalFileStatus
+      - id
+      - type
       type: object
       properties:
-        moderationFileStatus:
+        id:
           type: string
-          description: Moderation status for file
-          enum:
-          - NOT_MODERATED
-          - SCANNING
-          - FLAGGED
-          - TAKEN_DOWN
-          - OK
-          - ERROR
-        technicalFileStatus:
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
+        type:
           type: string
-          description: Technical status for file
-          enum:
-          - UPLOAD_REQUESTED
-          - PROCESSING
-          - OK
-          - ERROR
-          - DELETED
-      description: File status
+          description: Resource type
+          example: tracks
     Users_Resource_Object:
       required:
       - id
@@ -1224,22 +1239,6 @@ components:
           example: '12345'
         type:
           minLength: 1
-          type: string
-          description: Resource type
-          example: tracks
-    UserCollectionSaveForLaters_Items_Resource_Identifier:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
-        type:
           type: string
           description: Resource type
           example: tracks
@@ -2327,6 +2326,18 @@ components:
         meta:
           $ref: '#/components/schemas/File_Upload_Link_Meta'
       description: Upload link
+    AppreciationsCreateOperation_Payload_Data:
+      required:
+      - relationships
+      - type
+      type: object
+      properties:
+        relationships:
+          $ref: '#/components/schemas/AppreciationsCreateOperation_Payload_Data_Relationships'
+        type:
+          type: string
+          enum:
+          - appreciations
     SearchHistoryEntries_Resource_Object:
       required:
       - id
@@ -2594,6 +2605,18 @@ components:
           - STRIPE_AUTHORIZATION_REDIRECT
           - SQUARE_AUTHORIZATION_REDIRECT
       description: metadata about an external link
+    Appreciations_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Appreciations_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Download_Link_Meta:
       type: object
       properties:
@@ -2717,6 +2740,18 @@ components:
           type: string
         legacySource:
           $ref: '#/components/schemas/LegacySource'
+    AppreciationsCreateOperation_Payload_Data_Relationships_AppreciatedItem_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - artists
     UserCollections_Tracks_Resource_Identifier:
       required:
       - id
@@ -3116,6 +3151,17 @@ components:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
         history:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    AppreciationsCreateOperation_Payload_Data_Relationships_AppreciatedItem:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 1
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/AppreciationsCreateOperation_Payload_Data_Relationships_AppreciatedItem_Data'
     Single_Relationship_Data_Document:
       required:
       - links
@@ -3618,6 +3664,13 @@ components:
       properties:
         items:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    AppreciationsCreateOperation_Payload_Data_Relationships:
+      required:
+      - appreciatedItems
+      type: object
+      properties:
+        appreciatedItems:
+          $ref: '#/components/schemas/AppreciationsCreateOperation_Payload_Data_Relationships_AppreciatedItem'
     AlbumStatistics_Attributes:
       required:
       - totalPlaybacks
@@ -4151,6 +4204,11 @@ components:
           type: string
           description: Title of the module
           example: Shortcuts
+    AppreciationsCreateOperation_Payload_Meta:
+      type: object
+      properties:
+        dryRun:
+          type: boolean
     UserDataExportRequests_Attributes:
       required:
       - flowType

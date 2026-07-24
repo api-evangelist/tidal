@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms tracks API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,25 +8,1194 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: tracks
 paths:
-  /users/{id}:
+  /tracks:
     get:
-      description: Retrieves single user by id.
+      description: Retrieves multiple tracks by available filters, or without if applicable.
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
-        example: me
-        in: path
-        name: id
-        required: true
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
         schema:
           type: string
+      - description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+        in: query
+        name: sort
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: createdAt
+            enum:
+            - createdAt
+            - -createdAt
+            - title
+            - -title
+            default: -createdAt
+            x-enum-varnames:
+            - CreatedAtAsc
+            - CreatedAtDesc
+            - TitleAsc
+            - TitleDesc
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules'
+        example: albums
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: albums
+      - description: List of track IDs (e.g. `75413016`)
+        in: query
+        name: filter[id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: List of ISRCs. When a single ISRC is provided, pagination is supported and multiple tracks may be returned. When multiple ISRCs are provided, one track per ISRC is returned without pagination. (e.g. `QMJMT1701237`)
+        in: query
+        name: filter[isrc]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: User id. Use `me` for the authenticated user
+        in: query
+        name: filter[owners.id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
       responses:
         '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/Tracks_Multi_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get multiple tracks.
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    post:
+      description: Creates a new track.
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/TracksCreateOperation_Payload'
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Create single track.
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /tracks/{id}:
+    delete:
+      description: Deletes existing track.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Delete single track.
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    get:
+      description: Retrieves single track by id.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules'
+        example: albums
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: albums
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get single track.
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    patch:
+      description: Updates existing track.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/TracksUpdateOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Update single track.
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /tracks/{id}/relationships/albums:
+    get:
+      description: Retrieves albums relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: albums'
+        example: albums
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: albums
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get albums relationship ("to-many").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    patch:
+      description: Updates albums relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/TracksAlbumsRelationshipUpdateOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Update albums relationship ("to-many").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /tracks/{id}/relationships/artists:
+    get:
+      description: Retrieves artists relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: artists'
+        example: artists
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: artists
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get artists relationship ("to-many").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /tracks/{id}/relationships/credits:
+    get:
+      description: Retrieves credits relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: credits'
+        example: credits
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: credits
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get credits relationship ("to-many").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /tracks/{id}/relationships/download:
+    get:
+      description: Retrieves download relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: download'
+        example: download
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: download
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE: []
+      summary: Get download relationship ("to-one").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /tracks/{id}/relationships/genres:
+    get:
+      description: Retrieves genres relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: genres'
+        example: genres
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: genres
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get genres relationship ("to-many").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /tracks/{id}/relationships/lyrics:
+    get:
+      description: Retrieves lyrics relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: lyrics'
+        example: lyrics
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: lyrics
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get lyrics relationship ("to-many").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /tracks/{id}/relationships/metadataStatus:
+    get:
+      description: Retrieves metadataStatus relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: metadataStatus'
+        example: metadataStatus
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: metadataStatus
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE: []
+      summary: Get metadataStatus relationship ("to-one").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /tracks/{id}/relationships/owners:
+    get:
+      description: Retrieves owners relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get owners relationship ("to-many").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /tracks/{id}/relationships/priceConfig:
+    get:
+      description: Retrieves priceConfig relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: priceConfig'
+        example: priceConfig
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: priceConfig
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get priceConfig relationship ("to-one").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /tracks/{id}/relationships/providers:
+    get:
+      description: Retrieves providers relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: providers'
+        example: providers
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: providers
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get providers relationship ("to-many").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /tracks/{id}/relationships/radio:
+    get:
+      description: Retrieves radio relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: radio'
+        example: radio
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: radio
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get radio relationship ("to-many").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /tracks/{id}/relationships/replacement:
+    get:
+      description: Retrieves replacement relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: replacement'
+        example: replacement
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: replacement
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get replacement relationship ("to-one").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /tracks/{id}/relationships/shares:
+    get:
+      description: Retrieves shares relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: shares'
+        example: shares
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: shares
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Multi_Relationship_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -47,10 +1216,336 @@ paths:
       security:
       - Authorization_Code_PKCE:
         - r_usr
-        - user.read
-      summary: Get single user.
+      summary: Get shares relationship ("to-many").
       tags:
-      - users
+      - tracks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /tracks/{id}/relationships/similarTracks:
+    get:
+      description: Retrieves similarTracks relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: similarTracks'
+        example: similarTracks
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: similarTracks
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get similarTracks relationship ("to-many").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /tracks/{id}/relationships/sourceFile:
+    get:
+      description: Retrieves sourceFile relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: sourceFile'
+        example: sourceFile
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: sourceFile
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get sourceFile relationship ("to-one").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /tracks/{id}/relationships/suggestedTracks:
+    get:
+      description: Retrieves suggestedTracks relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: suggestedTracks'
+        example: suggestedTracks
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: suggestedTracks
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get suggestedTracks relationship ("to-many").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /tracks/{id}/relationships/trackStatistics:
+    get:
+      description: Retrieves trackStatistics relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: trackStatistics'
+        example: trackStatistics
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: trackStatistics
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE: []
+      summary: Get trackStatistics relationship ("to-one").
+      tags:
+      - tracks
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /tracks/{id}/relationships/usageRules:
+    get:
+      description: Retrieves usageRules relationship.
+      parameters:
+      - description: Track id
+        example: '75413016'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: usageRules'
+        example: usageRules
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: usageRules
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Tracks_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get usageRules relationship ("to-one").
+      tags:
+      - tracks
       x-path-item-properties:
         required-access-tier: THIRD_PARTY
 components:
@@ -286,6 +1781,20 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Tracks_Multi_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tracks_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     SearchSuggestions_Suggestions:
       required:
       - query
@@ -338,6 +1847,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TrackInfo'
+    TracksCreateOperation_Payload_Data:
+      required:
+      - attributes
+      - relationships
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/TracksCreateOperation_Payload_Data_Attributes'
+        relationships:
+          $ref: '#/components/schemas/TracksCreateOperation_Payload_Data_Relationships'
+        type:
+          type: string
+          enum:
+          - tracks
     UserCollections_Tracks_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -604,6 +2128,17 @@ components:
           type: string
           description: Resource type
           example: tracks
+    TracksCreateOperation_Payload_Data_Relationships_Artists:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 1
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/TracksCreateOperation_Payload_Data_Relationships_Artists_Data'
     UserCollectionFolders_Attributes:
       required:
       - collectionType
@@ -828,6 +2363,17 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Tracks_Single_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Albums_Relationships:
       properties:
         albumStatistics:
@@ -1089,18 +2635,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Users_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     UsageRules_Resource_Object:
       required:
       - id
@@ -1118,12 +2652,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Shares_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        sharedResources:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Terms_Resource_Object:
       required:
       - id
@@ -1141,6 +2669,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserCollectionAlbums_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1149,6 +2683,32 @@ components:
         addedAt:
           type: string
           format: date-time
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
     Tracks_Resource_Object:
       required:
       - id
@@ -1184,32 +2744,22 @@ components:
           type: string
           description: Resource type
           example: tracks
-    File_Status:
+    UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
-      - moderationFileStatus
-      - technicalFileStatus
+      - id
+      - type
       type: object
       properties:
-        moderationFileStatus:
+        id:
           type: string
-          description: Moderation status for file
-          enum:
-          - NOT_MODERATED
-          - SCANNING
-          - FLAGGED
-          - TAKEN_DOWN
-          - OK
-          - ERROR
-        technicalFileStatus:
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
+        type:
           type: string
-          description: Technical status for file
-          enum:
-          - UPLOAD_REQUESTED
-          - PROCESSING
-          - OK
-          - ERROR
-          - DELETED
-      description: File status
+          description: Resource type
+          example: tracks
     Users_Resource_Object:
       required:
       - id
@@ -1227,22 +2777,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    UserCollectionSaveForLaters_Items_Resource_Identifier:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
-        type:
-          type: string
-          description: Resource type
-          example: tracks
     Installations_OfflineInventory_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1251,10 +2785,34 @@ components:
         addedAt:
           type: string
           format: date-time
+    Tracks_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     DspSharingLinks_Relationships:
       properties:
         subject:
           $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    TracksAlbumsRelationshipUpdateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 1
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/TracksAlbumsRelationshipUpdateOperation_Payload_Data'
     SquareConnections_Resource_Object:
       required:
       - id
@@ -1366,6 +2924,18 @@ components:
       properties:
         owners:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    TracksUpdateOperation_Payload_Data_Relationships_Genres_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - genres
     UserCollectionVideos_Items_Multi_Relationship_Data_Document:
       required:
       - links
@@ -1663,6 +3233,13 @@ components:
           type: string
           description: Resource type
           example: tracks
+    TracksCreateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/TracksCreateOperation_Payload_Data'
     Genres_Resource_Object:
       required:
       - id
@@ -1722,6 +3299,80 @@ components:
           - COPYRIGHT_INFRINGEMENT
           - APPEAL
           - UNKNOWN
+    TracksCreateOperation_Payload_Data_Relationships_Albums:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 1
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/TracksCreateOperation_Payload_Data_Relationships_Albums_Data'
+    TracksUpdateOperation_Payload_Data_Attributes:
+      type: object
+      properties:
+        accessType:
+          type: string
+          description: Access type
+          example: PRIVATE
+          enum:
+          - PUBLIC
+          - UNLISTED
+          - PRIVATE
+        bpm:
+          type: number
+          format: float
+        explicit:
+          type: boolean
+          description: Explicit content
+          example: false
+        key:
+          type: string
+          enum:
+          - UNKNOWN
+          - C
+          - CSharp
+          - D
+          - Eb
+          - E
+          - F
+          - FSharp
+          - G
+          - Ab
+          - A
+          - Bb
+          - B
+        keyScale:
+          type: string
+          enum:
+          - UNKNOWN
+          - MAJOR
+          - MINOR
+          - AEOLIAN
+          - BLUES
+          - DORIAN
+          - HARMONIC_MINOR
+          - LOCRIAN
+          - LYDIAN
+          - MIXOLYDIAN
+          - PENTATONIC_MAJOR
+          - PHRYGIAN
+          - MELODIC_MINOR
+          - PENTATONIC_MINOR
+        title:
+          type: string
+        toneTags:
+          maxItems: 5
+          minItems: 0
+          type: array
+          items:
+            maxLength: 20
+            minLength: 1
+            type: string
+            description: Tone tags
+            example: happy
     UserCollectionFolders_Resource_Object:
       required:
       - id
@@ -1838,6 +3489,22 @@ components:
           type: boolean
           description: Is the artist spotlighted?
           example: true
+    TracksUpdateOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/TracksUpdateOperation_Payload_Data_Attributes'
+        id:
+          type: string
+        relationships:
+          $ref: '#/components/schemas/TracksUpdateOperation_Payload_Data_Relationships'
+        type:
+          type: string
+          enum:
+          - tracks
     ArtistClaims_Resource_Object:
       required:
       - id
@@ -1998,6 +3665,18 @@ components:
           type: string
           description: Genre name
           example: pop
+    TracksCreateOperation_Payload_Data_Relationships_Genres_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - genres
     TrackSourceFiles_Attributes:
       required:
       - md5Hash
@@ -2111,6 +3790,20 @@ components:
           type: string
           description: Resource type
           example: tracks
+    TrackStatistics_Attributes:
+      required:
+      - totalPlaybacks
+      - uniqueListeners
+      type: object
+      properties:
+        totalPlaybacks:
+          type: integer
+          description: Total playbacks
+          format: int32
+        uniqueListeners:
+          type: integer
+          description: Unique listeners
+          format: int32
     Artists_Resource_Object:
       required:
       - id
@@ -2434,6 +4127,18 @@ components:
           type: string
           description: Resource type
           example: tracks
+    TracksCreateOperation_Payload_Data_Relationships:
+      required:
+      - albums
+      - artists
+      type: object
+      properties:
+        albums:
+          $ref: '#/components/schemas/TracksCreateOperation_Payload_Data_Relationships_Albums'
+        artists:
+          $ref: '#/components/schemas/TracksCreateOperation_Payload_Data_Relationships_Artists'
+        genres:
+          $ref: '#/components/schemas/TracksCreateOperation_Payload_Data_Relationships_Genres'
     DynamicModules_Relationships:
       properties:
         items:
@@ -2554,6 +4259,18 @@ components:
       properties:
         dashboardLink:
           $ref: '#/components/schemas/Link_Object'
+    TracksAlbumsRelationshipUpdateOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - albums
     UserCollectionSaveForLaters_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -2570,6 +4287,11 @@ components:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserDailyMixes_Attributes:
       type: object
+    TracksUpdateOperation_Payload_Data_Relationships:
+      type: object
+      properties:
+        genres:
+          $ref: '#/components/schemas/TracksUpdateOperation_Payload_Data_Relationships_Genres'
     External_Link_Meta:
       required:
       - type
@@ -2850,6 +4572,49 @@ components:
           $ref: '#/components/schemas/Artwork_SourceFile'
         visualMetadata:
           $ref: '#/components/schemas/Artwork_VisualMetadata'
+    TracksCreateOperation_Payload_Data_Relationships_Artists_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - artists
+    TracksCreateOperation_Payload_Data_Attributes:
+      required:
+      - accessType
+      - title
+      type: object
+      properties:
+        accessType:
+          type: string
+          description: Access type
+          example: PRIVATE
+          enum:
+          - PUBLIC
+          - UNLISTED
+          - PRIVATE
+        explicit:
+          type: boolean
+          description: Explicit content
+          example: false
+        title:
+          type: string
+    TracksCreateOperation_Payload_Data_Relationships_Genres:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 3
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/TracksCreateOperation_Payload_Data_Relationships_Genres_Data'
     UserCollectionPlaylists_Attributes:
       type: object
     Reactions_Attributes:
@@ -3064,6 +4829,17 @@ components:
           type: string
           description: Artist biography
           example: Once upon a time an artist is born
+    TracksUpdateOperation_Payload_Data_Relationships_Genres:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 3
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/TracksUpdateOperation_Payload_Data_Relationships_Genres_Data'
     PlayQueues_Attributes:
       required:
       - createdAt
@@ -3250,6 +5026,13 @@ components:
           type: string
           description: Resource type
           example: tracks
+    TracksUpdateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/TracksUpdateOperation_Payload_Data'
     OfflineTasks_Relationships:
       properties:
         collection:
@@ -3442,6 +5225,18 @@ components:
           type: string
           description: Resource type
           example: tracks
+    TracksCreateOperation_Payload_Data_Relationships_Albums_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - albums
     UserDiscoveryMixes_Attributes:
       type: object
     UserCollections_Albums_Multi_Relationship_Data_Document:
@@ -3667,6 +5462,18 @@ components:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
         videos:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    Tracks_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Tracks_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     UserCollectionFolders_Items_Multi_Relationship_Data_Document:
       required:
       - links
@@ -3680,6 +5487,12 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    ProviderOwners_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        provider:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
     ContentClaims_Resource_Object:
       required:
       - id
@@ -3699,12 +5512,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    ProviderOwners_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        provider:
-          $ref: '#/components/schemas/Single_Relationship_Data_Document'
     OfflineTasks_Attributes:
       required:
       - action
@@ -3769,20 +5576,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    TrackStatistics_Attributes:
-      required:
-      - totalPlaybacks
-      - uniqueListeners
-      type: object
-      properties:
-        totalPlaybacks:
-          type: integer
-          description: Total playbacks
-          format: int32
-        uniqueListeners:
-          type: integer
-          description: Unique listeners
-          format: int32
     Providers_Attributes:
       required:
       - name

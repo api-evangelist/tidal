@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms installations API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,25 +8,58 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: installations
 paths:
-  /users/{id}:
+  /installations:
     get:
-      description: Retrieves single user by id.
+      description: Retrieves multiple installations by available filters, or without if applicable.
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
-        example: me
-        in: path
-        name: id
-        required: true
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
         schema:
           type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners'
+        example: offlineInventory
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: offlineInventory
+      - description: Client-provided installation identifier to filter by (e.g. `a468bee88def`)
+        in: query
+        name: filter[clientProvidedInstallationId]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: List of installation IDs (e.g. `a468bee88def`)
+        in: query
+        name: filter[id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: User ID to filter by. Use `me` for the authenticated user
+        in: query
+        name: filter[owners.id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
       responses:
         '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/Installations_Multi_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -47,12 +80,346 @@ paths:
       security:
       - Authorization_Code_PKCE:
         - r_usr
-        - user.read
-      summary: Get single user.
+      summary: Get multiple installations.
       tags:
-      - users
+      - installations
       x-path-item-properties:
-        required-access-tier: THIRD_PARTY
+        required-access-tier: INTERNAL
+    post:
+      description: Creates a new installation.
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/InstallationsCreateOperation_Payload'
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Installations_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Create single installation.
+      tags:
+      - installations
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /installations/{id}:
+    get:
+      description: Retrieves single installation by id.
+      parameters:
+      - description: Installation id
+        example: a468bee88def
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners'
+        example: offlineInventory
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: offlineInventory
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Installations_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get single installation.
+      tags:
+      - installations
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /installations/{id}/relationships/offlineInventory:
+    delete:
+      description: Deletes item(s) from offlineInventory relationship.
+      parameters:
+      - description: Installation id
+        example: a468bee88def
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/InstallationsOfflineInventoryRelationshipRemoveOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Delete from offlineInventory relationship ("to-many").
+      tags:
+      - installations
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    get:
+      description: Retrieves offlineInventory relationship.
+      parameters:
+      - description: Installation id
+        example: a468bee88def
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: offlineInventory'
+        example: offlineInventory
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: offlineInventory
+      - description: Offline item id (e.g. `1234`)
+        in: query
+        name: filter[id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: 'One of: PENDING, STORED (e.g. `PENDING`)'
+        in: query
+        name: filter[state]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - PENDING
+            - STORED
+      - description: 'One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. `tracks`)'
+        in: query
+        name: filter[type]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - tracks
+            - videos
+            - albums
+            - playlists
+            - userCollectionTracks
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Installations_OfflineInventory_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get offlineInventory relationship ("to-many").
+      tags:
+      - installations
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    post:
+      description: Adds item(s) to offlineInventory relationship.
+      parameters:
+      - description: Installation id
+        example: a468bee88def
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/InstallationsOfflineInventoryRelationshipAddOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Add to offlineInventory relationship ("to-many").
+      tags:
+      - installations
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /installations/{id}/relationships/owners:
+    get:
+      description: Retrieves owners relationship.
+      parameters:
+      - description: Installation id
+        example: a468bee88def
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Installations_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get owners relationship ("to-many").
+      tags:
+      - installations
+      x-path-item-properties:
+        required-access-tier: INTERNAL
 components:
   schemas:
     TrackFiles_Attributes:
@@ -267,6 +634,17 @@ components:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
         parentComment:
           $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    InstallationsOfflineInventoryRelationshipAddOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 1
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/InstallationsOfflineInventory_ItemIdentifier'
     UserOfflineMixes_Resource_Object:
       required:
       - id
@@ -1030,6 +1408,18 @@ components:
           type: string
         legacySource:
           $ref: '#/components/schemas/LegacySource'
+    Installations_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Installations_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     TrackSourceFiles_Resource_Object:
       required:
       - id
@@ -1049,6 +1439,21 @@ components:
           type: string
           description: Resource type
           example: tracks
+    InstallationsCreateOperation_Payload_Data_Attributes:
+      required:
+      - clientProvidedInstallationId
+      - name
+      type: object
+      properties:
+        clientProvidedInstallationId:
+          minLength: 1
+          type: string
+          description: Client provided installation identifier
+        name:
+          minLength: 1
+          type: string
+          description: Human-readable name
+          example: My iPhone
     PriceConfigurations_Attributes:
       required:
       - currency
@@ -1089,18 +1494,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Users_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     UsageRules_Resource_Object:
       required:
       - id
@@ -1118,12 +1511,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Shares_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        sharedResources:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Terms_Resource_Object:
       required:
       - id
@@ -1141,6 +1528,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserCollectionAlbums_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1149,6 +1542,32 @@ components:
         addedAt:
           type: string
           format: date-time
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
     Tracks_Resource_Object:
       required:
       - id
@@ -1184,32 +1603,17 @@ components:
           type: string
           description: Resource type
           example: tracks
-    File_Status:
+    InstallationsOfflineInventoryRelationshipRemoveOperation_Payload:
       required:
-      - moderationFileStatus
-      - technicalFileStatus
+      - data
       type: object
       properties:
-        moderationFileStatus:
-          type: string
-          description: Moderation status for file
-          enum:
-          - NOT_MODERATED
-          - SCANNING
-          - FLAGGED
-          - TAKEN_DOWN
-          - OK
-          - ERROR
-        technicalFileStatus:
-          type: string
-          description: Technical status for file
-          enum:
-          - UPLOAD_REQUESTED
-          - PROCESSING
-          - OK
-          - ERROR
-          - DELETED
-      description: File status
+        data:
+          maxItems: 1
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/InstallationsOfflineInventory_ItemIdentifier'
     Users_Resource_Object:
       required:
       - id
@@ -1356,6 +1760,23 @@ components:
         uri:
           type: string
           description: Manifest URI
+    InstallationsOfflineInventory_ItemIdentifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: The item id. Use "me" when the type is userCollectionTracks to resolve to the authenticated user's collection.
+        type:
+          type: string
+          enum:
+          - tracks
+          - videos
+          - albums
+          - playlists
+          - userCollectionTracks
     Lyrics_Relationships:
       properties:
         owners:
@@ -1760,6 +2181,20 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Installations_Multi_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Installations_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     UserCollectionSaveForLaters_Attributes:
       required:
       - numberOfItems
@@ -2612,6 +3047,13 @@ components:
         addedAt:
           type: string
           format: date-time
+    InstallationsCreateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/InstallationsCreateOperation_Payload_Data'
     Users_Attributes:
       required:
       - country
@@ -3250,6 +3692,18 @@ components:
           type: string
           description: Resource type
           example: tracks
+    InstallationsCreateOperation_Payload_Data:
+      required:
+      - attributes
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/InstallationsCreateOperation_Payload_Data_Attributes'
+        type:
+          type: string
+          enum:
+          - installations
     OfflineTasks_Relationships:
       properties:
         collection:
@@ -4403,6 +4857,19 @@ components:
           $ref: '#/components/schemas/UserCollectionAlbums_Items_Multi_Relationship_Data_Document'
         owners:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    Installations_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     UserCollectionVideos_Relationships:
       properties:
         items:

@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,25 +8,55 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: acceptedTerms
 paths:
-  /users/{id}:
+  /acceptedTerms:
     get:
-      description: Retrieves single user by id.
+      description: Retrieves multiple acceptedTerms by available filters, or without if applicable.
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
-        example: me
-        in: path
-        name: id
-        required: true
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners, terms'
+        example: owners
+        in: query
+        name: include
+        required: false
         schema:
-          type: string
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: User id. Use `me` for the authenticated user
+        in: query
+        name: filter[owners.id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Filter by terms.isLatestVersion
+        in: query
+        name: filter[terms.isLatestVersion]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: 'One of: DEVELOPER, UPLOAD_MARKETPLACE (e.g. `DEVELOPER`)'
+        in: query
+        name: filter[terms.termsType]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - DEVELOPER
+            - UPLOAD_MARKETPLACE
       responses:
         '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/AcceptedTerms_Multi_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -47,12 +77,165 @@ paths:
       security:
       - Authorization_Code_PKCE:
         - r_usr
-        - user.read
-      summary: Get single user.
+      summary: Get multiple acceptedTerms.
       tags:
-      - users
+      - acceptedTerms
       x-path-item-properties:
-        required-access-tier: THIRD_PARTY
+        required-access-tier: INTERNAL
+    post:
+      description: Creates a new acceptedTerm.
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/AcceptedTermsCreateOperation_Payload'
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/AcceptedTerms_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Create single acceptedTerm.
+      tags:
+      - acceptedTerms
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /acceptedTerms/{id}/relationships/owners:
+    get:
+      description: Retrieves owners relationship.
+      parameters:
+      - description: Accepted terms id
+        example: a468bee88def
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/AcceptedTerms_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get owners relationship ("to-many").
+      tags:
+      - acceptedTerms
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /acceptedTerms/{id}/relationships/terms:
+    get:
+      description: Retrieves terms relationship.
+      parameters:
+      - description: Accepted terms id
+        example: a468bee88def
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: terms'
+        example: terms
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: terms
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/AcceptedTerms_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get terms relationship ("to-one").
+      tags:
+      - acceptedTerms
+      x-path-item-properties:
+        required-access-tier: INTERNAL
 components:
   schemas:
     TrackFiles_Attributes:
@@ -1049,6 +1232,13 @@ components:
           type: string
           description: Resource type
           example: tracks
+    AcceptedTermsCreateOperation_Payload_Data_Relationships:
+      required:
+      - terms
+      type: object
+      properties:
+        terms:
+          $ref: '#/components/schemas/AcceptedTermsCreateOperation_Payload_Data_Relationships_Terms'
     PriceConfigurations_Attributes:
       required:
       - currency
@@ -1089,18 +1279,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Users_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     UsageRules_Resource_Object:
       required:
       - id
@@ -1118,12 +1296,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Shares_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        sharedResources:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Terms_Resource_Object:
       required:
       - id
@@ -1141,6 +1313,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserCollectionAlbums_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1149,6 +1327,32 @@ components:
         addedAt:
           type: string
           format: date-time
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
     Tracks_Resource_Object:
       required:
       - id
@@ -1184,32 +1388,22 @@ components:
           type: string
           description: Resource type
           example: tracks
-    File_Status:
+    UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
-      - moderationFileStatus
-      - technicalFileStatus
+      - id
+      - type
       type: object
       properties:
-        moderationFileStatus:
+        id:
           type: string
-          description: Moderation status for file
-          enum:
-          - NOT_MODERATED
-          - SCANNING
-          - FLAGGED
-          - TAKEN_DOWN
-          - OK
-          - ERROR
-        technicalFileStatus:
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
+        type:
           type: string
-          description: Technical status for file
-          enum:
-          - UPLOAD_REQUESTED
-          - PROCESSING
-          - OK
-          - ERROR
-          - DELETED
-      description: File status
+          description: Resource type
+          example: tracks
     Users_Resource_Object:
       required:
       - id
@@ -1224,22 +1418,6 @@ components:
           example: '12345'
         type:
           minLength: 1
-          type: string
-          description: Resource type
-          example: tracks
-    UserCollectionSaveForLaters_Items_Resource_Identifier:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
-        type:
           type: string
           description: Resource type
           example: tracks
@@ -1366,6 +1544,18 @@ components:
       properties:
         owners:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    AcceptedTermsCreateOperation_Payload_Data:
+      required:
+      - relationships
+      - type
+      type: object
+      properties:
+        relationships:
+          $ref: '#/components/schemas/AcceptedTermsCreateOperation_Payload_Data_Relationships'
+        type:
+          type: string
+          enum:
+          - acceptedTerms
     UserCollectionVideos_Items_Multi_Relationship_Data_Document:
       required:
       - links
@@ -1615,6 +1805,18 @@ components:
           type: string
           description: Resource type
           example: tracks
+    AcceptedTermsCreateOperation_Payload_Data_Relationships_Terms_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - terms
     SearchHistoryEntries_Attributes:
       required:
       - highlights
@@ -1998,6 +2200,18 @@ components:
           type: string
           description: Genre name
           example: pop
+    AcceptedTerms_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AcceptedTerms_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     TrackSourceFiles_Attributes:
       required:
       - md5Hash
@@ -2111,6 +2325,20 @@ components:
           type: string
           description: Resource type
           example: tracks
+    TrackStatistics_Attributes:
+      required:
+      - totalPlaybacks
+      - uniqueListeners
+      type: object
+      properties:
+        totalPlaybacks:
+          type: integer
+          description: Total playbacks
+          format: int32
+        uniqueListeners:
+          type: integer
+          description: Unique listeners
+          format: int32
     Artists_Resource_Object:
       required:
       - id
@@ -3383,6 +3611,17 @@ components:
           - PROCESSING
           - OK
       description: Color information extracted from artwork
+    AcceptedTerms_Single_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     ArtistRoles_Attributes:
       required:
       - name
@@ -3636,11 +3875,19 @@ components:
           type: integer
           description: Unique listeners
           format: int32
-    Artists_Following_Resource_Identifier_Meta:
+    AcceptedTerms_Multi_Relationship_Data_Document:
+      required:
+      - links
       type: object
       properties:
-        viewer:
-          $ref: '#/components/schemas/Artists_Followers_Resource_Meta_ViewerContext'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Artists_Relationships:
       properties:
         albums:
@@ -3667,6 +3914,11 @@ components:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
         videos:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    Artists_Following_Resource_Identifier_Meta:
+      type: object
+      properties:
+        viewer:
+          $ref: '#/components/schemas/Artists_Followers_Resource_Meta_ViewerContext'
     UserCollectionFolders_Items_Multi_Relationship_Data_Document:
       required:
       - links
@@ -3680,6 +3932,12 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    ProviderOwners_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        provider:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
     ContentClaims_Resource_Object:
       required:
       - id
@@ -3699,12 +3957,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    ProviderOwners_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        provider:
-          $ref: '#/components/schemas/Single_Relationship_Data_Document'
     OfflineTasks_Attributes:
       required:
       - action
@@ -3769,20 +4021,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    TrackStatistics_Attributes:
-      required:
-      - totalPlaybacks
-      - uniqueListeners
-      type: object
-      properties:
-        totalPlaybacks:
-          type: integer
-          description: Total playbacks
-          format: int32
-        uniqueListeners:
-          type: integer
-          description: Unique listeners
-          format: int32
     Providers_Attributes:
       required:
       - name
@@ -3833,6 +4071,13 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    AcceptedTermsCreateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AcceptedTermsCreateOperation_Payload_Data'
     UserRecommendations_Relationships:
       properties:
         discoveryMixes:
@@ -4391,6 +4636,20 @@ components:
           type: array
           items:
             type: string
+    AcceptedTerms_Multi_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcceptedTerms_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Purchases_Relationships:
       properties:
         owners:
@@ -4403,6 +4662,13 @@ components:
           $ref: '#/components/schemas/UserCollectionAlbums_Items_Multi_Relationship_Data_Document'
         owners:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    AcceptedTermsCreateOperation_Payload_Data_Relationships_Terms:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AcceptedTermsCreateOperation_Payload_Data_Relationships_Terms_Data'
     UserCollectionVideos_Relationships:
       properties:
         items:

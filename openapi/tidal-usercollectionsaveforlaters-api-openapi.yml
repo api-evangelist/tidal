@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms userCollectionSaveForLaters API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,25 +8,35 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: userCollectionSaveForLaters
 paths:
-  /users/{id}:
+  /userCollectionSaveForLaters/{id}:
     get:
-      description: Retrieves single user by id.
+      description: Retrieves single userCollectionSaveForLater by id.
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
+      - description: User collection save for later id. Use `me` for the authenticated user's resource
         example: me
         in: path
         name: id
         required: true
         schema:
           type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: items, owners'
+        example: items
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: items
       responses:
         '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/UserCollectionSaveForLaters_Single_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -47,12 +57,237 @@ paths:
       security:
       - Authorization_Code_PKCE:
         - r_usr
-        - user.read
-      summary: Get single user.
+      summary: Get single userCollectionSaveForLater.
       tags:
-      - users
+      - userCollectionSaveForLaters
       x-path-item-properties:
-        required-access-tier: THIRD_PARTY
+        required-access-tier: INTERNAL
+  /userCollectionSaveForLaters/{id}/relationships/items:
+    delete:
+      description: Deletes item(s) from items relationship.
+      parameters:
+      - description: User collection save for later id. Use `me` for the authenticated user's resource
+        example: me
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Delete from items relationship ("to-many").
+      tags:
+      - userCollectionSaveForLaters
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    get:
+      description: Retrieves items relationship.
+      parameters:
+      - description: User collection save for later id. Use `me` for the authenticated user's resource
+        example: me
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: items'
+        example: items
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: items
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get items relationship ("to-many").
+      tags:
+      - userCollectionSaveForLaters
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    post:
+      description: Adds item(s) to items relationship.
+      parameters:
+      - description: User collection save for later id. Use `me` for the authenticated user's resource
+        example: me
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload'
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Add_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/UserCollectionSaveForLatersAddMultiDataRelationshipWithResponse409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Add to items relationship ("to-many").
+      tags:
+      - userCollectionSaveForLaters
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /userCollectionSaveForLaters/{id}/relationships/owners:
+    get:
+      description: Retrieves owners relationship.
+      parameters:
+      - description: User collection save for later id. Use `me` for the authenticated user's resource
+        example: me
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/UserCollectionSaveForLaters_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get owners relationship ("to-many").
+      tags:
+      - userCollectionSaveForLaters
+      x-path-item-properties:
+        required-access-tier: INTERNAL
 components:
   schemas:
     TrackFiles_Attributes:
@@ -1089,18 +1324,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Users_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     UsageRules_Resource_Object:
       required:
       - id
@@ -1118,12 +1341,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Shares_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        sharedResources:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Terms_Resource_Object:
       required:
       - id
@@ -1141,6 +1358,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserCollectionAlbums_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1149,6 +1372,32 @@ components:
         addedAt:
           type: string
           format: date-time
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
     Tracks_Resource_Object:
       required:
       - id
@@ -1184,32 +1433,22 @@ components:
           type: string
           description: Resource type
           example: tracks
-    File_Status:
+    UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
-      - moderationFileStatus
-      - technicalFileStatus
+      - id
+      - type
       type: object
       properties:
-        moderationFileStatus:
+        id:
           type: string
-          description: Moderation status for file
-          enum:
-          - NOT_MODERATED
-          - SCANNING
-          - FLAGGED
-          - TAKEN_DOWN
-          - OK
-          - ERROR
-        technicalFileStatus:
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
+        type:
           type: string
-          description: Technical status for file
-          enum:
-          - UPLOAD_REQUESTED
-          - PROCESSING
-          - OK
-          - ERROR
-          - DELETED
-      description: File status
+          description: Resource type
+          example: tracks
     Users_Resource_Object:
       required:
       - id
@@ -1224,22 +1463,6 @@ components:
           example: '12345'
         type:
           minLength: 1
-          type: string
-          description: Resource type
-          example: tracks
-    UserCollectionSaveForLaters_Items_Resource_Identifier:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
-        type:
           type: string
           description: Resource type
           example: tracks
@@ -1272,6 +1495,19 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollectionSaveForLaters_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     ManualArtistClaims_Resource_Object:
       required:
       - id
@@ -1428,6 +1664,17 @@ components:
           description: volume number
           format: int32
           example: 1
+    UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload_Data'
     AcceptedTerms_Relationships:
       properties:
         owners:
@@ -1773,6 +2020,28 @@ components:
           type: integer
           description: Number of items in the collection
           format: int32
+    UserCollectionSaveForLatersItemsRelationshipAddOperation_Response_Meta_SkippedItem:
+      required:
+      - id
+      - reason
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        reason:
+          type: string
+          enum:
+          - NOT_FOUND
+          - ALREADY_PRESENT
+        type:
+          type: string
+          enum:
+          - tracks
+          - albums
+          - artists
+          - playlists
+          - videos
     Artists_TrackProviders_Resource_Identifier_Meta:
       required:
       - numberOfTracks
@@ -1838,6 +2107,17 @@ components:
           type: boolean
           description: Is the artist spotlighted?
           example: true
+    UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload_Data'
     ArtistClaims_Resource_Object:
       required:
       - id
@@ -2017,6 +2297,22 @@ components:
           $ref: '#/components/schemas/File_Status'
         uploadLink:
           $ref: '#/components/schemas/File_Upload_Link'
+    UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - tracks
+          - albums
+          - artists
+          - playlists
+          - videos
     StripeConnections_Relationships:
       properties:
         owners:
@@ -2594,6 +2890,29 @@ components:
           - STRIPE_AUTHORIZATION_REDIRECT
           - SQUARE_AUTHORIZATION_REDIRECT
       description: metadata about an external link
+    UserCollectionSaveForLaters_Items_Add_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Add_Multi_Relationship_Data_Document_Meta'
+    UserCollectionTracks_Items_Resource_Identifier_Meta:
+      required:
+      - addedAt
+      type: object
+      properties:
+        addedAt:
+          type: string
+          format: date-time
     Download_Link_Meta:
       type: object
       properties:
@@ -2604,14 +2923,6 @@ components:
             type: string
             description: HTTP headers required when requesting the download URL
       description: Metadata for download link
-    UserCollectionTracks_Items_Resource_Identifier_Meta:
-      required:
-      - addedAt
-      type: object
-      properties:
-        addedAt:
-          type: string
-          format: date-time
     Users_Attributes:
       required:
       - country
@@ -2828,6 +3139,15 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollectionSaveForLaters_Items_Add_Multi_Relationship_Data_Document_Meta:
+      required:
+      - skipped
+      type: object
+      properties:
+        skipped:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollectionSaveForLatersItemsRelationshipAddOperation_Response_Meta_SkippedItem'
     Artworks_Attributes:
       required:
       - files
@@ -3532,6 +3852,22 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - tracks
+          - albums
+          - artists
+          - playlists
+          - videos
     UserCollections_Albums_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -4233,6 +4569,18 @@ components:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
         past:
           $ref: '#/components/schemas/PlayQueues_Past_Multi_Relationship_Data_Document'
+    UserCollectionSaveForLaters_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Installations_OfflineInventory_Multi_Relationship_Data_Document:
       required:
       - links

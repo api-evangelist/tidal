@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms clients API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,25 +8,36 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: clients
 paths:
-  /users/{id}:
+  /clients:
     get:
-      description: Retrieves single user by id.
+      description: Retrieves multiple clients by available filters, or without if applicable.
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
-        example: me
-        in: path
-        name: id
-        required: true
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+        example: owners
+        in: query
+        name: include
+        required: false
         schema:
-          type: string
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: User id. Use `me` for the authenticated user
+        in: query
+        name: filter[owners.id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
       responses:
         '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/Clients_Multi_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -47,12 +58,250 @@ paths:
       security:
       - Authorization_Code_PKCE:
         - r_usr
-        - user.read
-      summary: Get single user.
+      summary: Get multiple clients.
       tags:
-      - users
+      - clients
       x-path-item-properties:
-        required-access-tier: THIRD_PARTY
+        required-access-tier: INTERNAL
+    post:
+      description: Creates a new client.
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/ClientsCreateOperation_Payload'
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Clients_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Create single client.
+      tags:
+      - clients
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /clients/{id}:
+    delete:
+      description: Deletes existing client.
+      parameters:
+      - description: OAuth client identifier
+        example: a468bee88def
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Delete single client.
+      tags:
+      - clients
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    get:
+      description: Retrieves single client by id.
+      parameters:
+      - description: OAuth client identifier
+        example: a468bee88def
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Clients_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get single client.
+      tags:
+      - clients
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    patch:
+      description: Updates existing client.
+      parameters:
+      - description: OAuth client identifier
+        example: a468bee88def
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/ClientsUpdateOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Update single client.
+      tags:
+      - clients
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /clients/{id}/relationships/owners:
+    get:
+      description: Retrieves owners relationship.
+      parameters:
+      - description: OAuth client identifier
+        example: a468bee88def
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Clients_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get owners relationship ("to-many").
+      tags:
+      - clients
+      x-path-item-properties:
+        required-access-tier: INTERNAL
 components:
   schemas:
     TrackFiles_Attributes:
@@ -1089,14 +1338,14 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
+    Clients_Single_Resource_Data_Document:
       required:
       - data
       - links
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/Users_Resource_Object'
+          $ref: '#/components/schemas/Clients_Resource_Object'
         included:
           $ref: '#/components/schemas/Included'
         links:
@@ -1316,6 +1565,15 @@ components:
           type: string
           description: Resource type
           example: tracks
+    ClientsCreateOperation_Payload_Data_Attributes:
+      required:
+      - name
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
     TrackManifests_Attributes:
       type: object
       properties:
@@ -1379,22 +1637,29 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
-    UserCollections_Albums_Resource_Identifier:
-      required:
-      - id
-      - type
+    ClientsUpdateOperation_Payload_Data_Attributes:
       type: object
       properties:
-        id:
+        description:
           type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollections_Albums_Resource_Identifier_Meta'
-        type:
+        name:
           type: string
-          description: Resource type
-          example: tracks
+        platformPreset:
+          type: string
+          enum:
+          - NONE
+          - WEB
+          - ANDROID
+          - IOS
+        redirectUris:
+          type: array
+          items:
+            type: string
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
     DrmData:
       type: object
       properties:
@@ -1412,6 +1677,22 @@ components:
         licenseUrl:
           type: string
       description: DRM data. Absence implies no DRM.
+    UserCollections_Albums_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollections_Albums_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
     Albums_Items_Resource_Identifier_Meta:
       required:
       - trackNumber
@@ -1428,6 +1709,21 @@ components:
           description: volume number
           format: int32
           example: 1
+    ClientsUpdateOperation_Payload_Data:
+      required:
+      - attributes
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/ClientsUpdateOperation_Payload_Data_Attributes'
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - clients
     AcceptedTerms_Relationships:
       properties:
         owners:
@@ -3138,6 +3434,13 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    ClientsUpdateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ClientsUpdateOperation_Payload_Data'
     ArtistClaims_Attributes:
       required:
       - artistId
@@ -3442,6 +3745,18 @@ components:
           type: string
           description: Resource type
           example: tracks
+    ClientsCreateOperation_Payload_Data:
+      required:
+      - attributes
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/ClientsCreateOperation_Payload_Data_Attributes'
+        type:
+          type: string
+          enum:
+          - clients
     UserDiscoveryMixes_Attributes:
       type: object
     UserCollections_Albums_Multi_Relationship_Data_Document:
@@ -3532,6 +3847,19 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Clients_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     UserCollections_Albums_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -3540,6 +3868,20 @@ components:
         addedAt:
           type: string
           format: date-time
+    Clients_Multi_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Clients_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Shares_Resource_Object:
       required:
       - id
@@ -4593,6 +4935,13 @@ components:
           $ref: '#/components/schemas/Link_Object'
         youTubeMusic:
           $ref: '#/components/schemas/Link_Object'
+    ClientsCreateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ClientsCreateOperation_Payload_Data'
     Clients_Resource_Object:
       required:
       - id

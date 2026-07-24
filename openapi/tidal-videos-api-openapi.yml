@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms videos API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,25 +8,51 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: videos
 paths:
-  /users/{id}:
+  /videos:
     get:
-      description: Retrieves single user by id.
+      description: Retrieves multiple videos by available filters, or without if applicable.
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
-        example: me
-        in: path
-        name: id
-        required: true
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
         schema:
           type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules'
+        example: albums
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: albums
+      - description: List of video IDs (e.g. `75623239`)
+        in: query
+        name: filter[id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: List of ISRCs (e.g. `QMJMT1701237`)
+        in: query
+        name: filter[isrc]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
       responses:
         '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/Videos_Multi_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -45,12 +71,636 @@ paths:
         '503':
           $ref: '#/components/responses/Default503Response'
       security:
-      - Authorization_Code_PKCE:
-        - r_usr
-        - user.read
-      summary: Get single user.
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get multiple videos.
       tags:
-      - users
+      - videos
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /videos/{id}:
+    get:
+      description: Retrieves single video by id.
+      parameters:
+      - description: Video id
+        example: '75623239'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules'
+        example: albums
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: albums
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Videos_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get single video.
+      tags:
+      - videos
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /videos/{id}/relationships/albums:
+    get:
+      description: Retrieves albums relationship.
+      parameters:
+      - description: Video id
+        example: '75623239'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: albums'
+        example: albums
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: albums
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Videos_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get albums relationship ("to-many").
+      tags:
+      - videos
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /videos/{id}/relationships/artists:
+    get:
+      description: Retrieves artists relationship.
+      parameters:
+      - description: Video id
+        example: '75623239'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: artists'
+        example: artists
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: artists
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Videos_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get artists relationship ("to-many").
+      tags:
+      - videos
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /videos/{id}/relationships/credits:
+    get:
+      description: Retrieves credits relationship.
+      parameters:
+      - description: Video id
+        example: '75623239'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: credits'
+        example: credits
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: credits
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Videos_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get credits relationship ("to-many").
+      tags:
+      - videos
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /videos/{id}/relationships/providers:
+    get:
+      description: Retrieves providers relationship.
+      parameters:
+      - description: Video id
+        example: '75623239'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: providers'
+        example: providers
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: providers
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Videos_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get providers relationship ("to-many").
+      tags:
+      - videos
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /videos/{id}/relationships/replacement:
+    get:
+      description: Retrieves replacement relationship.
+      parameters:
+      - description: Video id
+        example: '75623239'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: replacement'
+        example: replacement
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: replacement
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Videos_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get replacement relationship ("to-one").
+      tags:
+      - videos
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /videos/{id}/relationships/similarVideos:
+    get:
+      description: Retrieves similarVideos relationship.
+      parameters:
+      - description: Video id
+        example: '75623239'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: similarVideos'
+        example: similarVideos
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: similarVideos
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Videos_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get similarVideos relationship ("to-many").
+      tags:
+      - videos
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /videos/{id}/relationships/suggestedVideos:
+    get:
+      description: Retrieves suggestedVideos relationship.
+      parameters:
+      - description: Video id
+        example: '75623239'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: suggestedVideos'
+        example: suggestedVideos
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: suggestedVideos
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Videos_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get suggestedVideos relationship ("to-many").
+      tags:
+      - videos
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /videos/{id}/relationships/thumbnailArt:
+    get:
+      description: Retrieves thumbnailArt relationship.
+      parameters:
+      - description: Video id
+        example: '75623239'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: thumbnailArt'
+        example: thumbnailArt
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: thumbnailArt
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Videos_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get thumbnailArt relationship ("to-many").
+      tags:
+      - videos
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /videos/{id}/relationships/usageRules:
+    get:
+      description: Retrieves usageRules relationship.
+      parameters:
+      - description: Video id
+        example: '75623239'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: usageRules'
+        example: usageRules
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: usageRules
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Videos_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get usageRules relationship ("to-one").
+      tags:
+      - videos
       x-path-item-properties:
         required-access-tier: THIRD_PARTY
 components:
@@ -437,6 +1087,19 @@ components:
           type: string
           description: search request unique tracking number
           example: 5896e37d-e847-4ca6-9629-ef8001719f7f
+    Videos_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     External_Link:
       required:
       - href
@@ -936,6 +1599,16 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Copyright:
+      required:
+      - text
+      type: object
+      properties:
+        text:
+          maxLength: 1024
+          minLength: 1
+          type: string
+      description: Copyright information
     UserCollectionPlaylists_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -970,16 +1643,6 @@ components:
           type: string
           description: Credit role
           example: Vocals
-    Copyright:
-      required:
-      - text
-      type: object
-      properties:
-        text:
-          maxLength: 1024
-          minLength: 1
-          type: string
-      description: Copyright information
     Appreciations_Resource_Object:
       required:
       - id
@@ -1089,18 +1752,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Users_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     UsageRules_Resource_Object:
       required:
       - id
@@ -1118,12 +1769,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Shares_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        sharedResources:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Terms_Resource_Object:
       required:
       - id
@@ -1141,6 +1786,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserCollectionAlbums_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1149,6 +1800,32 @@ components:
         addedAt:
           type: string
           format: date-time
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
     Tracks_Resource_Object:
       required:
       - id
@@ -1184,32 +1861,22 @@ components:
           type: string
           description: Resource type
           example: tracks
-    File_Status:
+    UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
-      - moderationFileStatus
-      - technicalFileStatus
+      - id
+      - type
       type: object
       properties:
-        moderationFileStatus:
+        id:
           type: string
-          description: Moderation status for file
-          enum:
-          - NOT_MODERATED
-          - SCANNING
-          - FLAGGED
-          - TAKEN_DOWN
-          - OK
-          - ERROR
-        technicalFileStatus:
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
+        type:
           type: string
-          description: Technical status for file
-          enum:
-          - UPLOAD_REQUESTED
-          - PROCESSING
-          - OK
-          - ERROR
-          - DELETED
-      description: File status
+          description: Resource type
+          example: tracks
     Users_Resource_Object:
       required:
       - id
@@ -1224,22 +1891,6 @@ components:
           example: '12345'
         type:
           minLength: 1
-          type: string
-          description: Resource type
-          example: tracks
-    UserCollectionSaveForLaters_Items_Resource_Identifier:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
-        type:
           type: string
           description: Resource type
           example: tracks
@@ -1298,6 +1949,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Resource_Identifier'
+        links:
+          $ref: '#/components/schemas/Links'
+    Videos_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Videos_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
     Artists_Followers_Resource_Identifier:
@@ -3138,6 +3801,26 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    Videos_Relationships:
+      properties:
+        albums:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        artists:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        credits:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        providers:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        replacement:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
+        similarVideos:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        suggestedVideos:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        thumbnailArt:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        usageRules:
+          $ref: '#/components/schemas/Single_Relationship_Data_Document'
     ArtistClaims_Attributes:
       required:
       - artistId
@@ -3188,26 +3871,6 @@ components:
           - CANCELLED
           - NAME_MISMATCH
           - CLAIMED_ARTIST_MISMATCH
-    Videos_Relationships:
-      properties:
-        albums:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        artists:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        credits:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        providers:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        replacement:
-          $ref: '#/components/schemas/Single_Relationship_Data_Document'
-        similarVideos:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        suggestedVideos:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        thumbnailArt:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        usageRules:
-          $ref: '#/components/schemas/Single_Relationship_Data_Document'
     UserCollectionArtists_Items_Multi_Relationship_Data_Document:
       required:
       - links
@@ -3347,6 +4010,19 @@ components:
           description: Id used for reporting user events
           format: uuid
           example: 83c92ac0-b8e3-4e28-9e27-07909dcde1e5
+    UserCollectionAlbums_Attributes:
+      required:
+      - numberOfItems
+      type: object
+      properties:
+        lastModifiedAt:
+          type: string
+          description: When the collection was last modified
+          format: date-time
+        numberOfItems:
+          type: integer
+          description: Number of items in the collection
+          format: int32
     Lyrics_Resource_Object:
       required:
       - id
@@ -3783,6 +4459,17 @@ components:
           type: integer
           description: Unique listeners
           format: int32
+    Videos_Single_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Providers_Attributes:
       required:
       - name
@@ -4497,22 +5184,6 @@ components:
           example: tracks
     UserCollections_Attributes:
       type: object
-    Albums_Items_Resource_Identifier:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/Albums_Items_Resource_Identifier_Meta'
-        type:
-          type: string
-          description: Resource type
-          example: tracks
     Videos_Attributes:
       required:
       - duration
@@ -4570,6 +5241,22 @@ components:
           type: string
           description: Video version, complements title
           example: original, mix etc
+    Albums_Items_Resource_Identifier:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/Albums_Items_Resource_Identifier_Meta'
+        type:
+          type: string
+          description: Resource type
+          example: tracks
     ArtistBiographies_Relationships:
       properties:
         owners:
@@ -4629,19 +5316,20 @@ components:
           type: string
           description: Resource type
           example: tracks
-    UserCollectionAlbums_Attributes:
+    Videos_Multi_Resource_Data_Document:
       required:
-      - numberOfItems
+      - data
+      - links
       type: object
       properties:
-        lastModifiedAt:
-          type: string
-          description: When the collection was last modified
-          format: date-time
-        numberOfItems:
-          type: integer
-          description: Number of items in the collection
-          format: int32
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Videos_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     DynamicPages_Resource_Object:
       required:
       - id

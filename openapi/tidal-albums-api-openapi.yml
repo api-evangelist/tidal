@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms albums API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,25 +8,347 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: albums
 paths:
-  /users/{id}:
+  /albums:
     get:
-      description: Retrieves single user by id.
+      description: Retrieves multiple albums by available filters, or without if applicable.
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
-        example: me
-        in: path
-        name: id
-        required: true
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
         schema:
           type: string
+      - description: Values prefixed with "-" are sorted descending; values without it are sorted ascending.
+        in: query
+        name: sort
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: createdAt
+            enum:
+            - createdAt
+            - -createdAt
+            - title
+            - -title
+            default: -createdAt
+            x-enum-varnames:
+            - CreatedAtAsc
+            - CreatedAtDesc
+            - TitleAsc
+            - TitleDesc
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules'
+        example: albumStatistics
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: albumStatistics
+      - description: 'List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. (e.g. `196589525444`)'
+        in: query
+        name: filter[barcodeId]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Album id (e.g. `251380836`)
+        in: query
+        name: filter[id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: User id. Use `me` for the authenticated user
+        in: query
+        name: filter[owners.id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
       responses:
         '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/Albums_Multi_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get multiple albums.
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    post:
+      description: Creates a new album.
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/AlbumsCreateOperation_Payload'
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Create single album.
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /albums/{id}:
+    delete:
+      description: Deletes existing album.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Delete single album.
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    get:
+      description: Retrieves single album by id.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules'
+        example: albumStatistics
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: albumStatistics
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get single album.
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    patch:
+      description: Updates existing album.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/AlbumsUpdateOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Update single album.
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /albums/{id}/relationships/albumStatistics:
+    get:
+      description: Retrieves albumStatistics relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: albumStatistics'
+        example: albumStatistics
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: albumStatistics
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_Single_Relationship_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -47,10 +369,924 @@ paths:
       security:
       - Authorization_Code_PKCE:
         - r_usr
-        - user.read
-      summary: Get single user.
+      summary: Get albumStatistics relationship ("to-one").
       tags:
-      - users
+      - albums
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /albums/{id}/relationships/artists:
+    get:
+      description: Retrieves artists relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: artists'
+        example: artists
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: artists
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get artists relationship ("to-many").
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /albums/{id}/relationships/coverArt:
+    get:
+      description: Retrieves coverArt relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: coverArt'
+        example: coverArt
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: coverArt
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get coverArt relationship ("to-many").
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    patch:
+      description: Updates coverArt relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/AlbumsCoverArtRelationshipUpdateOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Update coverArt relationship ("to-many").
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /albums/{id}/relationships/genres:
+    get:
+      description: Retrieves genres relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: genres'
+        example: genres
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: genres
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get genres relationship ("to-many").
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /albums/{id}/relationships/items:
+    get:
+      description: Retrieves items relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: items'
+        example: items
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: items
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_Items_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get items relationship ("to-many").
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    patch:
+      description: Updates items relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/AlbumsItemsRelationshipUpdateOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Update items relationship ("to-many").
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /albums/{id}/relationships/owners:
+    get:
+      description: Retrieves owners relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get owners relationship ("to-many").
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /albums/{id}/relationships/priceConfig:
+    get:
+      description: Retrieves priceConfig relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: priceConfig'
+        example: priceConfig
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: priceConfig
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get priceConfig relationship ("to-one").
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /albums/{id}/relationships/providers:
+    get:
+      description: Retrieves providers relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: providers'
+        example: providers
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: providers
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get providers relationship ("to-many").
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /albums/{id}/relationships/replacement:
+    get:
+      description: Retrieves replacement relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: replacement'
+        example: replacement
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: replacement
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get replacement relationship ("to-one").
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /albums/{id}/relationships/shares:
+    get:
+      description: Retrieves shares relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: shares'
+        example: shares
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: shares
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get shares relationship ("to-many").
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /albums/{id}/relationships/similarAlbums:
+    get:
+      description: Retrieves similarAlbums relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: similarAlbums'
+        example: similarAlbums
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: similarAlbums
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get similarAlbums relationship ("to-many").
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+  /albums/{id}/relationships/suggestedCoverArts:
+    get:
+      description: Retrieves suggestedCoverArts relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: suggestedCoverArts'
+        example: suggestedCoverArts
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: suggestedCoverArts
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_SuggestedCoverArts_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get suggestedCoverArts relationship ("to-many").
+      tags:
+      - albums
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /albums/{id}/relationships/usageRules:
+    get:
+      description: Retrieves usageRules relationship.
+      parameters:
+      - description: Album id
+        example: '251380836'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: usageRules'
+        example: usageRules
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: usageRules
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Albums_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get usageRules relationship ("to-one").
+      tags:
+      - albums
       x-path-item-properties:
         required-access-tier: THIRD_PARTY
 components:
@@ -259,6 +1495,18 @@ components:
           type: string
           description: Resource type
           example: tracks
+    AlbumsCoverArtRelationshipUpdateOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - artworks
     Comments_Relationships:
       properties:
         ownerProfiles:
@@ -286,6 +1534,15 @@ components:
           type: string
           description: Resource type
           example: tracks
+    AlbumsItemsRelationshipUpdateOperation_Payload_Meta:
+      required:
+      - positionIndex
+      type: object
+      properties:
+        positionIndex:
+          type: integer
+          description: 1-based index
+          format: int32
     SearchSuggestions_Suggestions:
       required:
       - query
@@ -552,6 +1809,18 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Albums_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Albums_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Artwork_File:
       required:
       - href
@@ -604,6 +1873,20 @@ components:
           type: string
           description: Resource type
           example: tracks
+    AlbumsItemsRelationshipUpdateOperation_Payload:
+      required:
+      - data
+      - meta
+      type: object
+      properties:
+        data:
+          maxItems: 1
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/AlbumsItemsRelationshipUpdateOperation_Payload_Data'
+        meta:
+          $ref: '#/components/schemas/AlbumsItemsRelationshipUpdateOperation_Payload_Meta'
     UserCollectionFolders_Attributes:
       required:
       - collectionType
@@ -1049,6 +2332,39 @@ components:
           type: string
           description: Resource type
           example: tracks
+    AlbumsUpdateOperation_Payload_Data_Attributes:
+      type: object
+      properties:
+        accessType:
+          type: string
+          description: Access type
+          example: PRIVATE
+          enum:
+          - PUBLIC
+          - UNLISTED
+          - PRIVATE
+        albumType:
+          type: string
+          enum:
+          - ALBUM
+          - EP
+          - SINGLE
+        copyright:
+          $ref: '#/components/schemas/Copyright'
+        explicit:
+          type: boolean
+          description: Explicit content
+        explicitLyrics:
+          type: boolean
+          description: 'Explicit content. Deprecated: use ''explicit'' instead. This field will be removed in a future version.'
+          deprecated: true
+        releaseDate:
+          type: string
+          format: date
+        title:
+          type: string
+        version:
+          type: string
     PriceConfigurations_Attributes:
       required:
       - currency
@@ -1089,18 +2405,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Users_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     UsageRules_Resource_Object:
       required:
       - id
@@ -1118,12 +2422,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Shares_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        sharedResources:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Terms_Resource_Object:
       required:
       - id
@@ -1141,6 +2439,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserCollectionAlbums_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1149,6 +2453,32 @@ components:
         addedAt:
           type: string
           format: date-time
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
     Tracks_Resource_Object:
       required:
       - id
@@ -1184,32 +2514,22 @@ components:
           type: string
           description: Resource type
           example: tracks
-    File_Status:
+    UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
-      - moderationFileStatus
-      - technicalFileStatus
+      - id
+      - type
       type: object
       properties:
-        moderationFileStatus:
+        id:
           type: string
-          description: Moderation status for file
-          enum:
-          - NOT_MODERATED
-          - SCANNING
-          - FLAGGED
-          - TAKEN_DOWN
-          - OK
-          - ERROR
-        technicalFileStatus:
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
+        type:
           type: string
-          description: Technical status for file
-          enum:
-          - UPLOAD_REQUESTED
-          - PROCESSING
-          - OK
-          - ERROR
-          - DELETED
-      description: File status
+          description: Resource type
+          example: tracks
     Users_Resource_Object:
       required:
       - id
@@ -1227,22 +2547,19 @@ components:
           type: string
           description: Resource type
           example: tracks
-    UserCollectionSaveForLaters_Items_Resource_Identifier:
+    Albums_Multi_Relationship_Data_Document:
       required:
-      - id
-      - type
+      - links
       type: object
       properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
-        type:
-          type: string
-          description: Resource type
-          example: tracks
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Installations_OfflineInventory_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1615,6 +2932,20 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Albums_Multi_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Albums_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     SearchHistoryEntries_Attributes:
       required:
       - highlights
@@ -1680,6 +3011,17 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Albums_Single_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Comments_Resource_Object:
       required:
       - id
@@ -2327,6 +3669,28 @@ components:
         meta:
           $ref: '#/components/schemas/File_Upload_Link_Meta'
       description: Upload link
+    AlbumsCoverArtRelationshipUpdateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 1
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/AlbumsCoverArtRelationshipUpdateOperation_Payload_Data'
+    AlbumsCreateOperation_Payload_Data_Relationships_Artists:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 1
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/AlbumsCreateOperation_Payload_Data_Relationships_Artists_Data'
     SearchHistoryEntries_Resource_Object:
       required:
       - id
@@ -2462,6 +3826,19 @@ components:
         uploadLink:
           $ref: '#/components/schemas/File_Upload_Link'
       description: Artwork source file
+    AlbumsItemsRelationshipUpdateOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - tracks
+          - videos
     StripeDashboardLinks_Relationships:
       properties:
         owners:
@@ -2554,6 +3931,22 @@ components:
       properties:
         dashboardLink:
           $ref: '#/components/schemas/Link_Object'
+    AlbumsUpdateOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/AlbumsUpdateOperation_Payload_Data_Attributes'
+        id:
+          type: string
+        relationships:
+          $ref: '#/components/schemas/AlbumsUpdateOperation_Payload_Data_Relationships'
+        type:
+          type: string
+          enum:
+          - albums
     UserCollectionSaveForLaters_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -2852,6 +4245,11 @@ components:
           $ref: '#/components/schemas/Artwork_VisualMetadata'
     UserCollectionPlaylists_Attributes:
       type: object
+    AlbumsUpdateOperation_Payload_Data_Relationships:
+      type: object
+      properties:
+        genres:
+          $ref: '#/components/schemas/AlbumsUpdateOperation_Payload_Data_Relationships_Genres'
     Reactions_Attributes:
       required:
       - createdAt
@@ -3138,6 +4536,18 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    AlbumsCreateOperation_Payload_Data_Relationships_Artists_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - artists
     ArtistClaims_Attributes:
       required:
       - artistId
@@ -3250,6 +4660,13 @@ components:
           type: string
           description: Resource type
           example: tracks
+    AlbumsUpdateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AlbumsUpdateOperation_Payload_Data'
     OfflineTasks_Relationships:
       properties:
         collection:
@@ -3383,6 +4800,17 @@ components:
           - PROCESSING
           - OK
       description: Color information extracted from artwork
+    AlbumsCreateOperation_Payload_Data_Relationships_Genres:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 3
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/AlbumsCreateOperation_Payload_Data_Relationships_Genres_Data'
     ArtistRoles_Attributes:
       required:
       - name
@@ -3457,6 +4885,18 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    AlbumsUpdateOperation_Payload_Data_Relationships_Genres_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - genres
     UserCollectionSaveForLaters_Items_Multi_Relationship_Data_Document:
       required:
       - links
@@ -3783,6 +5223,17 @@ components:
           type: integer
           description: Unique listeners
           format: int32
+    AlbumsUpdateOperation_Payload_Data_Relationships_Genres:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 3
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/AlbumsUpdateOperation_Payload_Data_Relationships_Genres_Data'
     Providers_Attributes:
       required:
       - name
@@ -3833,6 +5284,15 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    AlbumsCreateOperation_Payload_Data_Relationships:
+      required:
+      - artists
+      type: object
+      properties:
+        artists:
+          $ref: '#/components/schemas/AlbumsCreateOperation_Payload_Data_Relationships_Artists'
+        genres:
+          $ref: '#/components/schemas/AlbumsCreateOperation_Payload_Data_Relationships_Genres'
     UserRecommendations_Relationships:
       properties:
         discoveryMixes:
@@ -4233,6 +5693,13 @@ components:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
         past:
           $ref: '#/components/schemas/PlayQueues_Past_Multi_Relationship_Data_Document'
+    AlbumsCreateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AlbumsCreateOperation_Payload_Data'
     Installations_OfflineInventory_Multi_Relationship_Data_Document:
       required:
       - links
@@ -4246,6 +5713,44 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    AlbumsCreateOperation_Payload_Data_Attributes:
+      required:
+      - title
+      type: object
+      properties:
+        albumType:
+          type: string
+          enum:
+          - ALBUM
+          - EP
+          - SINGLE
+        barcodeId:
+          maxLength: 13
+          minLength: 12
+          type: string
+          description: Barcode id (EAN-13 or UPC-A)
+        copyright:
+          $ref: '#/components/schemas/Copyright'
+        explicit:
+          type: boolean
+          description: Explicit content
+        explicitLyrics:
+          type: boolean
+          description: 'Explicit content. Deprecated: use ''explicit'' instead. This field will be removed in a future version.'
+          deprecated: true
+        releaseDate:
+          type: string
+          format: date
+        title:
+          type: string
+        upc:
+          maxLength: 13
+          minLength: 12
+          type: string
+          description: 'Barcode id (EAN-13 or UPC-A). Deprecated: use ''barcodeId'' instead. This field will be removed in a future version.'
+          deprecated: true
+        version:
+          type: string
     UserCollectionFolders_Items_Resource_Identifier:
       required:
       - id
@@ -4474,6 +5979,21 @@ components:
           type: string
           description: Resource type
           example: tracks
+    AlbumsCreateOperation_Payload_Data:
+      required:
+      - attributes
+      - relationships
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/AlbumsCreateOperation_Payload_Data_Attributes'
+        relationships:
+          $ref: '#/components/schemas/AlbumsCreateOperation_Payload_Data_Relationships'
+        type:
+          type: string
+          enum:
+          - albums
     AlbumStatistics_Relationships:
       properties:
         owners:
@@ -4495,6 +6015,18 @@ components:
           type: string
           description: Resource type
           example: tracks
+    AlbumsCreateOperation_Payload_Data_Relationships_Genres_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - genres
     UserCollections_Attributes:
       type: object
     Albums_Items_Resource_Identifier:

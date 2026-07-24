@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms trackManifests API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,30 +8,81 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: trackManifests
 paths:
-  /users/{id}:
+  /trackManifests/{id}:
     get:
-      description: Retrieves single user by id.
+      description: Retrieves single trackManifest by id.
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
-        example: me
+      - description: Track manifest id
+        example: '123456'
         in: path
         name: id
         required: true
         schema:
           type: string
+      - in: query
+        name: manifestType
+        required: true
+        schema:
+          type: string
+          enum:
+          - HLS
+          - MPEG_DASH
+      - in: query
+        name: formats
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - HEAACV1
+            - AACLC
+            - FLAC
+            - FLAC_HIRES
+            - EAC3_JOC
+      - in: query
+        name: uriScheme
+        required: true
+        schema:
+          type: string
+          enum:
+          - HTTPS
+          - DATA
+      - in: query
+        name: usage
+        required: true
+        schema:
+          type: string
+          enum:
+          - PLAYBACK
+          - DOWNLOAD
+      - in: query
+        name: adaptive
+        required: true
+        schema:
+          type: boolean
+      - description: Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted.
+        in: query
+        name: shareCode
+        required: false
+        schema:
+          type: string
+          example: xyz
       responses:
         '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/TrackManifests_Single_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
+        '403':
+          $ref: '#/components/responses/TrackManifestsReadById403Response'
         '404':
-          $ref: '#/components/responses/Default404Response'
+          $ref: '#/components/responses/TrackManifestsReadById404Response'
         '405':
           $ref: '#/components/responses/Default405Response'
         '406':
@@ -45,12 +96,13 @@ paths:
         '503':
           $ref: '#/components/responses/Default503Response'
       security:
+      - Client_Credentials: []
       - Authorization_Code_PKCE:
+        - playback
         - r_usr
-        - user.read
-      summary: Get single user.
+      summary: Get single trackManifest.
       tags:
-      - users
+      - trackManifests
       x-path-item-properties:
         required-access-tier: THIRD_PARTY
 components:
@@ -142,24 +194,23 @@ components:
           type: string
           description: Resource type
           example: tracks
+    TrackManifests_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/TrackManifests_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Artists_Followers_Resource_Identifier_Meta:
       type: object
       properties:
         viewer:
           $ref: '#/components/schemas/Artists_Followers_Resource_Meta_ViewerContext'
-    UserCollectionTracks_Attributes:
-      required:
-      - numberOfItems
-      type: object
-      properties:
-        lastModifiedAt:
-          type: string
-          description: When the collection was last modified
-          format: date-time
-        numberOfItems:
-          type: integer
-          description: Number of items in the collection
-          format: int32
     Terms_Attributes:
       required:
       - contentLink
@@ -240,6 +291,19 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    UserCollectionTracks_Attributes:
+      required:
+      - numberOfItems
+      type: object
+      properties:
+        lastModifiedAt:
+          type: string
+          description: When the collection was last modified
+          format: date-time
+        numberOfItems:
+          type: integer
+          description: Number of items in the collection
+          format: int32
     AlbumStatistics_Resource_Object:
       required:
       - id
@@ -563,6 +627,16 @@ components:
         meta:
           $ref: '#/components/schemas/Artwork_File_Meta'
       description: Artwork files
+    AudioNormalizationData:
+      type: object
+      properties:
+        peakAmplitude:
+          type: number
+          format: float
+        replayGain:
+          type: number
+          format: float
+      description: Track normalization data
     Links:
       required:
       - self
@@ -578,16 +652,6 @@ components:
           type: string
           description: Link to self
           example: /artists/xyz/relationships/tracks
-    AudioNormalizationData:
-      type: object
-      properties:
-        peakAmplitude:
-          type: number
-          format: float
-        replayGain:
-          type: number
-          format: float
-      description: Track normalization data
     UserCollectionArtists_Items_Resource_Identifier:
       required:
       - id
@@ -1089,18 +1153,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Users_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     UsageRules_Resource_Object:
       required:
       - id
@@ -1118,12 +1170,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Shares_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        sharedResources:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Terms_Resource_Object:
       required:
       - id
@@ -1141,6 +1187,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserCollectionAlbums_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1149,6 +1201,32 @@ components:
         addedAt:
           type: string
           format: date-time
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
     Tracks_Resource_Object:
       required:
       - id
@@ -1184,32 +1262,22 @@ components:
           type: string
           description: Resource type
           example: tracks
-    File_Status:
+    UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
-      - moderationFileStatus
-      - technicalFileStatus
+      - id
+      - type
       type: object
       properties:
-        moderationFileStatus:
+        id:
           type: string
-          description: Moderation status for file
-          enum:
-          - NOT_MODERATED
-          - SCANNING
-          - FLAGGED
-          - TAKEN_DOWN
-          - OK
-          - ERROR
-        technicalFileStatus:
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
+        type:
           type: string
-          description: Technical status for file
-          enum:
-          - UPLOAD_REQUESTED
-          - PROCESSING
-          - OK
-          - ERROR
-          - DELETED
-      description: File status
+          description: Resource type
+          example: tracks
     Users_Resource_Object:
       required:
       - id
@@ -1224,22 +1292,6 @@ components:
           example: '12345'
         type:
           minLength: 1
-          type: string
-          description: Resource type
-          example: tracks
-    UserCollectionSaveForLaters_Items_Resource_Identifier:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
-        type:
           type: string
           description: Resource type
           example: tracks

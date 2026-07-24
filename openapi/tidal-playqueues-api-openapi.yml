@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms playQueues API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,25 +8,42 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: playQueues
 paths:
-  /users/{id}:
+  /playQueues:
     get:
-      description: Retrieves single user by id.
+      description: Retrieves multiple playQueues by available filters, or without if applicable.
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
-        example: me
-        in: path
-        name: id
-        required: true
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
         schema:
           type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: current, future, owners, past'
+        example: current
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: current
+      - description: User id. Use `me` for the authenticated user
+        in: query
+        name: filter[owners.id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
       responses:
         '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/PlayQueues_Multi_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -47,12 +64,598 @@ paths:
       security:
       - Authorization_Code_PKCE:
         - r_usr
-        - user.read
-      summary: Get single user.
+      summary: Get multiple playQueues.
       tags:
-      - users
+      - playQueues
       x-path-item-properties:
-        required-access-tier: THIRD_PARTY
+        required-access-tier: INTERNAL
+    post:
+      description: Creates a new playQueue.
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/PlayQueuesCreateOperation_Payload'
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/PlayQueues_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Create single playQueue.
+      tags:
+      - playQueues
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /playQueues/{id}:
+    delete:
+      description: Deletes existing playQueue.
+      parameters:
+      - description: Play queue id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Delete single playQueue.
+      tags:
+      - playQueues
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    get:
+      description: Retrieves single playQueue by id.
+      parameters:
+      - description: Play queue id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: current, future, owners, past'
+        example: current
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: current
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/PlayQueues_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get single playQueue.
+      tags:
+      - playQueues
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    patch:
+      description: Updates existing playQueue.
+      parameters:
+      - description: Play queue id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/PlayQueuesUpdateOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Update single playQueue.
+      tags:
+      - playQueues
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /playQueues/{id}/relationships/current:
+    get:
+      description: Retrieves current relationship.
+      parameters:
+      - description: Play queue id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: current'
+        example: current
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: current
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/PlayQueues_Current_Single_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get current relationship ("to-one").
+      tags:
+      - playQueues
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    patch:
+      description: Updates current relationship.
+      parameters:
+      - description: Play queue id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/PlayQueuesCurrentRelationshipUpdateOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Update current relationship ("to-one").
+      tags:
+      - playQueues
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /playQueues/{id}/relationships/future:
+    delete:
+      description: Deletes item(s) from future relationship.
+      parameters:
+      - description: Play queue id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/PlayQueuesFutureRelationshipRemoveOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Delete from future relationship ("to-many").
+      tags:
+      - playQueues
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    get:
+      description: Retrieves future relationship.
+      parameters:
+      - description: Play queue id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: future'
+        example: future
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: future
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/PlayQueues_Future_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get future relationship ("to-many").
+      tags:
+      - playQueues
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    patch:
+      description: Updates future relationship.
+      parameters:
+      - description: Play queue id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/PlayQueuesFutureRelationshipUpdateOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Update future relationship ("to-many").
+      tags:
+      - playQueues
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+    post:
+      description: Adds item(s) to future relationship.
+      parameters:
+      - description: Play queue id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/PlayQueuesFutureRelationshipAddOperation_Payload'
+      responses:
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Add to future relationship ("to-many").
+      tags:
+      - playQueues
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /playQueues/{id}/relationships/owners:
+    get:
+      description: Retrieves owners relationship.
+      parameters:
+      - description: Play queue id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: owners'
+        example: owners
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: owners
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/PlayQueues_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get owners relationship ("to-many").
+      tags:
+      - playQueues
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /playQueues/{id}/relationships/past:
+    get:
+      description: Retrieves past relationship.
+      parameters:
+      - description: Play queue id
+        example: 550e8400-e29b-41d4-a716-446655440000
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: past'
+        example: past
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: past
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/PlayQueues_Past_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get past relationship ("to-many").
+      tags:
+      - playQueues
+      x-path-item-properties:
+        required-access-tier: INTERNAL
 components:
   schemas:
     TrackFiles_Attributes:
@@ -346,6 +949,13 @@ components:
         addedAt:
           type: string
           format: date-time
+    PlayQueuesCreateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/PlayQueuesCreateOperation_Payload_Data'
     UserCollections_Artists_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -604,6 +1214,13 @@ components:
           type: string
           description: Resource type
           example: tracks
+    PlayQueuesCurrentRelationshipUpdateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data'
     UserCollectionFolders_Attributes:
       required:
       - collectionType
@@ -1089,18 +1706,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Users_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     UsageRules_Resource_Object:
       required:
       - id
@@ -1118,12 +1723,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Shares_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        sharedResources:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Terms_Resource_Object:
       required:
       - id
@@ -1141,6 +1740,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserCollectionAlbums_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1149,6 +1754,32 @@ components:
         addedAt:
           type: string
           format: date-time
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
     Tracks_Resource_Object:
       required:
       - id
@@ -1184,32 +1815,22 @@ components:
           type: string
           description: Resource type
           example: tracks
-    File_Status:
+    UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
-      - moderationFileStatus
-      - technicalFileStatus
+      - id
+      - type
       type: object
       properties:
-        moderationFileStatus:
+        id:
           type: string
-          description: Moderation status for file
-          enum:
-          - NOT_MODERATED
-          - SCANNING
-          - FLAGGED
-          - TAKEN_DOWN
-          - OK
-          - ERROR
-        technicalFileStatus:
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
+        type:
           type: string
-          description: Technical status for file
-          enum:
-          - UPLOAD_REQUESTED
-          - PROCESSING
-          - OK
-          - ERROR
-          - DELETED
-      description: File status
+          description: Resource type
+          example: tracks
     Users_Resource_Object:
       required:
       - id
@@ -1224,22 +1845,6 @@ components:
           example: '12345'
         type:
           minLength: 1
-          type: string
-          description: Resource type
-          example: tracks
-    UserCollectionSaveForLaters_Items_Resource_Identifier:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
-        type:
           type: string
           description: Resource type
           example: tracks
@@ -1615,6 +2220,22 @@ components:
           type: string
           description: Resource type
           example: tracks
+    PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data:
+      required:
+      - id
+      - meta
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        meta:
+          $ref: '#/components/schemas/PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data_Meta'
+        type:
+          type: string
+          enum:
+          - tracks
+          - videos
     SearchHistoryEntries_Attributes:
       required:
       - highlights
@@ -1773,6 +2394,17 @@ components:
           type: integer
           description: Number of items in the collection
           format: int32
+    PlayQueuesFutureRelationshipRemoveOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayQueuesFutureRelationshipRemoveOperation_Payload_Data'
     Artists_TrackProviders_Resource_Identifier_Meta:
       required:
       - numberOfTracks
@@ -1998,6 +2630,13 @@ components:
           type: string
           description: Genre name
           example: pop
+    PlayQueuesFutureRelationshipRemoveOperation_Payload_Data_Meta:
+      required:
+      - itemId
+      type: object
+      properties:
+        itemId:
+          type: string
     TrackSourceFiles_Attributes:
       required:
       - md5Hash
@@ -2223,6 +2862,29 @@ components:
           description: URL to download the content from
         meta:
           $ref: '#/components/schemas/Download_Link_Meta'
+    PlayQueuesFutureRelationshipUpdateOperation_Payload_Meta:
+      required:
+      - positionBefore
+      type: object
+      properties:
+        positionBefore:
+          type: string
+    PlayQueuesFutureRelationshipUpdateOperation_Payload_Data:
+      required:
+      - id
+      - meta
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        meta:
+          $ref: '#/components/schemas/PlayQueuesFutureRelationshipUpdateOperation_Payload_Data_Meta'
+        type:
+          type: string
+          enum:
+          - tracks
+          - videos
     UserCollectionPlaylists_Resource_Object:
       required:
       - id
@@ -2512,6 +3174,13 @@ components:
           type: string
           description: Resource type
           example: tracks
+    PlayQueuesFutureRelationshipUpdateOperation_Payload_Data_Meta:
+      required:
+      - itemId
+      type: object
+      properties:
+        itemId:
+          type: string
     Albums_SuggestedCoverArts_Resource_Identifier_Meta:
       required:
       - backgroundColor
@@ -2850,6 +3519,18 @@ components:
           $ref: '#/components/schemas/Artwork_SourceFile'
         visualMetadata:
           $ref: '#/components/schemas/Artwork_VisualMetadata'
+    PlayQueues_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/PlayQueues_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     UserCollectionPlaylists_Attributes:
       type: object
     Reactions_Attributes:
@@ -2866,6 +3547,22 @@ components:
         emoji:
           type: string
           description: The type of reaction representing an emoji
+    PlayQueuesFutureRelationshipRemoveOperation_Payload_Data:
+      required:
+      - id
+      - meta
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        meta:
+          $ref: '#/components/schemas/PlayQueuesFutureRelationshipRemoveOperation_Payload_Data_Meta'
+        type:
+          type: string
+          enum:
+          - tracks
+          - videos
     Artists_Following_Multi_Relationship_Data_Document:
       required:
       - links
@@ -3125,6 +3822,25 @@ components:
           $ref: '#/components/schemas/Resource_Identifier'
         links:
           $ref: '#/components/schemas/Links'
+    PlayQueuesFutureRelationshipAddOperation_Payload_Meta:
+      required:
+      - mode
+      type: object
+      properties:
+        batchId:
+          type: string
+          format: uuid
+        legacySource:
+          $ref: '#/components/schemas/LegacySource'
+        mode:
+          type: string
+          enum:
+          - ADD_TO_FRONT
+          - ADD_TO_BACK
+          - ADD_BEFORE
+          - REPLACE_ALL
+        positionBefore:
+          type: string
     UserNewReleaseMixes_Attributes:
       type: object
     PlayQueues_Current_Single_Relationship_Data_Document:
@@ -3138,6 +3854,20 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    PlayQueuesFutureRelationshipUpdateOperation_Payload:
+      required:
+      - data
+      - meta
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayQueuesFutureRelationshipUpdateOperation_Payload_Data'
+        meta:
+          $ref: '#/components/schemas/PlayQueuesFutureRelationshipUpdateOperation_Payload_Meta'
     ArtistClaims_Attributes:
       required:
       - artistId
@@ -3250,6 +3980,21 @@ components:
           type: string
           description: Resource type
           example: tracks
+    PlayQueuesFutureRelationshipAddOperation_Payload_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - tracks
+          - videos
+          - albums
+          - playlists
     OfflineTasks_Relationships:
       properties:
         collection:
@@ -3288,6 +4033,21 @@ components:
           - IN_PROGRESS
           - RESOLVED
           - REJECTED
+    PlayQueuesUpdateOperation_Payload_Data:
+      required:
+      - attributes
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/PlayQueuesUpdateOperation_Payload_Data_Attributes'
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - playQueues
     UserCollectionSaveForLaters_Resource_Object:
       required:
       - id
@@ -3442,6 +4202,17 @@ components:
           type: string
           description: Resource type
           example: tracks
+    PlayQueuesUpdateOperation_Payload_Data_Attributes:
+      type: object
+      properties:
+        repeat:
+          type: string
+          enum:
+          - NONE
+          - ONE
+          - BATCH
+        shuffled:
+          type: boolean
     UserDiscoveryMixes_Attributes:
       type: object
     UserCollections_Albums_Multi_Relationship_Data_Document:
@@ -3532,6 +4303,13 @@ components:
           type: string
           description: Resource type
           example: tracks
+    PlayQueuesUpdateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/PlayQueuesUpdateOperation_Payload_Data'
     UserCollections_Albums_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -4309,6 +5087,19 @@ components:
           type: string
           description: Resource type
           example: tracks
+    PlayQueuesFutureRelationshipAddOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 20
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayQueuesFutureRelationshipAddOperation_Payload_Data'
+        meta:
+          $ref: '#/components/schemas/PlayQueuesFutureRelationshipAddOperation_Payload_Meta'
     UserCollections_Tracks_Multi_Relationship_Data_Document:
       required:
       - links
@@ -4391,6 +5182,13 @@ components:
           type: array
           items:
             type: string
+    PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data_Meta:
+      required:
+      - itemId
+      type: object
+      properties:
+        itemId:
+          type: string
     Purchases_Relationships:
       properties:
         owners:
@@ -4403,6 +5201,20 @@ components:
           $ref: '#/components/schemas/UserCollectionAlbums_Items_Multi_Relationship_Data_Document'
         owners:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    PlayQueues_Multi_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayQueues_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     UserCollectionVideos_Relationships:
       properties:
         items:
@@ -4428,6 +5240,15 @@ components:
           type: string
           description: Resource type
           example: tracks
+    PlayQueuesCreateOperation_Payload_Data:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - playQueues
     ThirdPartyLyricsProvider:
       required:
       - commonTrackId
@@ -4593,6 +5414,19 @@ components:
           $ref: '#/components/schemas/Link_Object'
         youTubeMusic:
           $ref: '#/components/schemas/Link_Object'
+    PlayQueues_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Clients_Resource_Object:
       required:
       - id

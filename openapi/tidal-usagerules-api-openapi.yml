@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: TIDAL Catalog acceptedTerms users API
+  title: TIDAL Catalog acceptedTerms usageRules API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,25 +8,26 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: users
+- name: usageRules
 paths:
-  /users/{id}:
+  /usageRules:
     get:
-      description: Retrieves single user by id.
+      description: Retrieves multiple usageRules by available filters, or without if applicable.
       parameters:
-      - description: User id. Use `me` for the authenticated user's resource
-        example: me
-        in: path
-        name: id
-        required: true
+      - description: List of usage rules IDs (e.g. `VFJBQ0tTOjEyMzpOTw`)
+        in: query
+        name: filter[id]
+        required: false
         schema:
-          type: string
+          type: array
+          items:
+            type: string
       responses:
         '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/Users_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/UsageRules_Multi_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -45,12 +46,97 @@ paths:
         '503':
           $ref: '#/components/responses/Default503Response'
       security:
-      - Authorization_Code_PKCE:
-        - r_usr
-        - user.read
-      summary: Get single user.
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get multiple usageRules.
       tags:
-      - users
+      - usageRules
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+    post:
+      description: Creates a new usageRule.
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UsageRulesCreateOperation_Payload'
+      responses:
+        '201':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/UsageRules_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '409':
+          $ref: '#/components/responses/Idempotency409Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '422':
+          $ref: '#/components/responses/Idempotency422Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE:
+        - w_usr
+      summary: Create single usageRule.
+      tags:
+      - usageRules
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+  /usageRules/{id}:
+    get:
+      description: Retrieves single usageRule by id.
+      parameters:
+      - description: Usage rules id
+        example: VFJBQ0tTOjEyMzpOTw
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/UsageRules_Single_Resource_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get single usageRule.
+      tags:
+      - usageRules
       x-path-item-properties:
         required-access-tier: THIRD_PARTY
 components:
@@ -240,6 +326,20 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    UsageRulesCreateOperation_Payload_Subject:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - tracks
+          - albums
+          - videos
     AlbumStatistics_Resource_Object:
       required:
       - id
@@ -970,6 +1070,20 @@ components:
           type: string
           description: Credit role
           example: Vocals
+    UsageRules_Multi_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsageRules_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Copyright:
       required:
       - text
@@ -980,6 +1094,12 @@ components:
           minLength: 1
           type: string
       description: Copyright information
+    UserCollectionFolders_Relationships:
+      properties:
+        items:
+          $ref: '#/components/schemas/UserCollectionFolders_Items_Multi_Relationship_Data_Document'
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Appreciations_Resource_Object:
       required:
       - id
@@ -997,12 +1117,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    UserCollectionFolders_Relationships:
-      properties:
-        items:
-          $ref: '#/components/schemas/UserCollectionFolders_Items_Multi_Relationship_Data_Document'
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Playlists_Items_Multi_Relationship_Data_Document:
       required:
       - links
@@ -1089,18 +1203,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Users_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Users_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     UsageRules_Resource_Object:
       required:
       - id
@@ -1118,12 +1220,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    Shares_Relationships:
-      properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-        sharedResources:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     Terms_Resource_Object:
       required:
       - id
@@ -1141,6 +1237,12 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Shares_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        sharedResources:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     UserCollectionAlbums_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -1149,6 +1251,32 @@ components:
         addedAt:
           type: string
           format: date-time
+    File_Status:
+      required:
+      - moderationFileStatus
+      - technicalFileStatus
+      type: object
+      properties:
+        moderationFileStatus:
+          type: string
+          description: Moderation status for file
+          enum:
+          - NOT_MODERATED
+          - SCANNING
+          - FLAGGED
+          - TAKEN_DOWN
+          - OK
+          - ERROR
+        technicalFileStatus:
+          type: string
+          description: Technical status for file
+          enum:
+          - UPLOAD_REQUESTED
+          - PROCESSING
+          - OK
+          - ERROR
+          - DELETED
+      description: File status
     Tracks_Resource_Object:
       required:
       - id
@@ -1184,32 +1312,22 @@ components:
           type: string
           description: Resource type
           example: tracks
-    File_Status:
+    UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
-      - moderationFileStatus
-      - technicalFileStatus
+      - id
+      - type
       type: object
       properties:
-        moderationFileStatus:
+        id:
           type: string
-          description: Moderation status for file
-          enum:
-          - NOT_MODERATED
-          - SCANNING
-          - FLAGGED
-          - TAKEN_DOWN
-          - OK
-          - ERROR
-        technicalFileStatus:
+          description: Resource id
+          example: '12345'
+        meta:
+          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
+        type:
           type: string
-          description: Technical status for file
-          enum:
-          - UPLOAD_REQUESTED
-          - PROCESSING
-          - OK
-          - ERROR
-          - DELETED
-      description: File status
+          description: Resource type
+          example: tracks
     Users_Resource_Object:
       required:
       - id
@@ -1224,22 +1342,6 @@ components:
           example: '12345'
         type:
           minLength: 1
-          type: string
-          description: Resource type
-          example: tracks
-    UserCollectionSaveForLaters_Items_Resource_Identifier:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        meta:
-          $ref: '#/components/schemas/UserCollectionSaveForLaters_Items_Resource_Identifier_Meta'
-        type:
           type: string
           description: Resource type
           example: tracks
@@ -2292,10 +2394,13 @@ components:
           type: string
           description: Resource type
           example: tracks
-    TemporaryUserTokens_Relationships:
+    UsageRulesCreateOperation_Payload:
+      required:
+      - data
+      type: object
       properties:
-        owners:
-          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+        data:
+          $ref: '#/components/schemas/UsageRulesCreateOperation_Payload_Data'
     Reactions_Resource_Object:
       required:
       - id
@@ -2327,6 +2432,10 @@ components:
         meta:
           $ref: '#/components/schemas/File_Upload_Link_Meta'
       description: Upload link
+    TemporaryUserTokens_Relationships:
+      properties:
+        owners:
+          $ref: '#/components/schemas/Multi_Relationship_Data_Document'
     SearchHistoryEntries_Resource_Object:
       required:
       - id
@@ -2688,6 +2797,13 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UsageRulesCreateOperation_Payload_Data_Relationships:
+      required:
+      - subject
+      type: object
+      properties:
+        subject:
+          $ref: '#/components/schemas/UsageRulesCreateOperation_Payload_Data_Relationships_Subject'
     File_Upload_Link_Meta:
       required:
       - method
@@ -3419,6 +3535,45 @@ components:
           type: string
           description: Human-readable name for the installation
           example: My iPhone
+    UsageRulesCreateOperation_Payload_Data_Attributes:
+      type: object
+      properties:
+        countryCode:
+          type: string
+        free:
+          type: array
+          items:
+            type: string
+            enum:
+            - STREAM
+            - DJ
+            - STEM
+            - DOWNLOAD
+        inherited:
+          type: boolean
+          description: Tracks only. Set to true (with empty paid/subscription/free) to clear an explicit track-level override and inherit usage rules from the album. Must be omitted or false when providing explicit usage values.
+        paid:
+          type: array
+          items:
+            type: string
+            enum:
+            - STREAM
+            - DJ
+            - STEM
+            - DOWNLOAD
+        subscription:
+          type: array
+          items:
+            type: string
+            enum:
+            - STREAM
+            - DJ
+            - STEM
+            - DOWNLOAD
+        validFrom:
+          type: string
+          description: Datetime from which these usage rules are valid (ISO 8601)
+          format: date-time
     UserNewReleaseMixes_Relationships:
       properties:
         items:
@@ -3820,6 +3975,13 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UsageRulesCreateOperation_Payload_Data_Relationships_Subject:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UsageRulesCreateOperation_Payload_Subject'
     UserCollectionTracks_Items_Multi_Relationship_Data_Document:
       required:
       - links
@@ -3996,6 +4158,21 @@ components:
       properties:
         owners:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    UsageRulesCreateOperation_Payload_Data:
+      required:
+      - attributes
+      - relationships
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UsageRulesCreateOperation_Payload_Data_Attributes'
+        relationships:
+          $ref: '#/components/schemas/UsageRulesCreateOperation_Payload_Data_Relationships'
+        type:
+          type: string
+          enum:
+          - usageRules
     DynamicModules_Attributes:
       required:
       - icons
@@ -4442,6 +4619,18 @@ components:
             type: string
           lyricsId:
             type: string
+    UsageRules_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UsageRules_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     UserCollectionAlbums_Items_Resource_Identifier:
       required:
       - id
