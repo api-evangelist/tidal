@@ -1,52 +1,6 @@
 aid: tidal
 url: https://raw.githubusercontent.com/api-evangelist/tidal/refs/heads/main/apis.yml
 apis:
-- aid: tidal:tidal-catalog-api
-  name: TIDAL Catalog API
-  tags:
-  - Music
-  - Catalog
-  - Albums
-  - Artists
-  - Tracks
-  - Videos
-  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
-  properties:
-  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
-    type: Documentation
-  - url: https://tidal-music.github.io/tidal-api-reference/
-    type: Documentation
-  - url: openapi/tidal-catalog-api-openapi.yml
-    type: OpenAPI
-  - url: json-schema/tidal-album-schema.json
-    type: JSONSchema
-  - url: json-schema/tidal-artist-schema.json
-    type: JSONSchema
-  - url: json-schema/tidal-track-schema.json
-    type: JSONSchema
-  - url: json-ld/tidal-context.jsonld
-    type: JSONLD
-  - url: graphql/tidal-graphql.md
-    type: GraphQL
-  description: Browse TIDAL's high-fidelity music catalog. Resource-oriented JSON:API
-    surface for albums, artists, tracks, videos, genres, lyrics, credits, artworks,
-    providers, and biographies, with cursor pagination, sparse fieldsets, sort, filter,
-    and JSON:API `include` relationship traversal.
-- aid: tidal:tidal-search-api
-  name: TIDAL Search API
-  tags:
-  - Music
-  - Search
-  - Suggestions
-  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
-  properties:
-  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
-    type: Documentation
-  - url: openapi/tidal-search-api-openapi.yml
-    type: OpenAPI
-  description: Search the TIDAL catalog with personalized search results, type-ahead
-    suggestions, and per-user search history. Supports filtering by entity type and
-    respects user locale and country.
 - aid: tidal:tidal-playlists-api
   name: TIDAL Playlists API
   tags:
@@ -60,9 +14,9 @@ apis:
     type: OpenAPI
   - url: json-schema/tidal-playlist-schema.json
     type: JSONSchema
-  description: Create, read, update, delete, and reorder TIDAL playlists. Manage playlist
-    items, cover art, owners, and editorial vs. user-created classifications. Requires
-    playlists.read and playlists.write scopes.
+  description: >-
+    Create, read, update, delete, and reorder TIDAL playlists. Manage playlist items, cover art, owners,
+    and editorial vs. user-created classifications. Requires playlists.read and playlists.write scopes.
 - aid: tidal:tidal-users-api
   name: TIDAL Users API
   tags:
@@ -77,118 +31,1774 @@ apis:
     type: OpenAPI
   - url: json-schema/tidal-user-schema.json
     type: JSONSchema
-  description: User account management surface. Read user profile and country, manage
-    accepted terms, list registered installations and clients, submit user reports,
-    and request data exports for GDPR/CCPA compliance.
-- aid: tidal:tidal-user-collections-api
-  name: TIDAL User Collections API
-  tags:
-  - Users
-  - Collections
-  - Library
-  - My Collection
+  description: >-
+    User account management surface. Read user profile and country, manage accepted terms, list registered
+    installations and clients, submit user reports, and request data exports for GDPR/CCPA compliance.
+- aid: tidal:tidal-acceptedterms-api
+  name: TIDAL acceptedTerms API
+  description: The acceptedTerms API from TIDAL — 3 operation(s) for acceptedterms.
   humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
-  properties:
-  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
-    type: Documentation
-  - url: openapi/tidal-user-collections-api-openapi.yml
-    type: OpenAPI
-  description: TIDAL's My Collection — the user's saved albums, artists, tracks, videos,
-    playlists, folders, and save-for-later items. Add, remove, organize into folders,
-    and traverse the collection via JSON:API relationships. Requires collection.read/write
-    scopes.
-- aid: tidal:tidal-recommendations-api
-  name: TIDAL Recommendations API
   tags:
-  - Music
-  - Recommendations
-  - Mixes
-  - Personalization
-  - Discovery
-  humanURL: https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - acceptedTerms
   properties:
-  - url: https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
-    type: Documentation
-  - url: openapi/tidal-recommendations-api-openapi.yml
-    type: OpenAPI
-  description: Personalized recommendations powered by TIDAL's algorithmic mixes.
-    Daily Mix, Discovery Mix, New Release Mix, and Offline Mix, plus dynamic editorial
-    pages and modules curated for the user. Requires recommendations.read scope.
-- aid: tidal:tidal-playback-api
-  name: TIDAL Playback API
-  tags:
-  - Music
-  - Playback
-  - Streaming
-  - Hi-Fi
-  - HiRes
-  - Manifests
-  - Downloads
+  - type: OpenAPI
+    url: openapi/tidal-acceptedterms-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-albums-api
+  name: TIDAL albums API
+  description: The albums API from TIDAL — 15 operation(s) for albums.
   humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
-  properties:
-  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
-    type: Documentation
-  - url: https://github.com/tidal-music/tidal-sdk
-    type: Documentation
-  - url: openapi/tidal-playback-api-openapi.yml
-    type: OpenAPI
-  description: Playback prerequisites — play queues, encrypted track manifests (HLS/DASH
-    with HI_RES_LOSSLESS, LOSSLESS, HIGH, LOW quality tiers), video manifests, offline
-    tasks, downloads, and usage rules. Per TIDAL policy, audio bytes flow exclusively
-    through the official TIDAL Player SDK; the Playback API only issues signed manifests.
-    Requires playback scope.
-- aid: tidal:tidal-social-api
-  name: TIDAL Social API
   tags:
-  - Music
-  - Social
-  - Sharing
-  - Comments
-  - Reactions
-  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - albums
   properties:
-  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
-    type: Documentation
-  - url: openapi/tidal-social-api-openapi.yml
-    type: OpenAPI
-  description: TIDAL's social surface — shares, saved shares, DSP sharing links (deep
-    links to TIDAL content from other DSPs), comments, reactions, and artist appreciations
-    across albums, artists, tracks, videos, and playlists.
-- aid: tidal:tidal-commerce-api
-  name: TIDAL Commerce API
+  - type: OpenAPI
+    url: openapi/tidal-albums-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-albumstatistics-api
+  name: TIDAL albumStatistics API
+  description: The albumStatistics API from TIDAL — 3 operation(s) for albumstatistics.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
   tags:
-  - Music
-  - Commerce
-  - Purchases
-  - Pricing
-  - Stripe
-  - Square
-  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - albumStatistics
   properties:
-  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
-    type: Documentation
-  - url: openapi/tidal-commerce-api-openapi.yml
-    type: OpenAPI
-  description: TIDAL's marketplace and creator-commerce surface — direct fan purchases
-    of music, artist price configurations, Stripe and Square connections (reflecting
-    TIDAL's Block / Square parentage), and Stripe dashboard links for connected artists.
-- aid: tidal:tidal-claims-api
-  name: TIDAL Claims API
+  - type: OpenAPI
+    url: openapi/tidal-albumstatistics-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-appreciations-api
+  name: TIDAL appreciations API
+  description: The appreciations API from TIDAL — 1 operation(s) for appreciations.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
   tags:
-  - Music
-  - Claims
-  - Artists
-  - Verification
-  - Rights
-  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - appreciations
   properties:
-  - url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
-    type: Documentation
-  - url: openapi/tidal-claims-api-openapi.yml
-    type: OpenAPI
-  description: Artist verification and content rights claims for the TIDAL Artist
-    platform. Artists claim profiles, content owners assert ownership of catalog items,
-    and TIDAL operations review manual claim workflows.
+  - type: OpenAPI
+    url: openapi/tidal-appreciations-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-artistbiographies-api
+  name: TIDAL artistBiographies API
+  description: The artistBiographies API from TIDAL — 3 operation(s) for artistbiographies.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - artistBiographies
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-artistbiographies-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-artistclaims-api
+  name: TIDAL artistClaims API
+  description: The artistClaims API from TIDAL — 5 operation(s) for artistclaims.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - artistClaims
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-artistclaims-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-artistroles-api
+  name: TIDAL artistRoles API
+  description: The artistRoles API from TIDAL — 2 operation(s) for artistroles.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - artistRoles
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-artistroles-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-artists-api
+  name: TIDAL artists API
+  description: The artists API from TIDAL — 14 operation(s) for artists.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - artists
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-artists-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-artworks-api
+  name: TIDAL artworks API
+  description: The artworks API from TIDAL — 3 operation(s) for artworks.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - artworks
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-artworks-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-clients-api
+  name: TIDAL clients API
+  description: The clients API from TIDAL — 3 operation(s) for clients.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - clients
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-clients-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-comments-api
+  name: TIDAL comments API
+  description: The comments API from TIDAL — 5 operation(s) for comments.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - comments
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-comments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-contentclaims-api
+  name: TIDAL contentClaims API
+  description: The contentClaims API from TIDAL — 5 operation(s) for contentclaims.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - contentClaims
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-contentclaims-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-credits-api
+  name: TIDAL credits API
+  description: The credits API from TIDAL — 4 operation(s) for credits.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - credits
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-credits-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-downloads-api
+  name: TIDAL downloads API
+  description: The downloads API from TIDAL — 3 operation(s) for downloads.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - downloads
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-downloads-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-dspsharinglinks-api
+  name: TIDAL dspSharingLinks API
+  description: The dspSharingLinks API from TIDAL — 2 operation(s) for dspsharinglinks.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - dspSharingLinks
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-dspsharinglinks-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-dynamicmodules-api
+  name: TIDAL dynamicModules API
+  description: The dynamicModules API from TIDAL — 2 operation(s) for dynamicmodules.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - dynamicModules
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-dynamicmodules-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-dynamicpages-api
+  name: TIDAL dynamicPages API
+  description: The dynamicPages API from TIDAL — 3 operation(s) for dynamicpages.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - dynamicPages
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-dynamicpages-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-genres-api
+  name: TIDAL genres API
+  description: The genres API from TIDAL — 2 operation(s) for genres.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - genres
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-genres-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-installations-api
+  name: TIDAL installations API
+  description: The installations API from TIDAL — 4 operation(s) for installations.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - installations
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-installations-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-lyrics-api
+  name: TIDAL lyrics API
+  description: The lyrics API from TIDAL — 4 operation(s) for lyrics.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - lyrics
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-lyrics-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-manualartistclaims-api
+  name: TIDAL manualArtistClaims API
+  description: The manualArtistClaims API from TIDAL — 1 operation(s) for manualartistclaims.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - manualArtistClaims
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-manualartistclaims-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-offlinetasks-api
+  name: TIDAL offlineTasks API
+  description: The offlineTasks API from TIDAL — 5 operation(s) for offlinetasks.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - offlineTasks
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-offlinetasks-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-playqueues-api
+  name: TIDAL playQueues API
+  description: The playQueues API from TIDAL — 6 operation(s) for playqueues.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - playQueues
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-playqueues-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-priceconfigurations-api
+  name: TIDAL priceConfigurations API
+  description: The priceConfigurations API from TIDAL — 2 operation(s) for priceconfigurations.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - priceConfigurations
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-priceconfigurations-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-providerowners-api
+  name: TIDAL providerOwners API
+  description: The providerOwners API from TIDAL — 3 operation(s) for providerowners.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - providerOwners
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-providerowners-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-providerproductinfos-api
+  name: TIDAL providerProductInfos API
+  description: The providerProductInfos API from TIDAL — 3 operation(s) for providerproductinfos.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - providerProductInfos
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-providerproductinfos-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-providers-api
+  name: TIDAL providers API
+  description: The providers API from TIDAL — 2 operation(s) for providers.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - providers
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-providers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-purchases-api
+  name: TIDAL purchases API
+  description: The purchases API from TIDAL — 3 operation(s) for purchases.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - purchases
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-purchases-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-reactions-api
+  name: TIDAL reactions API
+  description: The reactions API from TIDAL — 4 operation(s) for reactions.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - reactions
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-reactions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-savedshares-api
+  name: TIDAL savedShares API
+  description: The savedShares API from TIDAL — 1 operation(s) for savedshares.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - savedShares
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-savedshares-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-searchhistoryentries-api
+  name: TIDAL searchHistoryEntries API
+  description: The searchHistoryEntries API from TIDAL — 2 operation(s) for searchhistoryentries.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - searchHistoryEntries
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-searchhistoryentries-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-searchresults-api
+  name: TIDAL searchResults API
+  description: The searchResults API from TIDAL — 7 operation(s) for searchresults.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - searchResults
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-searchresults-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-searchsuggestions-api
+  name: TIDAL searchSuggestions API
+  description: The searchSuggestions API from TIDAL — 3 operation(s) for searchsuggestions.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - searchSuggestions
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-searchsuggestions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-shares-api
+  name: TIDAL shares API
+  description: The shares API from TIDAL — 4 operation(s) for shares.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - shares
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-shares-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-squareconnections-api
+  name: TIDAL squareConnections API
+  description: The squareConnections API from TIDAL — 2 operation(s) for squareconnections.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - squareConnections
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-squareconnections-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-stripeconnections-api
+  name: TIDAL stripeConnections API
+  description: The stripeConnections API from TIDAL — 2 operation(s) for stripeconnections.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - stripeConnections
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-stripeconnections-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-stripedashboardlinks-api
+  name: TIDAL stripeDashboardLinks API
+  description: The stripeDashboardLinks API from TIDAL — 2 operation(s) for stripedashboardlinks.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - stripeDashboardLinks
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-stripedashboardlinks-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-temporaryusertokens-api
+  name: TIDAL temporaryUserTokens API
+  description: The temporaryUserTokens API from TIDAL — 3 operation(s) for temporaryusertokens.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - temporaryUserTokens
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-temporaryusertokens-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-terms-api
+  name: TIDAL terms API
+  description: The terms API from TIDAL — 2 operation(s) for terms.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - terms
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-terms-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-trackfiles-api
+  name: TIDAL trackFiles API
+  description: The trackFiles API from TIDAL — 1 operation(s) for trackfiles.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - trackFiles
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-trackfiles-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-trackmanifests-api
+  name: TIDAL trackManifests API
+  description: The trackManifests API from TIDAL — 1 operation(s) for trackmanifests.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - trackManifests
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-trackmanifests-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-tracks-api
+  name: TIDAL tracks API
+  description: The tracks API from TIDAL — 20 operation(s) for tracks.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - tracks
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-tracks-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-tracksmetadatastatus-api
+  name: TIDAL tracksMetadataStatus API
+  description: The tracksMetadataStatus API from TIDAL — 2 operation(s) for tracksmetadatastatus.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - tracksMetadataStatus
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-tracksmetadatastatus-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-tracksourcefiles-api
+  name: TIDAL trackSourceFiles API
+  description: The trackSourceFiles API from TIDAL — 3 operation(s) for tracksourcefiles.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - trackSourceFiles
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-tracksourcefiles-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-trackstatistics-api
+  name: TIDAL trackStatistics API
+  description: The trackStatistics API from TIDAL — 3 operation(s) for trackstatistics.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - trackStatistics
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-trackstatistics-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-usagerules-api
+  name: TIDAL usageRules API
+  description: The usageRules API from TIDAL — 2 operation(s) for usagerules.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - usageRules
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-usagerules-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-usercollectionalbums-api
+  name: TIDAL userCollectionAlbums API
+  description: The userCollectionAlbums API from TIDAL — 3 operation(s) for usercollectionalbums.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userCollectionAlbums
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-usercollectionalbums-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-usercollectionartists-api
+  name: TIDAL userCollectionArtists API
+  description: The userCollectionArtists API from TIDAL — 3 operation(s) for usercollectionartists.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userCollectionArtists
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-usercollectionartists-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-usercollectionfolders-api
+  name: TIDAL userCollectionFolders API
+  description: The userCollectionFolders API from TIDAL — 4 operation(s) for usercollectionfolders.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userCollectionFolders
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-usercollectionfolders-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-usercollectionplaylists-api
+  name: TIDAL userCollectionPlaylists API
+  description: The userCollectionPlaylists API from TIDAL — 3 operation(s) for usercollectionplaylists.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userCollectionPlaylists
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-usercollectionplaylists-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-usercollections-api
+  name: TIDAL userCollections API
+  description: The userCollections API from TIDAL — 7 operation(s) for usercollections.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userCollections
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-usercollections-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-usercollectionsaveforlaters-api
+  name: TIDAL userCollectionSaveForLaters API
+  description: >-
+    The userCollectionSaveForLaters API from TIDAL — 3 operation(s) for usercollectionsaveforlaters.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userCollectionSaveForLaters
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-usercollectionsaveforlaters-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-usercollectiontracks-api
+  name: TIDAL userCollectionTracks API
+  description: The userCollectionTracks API from TIDAL — 4 operation(s) for usercollectiontracks.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userCollectionTracks
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-usercollectiontracks-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-usercollectionvideos-api
+  name: TIDAL userCollectionVideos API
+  description: The userCollectionVideos API from TIDAL — 3 operation(s) for usercollectionvideos.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userCollectionVideos
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-usercollectionvideos-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-userdailymixes-api
+  name: TIDAL userDailyMixes API
+  description: The userDailyMixes API from TIDAL — 2 operation(s) for userdailymixes.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userDailyMixes
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-userdailymixes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-userdataexportrequests-api
+  name: TIDAL userDataExportRequests API
+  description: The userDataExportRequests API from TIDAL — 1 operation(s) for userdataexportrequests.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userDataExportRequests
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-userdataexportrequests-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-userdiscoverymixes-api
+  name: TIDAL userDiscoveryMixes API
+  description: The userDiscoveryMixes API from TIDAL — 2 operation(s) for userdiscoverymixes.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userDiscoveryMixes
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-userdiscoverymixes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-usernewreleasemixes-api
+  name: TIDAL userNewReleaseMixes API
+  description: The userNewReleaseMixes API from TIDAL — 2 operation(s) for usernewreleasemixes.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userNewReleaseMixes
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-usernewreleasemixes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-userofflinemixes-api
+  name: TIDAL userOfflineMixes API
+  description: The userOfflineMixes API from TIDAL — 2 operation(s) for userofflinemixes.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userOfflineMixes
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-userofflinemixes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-userrecommendations-api
+  name: TIDAL userRecommendations API
+  description: The userRecommendations API from TIDAL — 5 operation(s) for userrecommendations.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userRecommendations
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-userrecommendations-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-userreports-api
+  name: TIDAL userReports API
+  description: The userReports API from TIDAL — 1 operation(s) for userreports.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - userReports
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-userreports-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-videomanifests-api
+  name: TIDAL videoManifests API
+  description: The videoManifests API from TIDAL — 1 operation(s) for videomanifests.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - videoManifests
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-videomanifests-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
+- aid: tidal:tidal-videos-api
+  name: TIDAL videos API
+  description: The videos API from TIDAL — 11 operation(s) for videos.
+  humanURL: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  tags:
+  - videos
+  properties:
+  - type: OpenAPI
+    url: openapi/tidal-videos-api-openapi.yml
+  - type: Documentation
+    url: https://developer.tidal.com/documentation/api-sdk/api-sdk-overview
+  - type: Documentation
+    url: https://tidal-music.github.io/tidal-api-reference/
+  - type: JSONSchema
+    url: json-schema/tidal-album-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-artist-schema.json
+  - type: JSONSchema
+    url: json-schema/tidal-track-schema.json
+  - type: JSONLD
+    url: json-ld/tidal-context.jsonld
+  - type: GraphQL
+    url: graphql/tidal-graphql.md
+  - type: Documentation
+    url: >-
+      https://developer.tidal.com/blog/discover-explore-play-tidals-recommendation-apis-unraveled
+  - type: Documentation
+    url: https://github.com/tidal-music/tidal-sdk
 name: TIDAL
 tags:
 - Music
@@ -199,7 +1809,20 @@ tags:
 - Block
 - Square
 kind: contract
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/tidal.png
 access: 3rd-Party
 common:
 - type: AgenticAccess
