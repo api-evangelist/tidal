@@ -1,0 +1,169 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms searchSuggestions API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "searchSuggestions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get single searchSuggestion.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchSuggestions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello",
+                "type": "path",
+                "description": "Search query string used as the resource identifier"
+              },
+              {
+                "name": "explicitFilter",
+                "value": "INCLUDE",
+                "type": "query",
+                "description": "Explicit filter. Valid values: INCLUDE or EXCLUDE"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "directHits",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: directHits, history"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single searchSuggestion by id."
+        },
+        {
+          "info": {
+            "name": "Get directHits relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchSuggestions/:id/relationships/directHits",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello",
+                "type": "path",
+                "description": "Search query string used as the resource identifier"
+              },
+              {
+                "name": "explicitFilter",
+                "value": "INCLUDE",
+                "type": "query",
+                "description": "Explicit filter. Valid values: INCLUDE or EXCLUDE"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "directHits",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: directHits"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves directHits relationship."
+        },
+        {
+          "info": {
+            "name": "Get history relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchSuggestions/:id/relationships/history",
+            "params": [
+              {
+                "name": "id",
+                "value": "hello",
+                "type": "path",
+                "description": "Search query string used as the resource identifier"
+              },
+              {
+                "name": "explicitFilter",
+                "value": "INCLUDE",
+                "type": "query",
+                "description": "Explicit filter. Valid values: INCLUDE or EXCLUDE"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "history",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: history"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves history relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,82 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms searchHistoryEntries API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "searchHistoryEntries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple searchHistoryEntries.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/searchHistoryEntries",
+            "params": [
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "filter[id]",
+                "value": "",
+                "type": "query",
+                "description": "Opaque identifier for a search history entry (e.g. `MjcyNjg5OTAjamF5`)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple searchHistoryEntries by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Delete single searchHistoryEntrie.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://openapi.tidal.com/v2/searchHistoryEntries/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "MjcyNjg5OTAjamF5",
+                "type": "path",
+                "description": "Opaque identifier for a search history entry"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes existing searchHistoryEntrie."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

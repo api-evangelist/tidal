@@ -1,0 +1,154 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms credits API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "credits",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple credits.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/credits",
+            "params": [
+              {
+                "name": "include",
+                "value": "artist",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: artist, category"
+              },
+              {
+                "name": "filter[id]",
+                "value": "",
+                "type": "query",
+                "description": "List of credit IDs (e.g. `3fG7kLmN2pQrStUv`)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple credits by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Get single credit.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/credits/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "3fG7kLmN2pQrStUv",
+                "type": "path",
+                "description": "Credit id"
+              },
+              {
+                "name": "include",
+                "value": "artist",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: artist, category"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single credit by id."
+        },
+        {
+          "info": {
+            "name": "Get artist relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/credits/:id/relationships/artist",
+            "params": [
+              {
+                "name": "id",
+                "value": "3fG7kLmN2pQrStUv",
+                "type": "path",
+                "description": "Credit id"
+              },
+              {
+                "name": "include",
+                "value": "artist",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: artist"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves artist relationship."
+        },
+        {
+          "info": {
+            "name": "Get category relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/credits/:id/relationships/category",
+            "params": [
+              {
+                "name": "id",
+                "value": "3fG7kLmN2pQrStUv",
+                "type": "path",
+                "description": "Credit id"
+              },
+              {
+                "name": "include",
+                "value": "category",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: category"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves category relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

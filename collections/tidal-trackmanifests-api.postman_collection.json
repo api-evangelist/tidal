@@ -1,0 +1,896 @@
+{
+  "item": [
+    {
+      "id": "56569377-ae13-4012-b138-da0fbebcbb58",
+      "name": "trackManifests",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ea11f124-1cc9-4f47-aff0-de0e93401731",
+          "name": "Get single trackManifest.",
+          "request": {
+            "name": "Get single trackManifest.",
+            "description": {
+              "content": "Retrieves single trackManifest by id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "trackManifests",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "manifestType",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "formats",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "formats",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "uriScheme",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "usage",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "adaptive",
+                  "value": "<boolean>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "shareCode",
+                  "value": "<string>",
+                  "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Track manifest id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://auth.tidal.com/v1/oauth2/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a040f4d5-a90c-48ed-a1f2-2e7d4d68ad23",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trackManifests",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "manifestType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "uriScheme",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "adaptive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "shareCode",
+                      "value": "xyz"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Track manifest id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"12345\",\n    \"type\": \"tracks\",\n    \"attributes\": {\n      \"albumAudioNormalizationData\": {\n        \"peakAmplitude\": 7927.045234377952,\n        \"replayGain\": 9626.476843662474\n      },\n      \"drmData\": {\n        \"certificateUrl\": \"string\",\n        \"drmSystem\": \"WIDEVINE\",\n        \"initData\": [\n          \"string\",\n          \"string\"\n        ],\n        \"licenseUrl\": \"string\"\n      },\n      \"formats\": [\n        \"FLAC_HIRES\",\n        \"FLAC\"\n      ],\n      \"hash\": \"string\",\n      \"previewReason\": \"FULL_REQUIRES_PURCHASE\",\n      \"trackAudioNormalizationData\": {\n        \"peakAmplitude\": 9188.300609948226,\n        \"replayGain\": 4440.545566555152\n      },\n      \"trackPresentation\": \"PREVIEW\",\n      \"uri\": \"string\"\n    }\n  },\n  \"links\": {\n    \"self\": \"/artists/xyz/relationships/tracks\",\n    \"meta\": {\n      \"nextCursor\": \"zyx\"\n    },\n    \"next\": \"/artists/xyz/relationships/tracks?page[cursor]=zyx\"\n  },\n  \"included\": [\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"createdAt\": \"1949-12-27T01:59:59.409Z\"\n      },\n      \"relationships\": {\n        \"owners\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"terms\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"createdAt\": \"1965-09-02T22:18:34.918Z\"\n      },\n      \"relationships\": {\n        \"owners\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"terms\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "27813e69-e027-4e2b-b1e7-4e14d7270d1d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trackManifests",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "manifestType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "uriScheme",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "adaptive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "shareCode",
+                      "value": "xyz"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Track manifest id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "363dc3e5-63dd-4e34-8df3-22e886336a57",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trackManifests",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "manifestType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "uriScheme",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "adaptive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "shareCode",
+                      "value": "xyz"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Track manifest id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d2133c89-c240-4812-be33-7864ce764df0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trackManifests",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "manifestType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "uriScheme",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "adaptive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "shareCode",
+                      "value": "xyz"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Track manifest id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c7c249bb-6892-4a82-b946-086bf18fa2f3",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trackManifests",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "manifestType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "uriScheme",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "adaptive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "shareCode",
+                      "value": "xyz"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Track manifest id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5e028f1f-fbd2-4fec-ad0e-1e9425205bd6",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trackManifests",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "manifestType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "uriScheme",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "adaptive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "shareCode",
+                      "value": "xyz"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Track manifest id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "dfeedb1f-b88a-41ca-a509-502ee9901d04",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trackManifests",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "manifestType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "uriScheme",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "adaptive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "shareCode",
+                      "value": "xyz"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Track manifest id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f0769c9f-54df-46e6-b11b-fbeb4e3965e5",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trackManifests",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "manifestType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "uriScheme",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "adaptive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "shareCode",
+                      "value": "xyz"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Track manifest id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ebddab11-d256-402d-8766-644f7bb3c38d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trackManifests",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "manifestType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "uriScheme",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "adaptive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "shareCode",
+                      "value": "xyz"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Track manifest id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "837e5993-d4a4-4cb1-846d-7448c62a80fb",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trackManifests",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "manifestType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "uriScheme",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "adaptive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "shareCode",
+                      "value": "xyz"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Track manifest id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://openapi.tidal.com/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8362ab49-d497-44d0-b552-07d801aa996c",
+    "name": "TIDAL Catalog acceptedTerms trackManifests API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Browse TIDAL's high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.",
+      "type": "text/plain"
+    }
+  }
+}

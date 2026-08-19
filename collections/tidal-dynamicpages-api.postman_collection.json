@@ -1,0 +1,2428 @@
+{
+  "item": [
+    {
+      "id": "58e13aae-aae9-49da-a167-9e16ea35fe04",
+      "name": "dynamicPages",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "75aa8a47-7c4d-48e1-9d7a-c7a97bc2619c",
+          "name": "Get multiple dynamicPages.",
+          "request": {
+            "name": "Get multiple dynamicPages.",
+            "description": {
+              "content": "Retrieves multiple dynamicPages by available filters, or without if applicable.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dynamicPages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "refreshId",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "countryCode",
+                  "value": "<string>",
+                  "description": "ISO 3166-1 alpha-2 country code"
+                },
+                {
+                  "disabled": false,
+                  "key": "locale",
+                  "value": "en-US",
+                  "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+                },
+                {
+                  "disabled": false,
+                  "key": "deviceType",
+                  "value": "<string>",
+                  "description": "(Required) The type of device making the request"
+                },
+                {
+                  "disabled": false,
+                  "key": "systemType",
+                  "value": "<string>",
+                  "description": "(Required) The system type of the device making the request"
+                },
+                {
+                  "disabled": false,
+                  "key": "clientVersion",
+                  "value": "<string>",
+                  "description": "(Required) Client version number"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Allows the client to customize which related resources should be returned. Available options: dynamicModules, subject"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Allows the client to customize which related resources should be returned. Available options: dynamicModules, subject"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[pageType]",
+                  "value": "<string>",
+                  "description": "type of the page (e.g. `ARTIST`)"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[pageType]",
+                  "value": "<string>",
+                  "description": "type of the page (e.g. `ARTIST`)"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[subject.id]",
+                  "value": "<string>",
+                  "description": "the subject id, eg. artistId (e.g. `67890`)"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[subject.id]",
+                  "value": "<string>",
+                  "description": "the subject id, eg. artistId (e.g. `67890`)"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://auth.tidal.com/v1/oauth2/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "dc4caa7d-b7ba-41f4-ae6d-81d5694e4471",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"pageType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"reportingId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"relationships\": {\n        \"dynamicModules\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"subject\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"pageType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"reportingId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"relationships\": {\n        \"dynamicModules\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"subject\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    }\n  ],\n  \"links\": {\n    \"self\": \"/artists/xyz/relationships/tracks\",\n    \"meta\": {\n      \"nextCursor\": \"zyx\"\n    },\n    \"next\": \"/artists/xyz/relationships/tracks?page[cursor]=zyx\"\n  },\n  \"included\": [\n    {\n      \"id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"attributes\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relationships\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    },\n    {\n      \"id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"attributes\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relationships\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bd5690c8-c815-44e8-b49d-783f020b969f",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c8ce5898-6db6-4664-a744-acd87a91ca16",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "64b4bc5f-b1bc-419b-9a0d-8076adbd7c7d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e8bea9db-f8fa-4ad5-b789-8e206fca02fc",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "57914b20-f3ea-48b7-948d-6d667955560f",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "53247b6c-5cc5-4b63-88b1-0e4ebf7e0185",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "92b17d6e-5892-4751-8b54-0af3028418d0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "358a7f2b-20fd-44bd-8452-c3cc01f37bd1",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[pageType]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[subject.id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d0036cd6-2e3a-4df2-a49b-5b42152cb9c9",
+          "name": "Get dynamicModules relationship (\"to-many\").",
+          "request": {
+            "name": "Get dynamicModules relationship (\"to-many\").",
+            "description": {
+              "content": "Retrieves dynamicModules relationship.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dynamicPages",
+                ":id",
+                "relationships",
+                "dynamicModules"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "refreshId",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[cursor]",
+                  "value": "<string>",
+                  "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+                },
+                {
+                  "disabled": false,
+                  "key": "countryCode",
+                  "value": "<string>",
+                  "description": "ISO 3166-1 alpha-2 country code"
+                },
+                {
+                  "disabled": false,
+                  "key": "locale",
+                  "value": "en-US",
+                  "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+                },
+                {
+                  "disabled": false,
+                  "key": "deviceType",
+                  "value": "<string>",
+                  "description": "(Required) The type of device making the request"
+                },
+                {
+                  "disabled": false,
+                  "key": "systemType",
+                  "value": "<string>",
+                  "description": "(Required) The system type of the device making the request"
+                },
+                {
+                  "disabled": false,
+                  "key": "clientVersion",
+                  "value": "<string>",
+                  "description": "(Required) Client version number"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Allows the client to customize which related resources should be returned. Available options: dynamicModules"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Allows the client to customize which related resources should be returned. Available options: dynamicModules"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) DynamicPages Id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://auth.tidal.com/v1/oauth2/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4548595b-32b1-4a0f-9a70-f617a79d28cd",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"links\": {\n    \"self\": \"/artists/xyz/relationships/tracks\",\n    \"meta\": {\n      \"nextCursor\": \"zyx\"\n    },\n    \"next\": \"/artists/xyz/relationships/tracks?page[cursor]=zyx\"\n  },\n  \"data\": [\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\"\n    },\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\"\n    }\n  ],\n  \"included\": [\n    {\n      \"id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"attributes\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relationships\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    },\n    {\n      \"id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"attributes\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relationships\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "58831f10-8583-43c2-9b37-ec38fbce5d2b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2b9609c4-6aa2-4e3b-96e9-c8c98e895b88",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "137cc9f5-2897-41c5-9bc9-e028897cc4b2",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "da010860-e902-4c77-ad51-18f4c6d9584a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d36b0e3c-c85d-41f8-b1e0-c87b17bbe140",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "18c76df0-a7b2-4e78-98e3-e3d2d1731912",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "06899f6b-0b93-412a-9c66-6d5dbd6be3be",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1029b6e1-fcf7-497c-93bb-709318fe690c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    },
+                    {
+                      "key": "include",
+                      "value": "dynamicModules"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "09b61d1f-7fb9-406a-8446-78771be0e36e",
+          "name": "Get subject relationship (\"to-one\").",
+          "request": {
+            "name": "Get subject relationship (\"to-one\").",
+            "description": {
+              "content": "Retrieves subject relationship.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dynamicPages",
+                ":id",
+                "relationships",
+                "subject"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Allows the client to customize which related resources should be returned. Available options: subject"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Allows the client to customize which related resources should be returned. Available options: subject"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) DynamicPages Id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://auth.tidal.com/v1/oauth2/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b0f9ac49-1312-403a-adf2-1839c6aef318",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "subject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    },
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"links\": {\n    \"self\": \"/artists/xyz/relationships/tracks\",\n    \"meta\": {\n      \"nextCursor\": \"zyx\"\n    },\n    \"next\": \"/artists/xyz/relationships/tracks?page[cursor]=zyx\"\n  },\n  \"data\": {\n    \"id\": \"12345\",\n    \"type\": \"tracks\"\n  },\n  \"included\": [\n    {\n      \"id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"attributes\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relationships\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    },\n    {\n      \"id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"attributes\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"relationships\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b9e496c-32b5-42ef-b8c4-893fd8899da2",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "subject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    },
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2a8c9cff-2d5a-44ea-ba0b-1e69eb88a3e6",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "subject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    },
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4daeaa60-6e06-4b57-a515-fd9054e37a7b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "subject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    },
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "adf37e8e-c43d-487f-986b-0412fbfb6fb0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "subject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    },
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f082190e-2fc5-4cb2-806b-afc93e168ed2",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "subject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    },
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0ce69caf-d804-4567-a070-514c3056e96d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "subject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    },
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3c39e3ba-f1a1-4da7-8b3b-a97fb547edef",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "subject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    },
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a6406a7d-f4b8-4a2b-94d3-74d4ff3caa23",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicPages",
+                    ":id",
+                    "relationships",
+                    "subject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    },
+                    {
+                      "key": "include",
+                      "value": "subject"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicPages Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://openapi.tidal.com/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "21fe385f-3d12-4be0-84c9-ec711e05f549",
+    "name": "TIDAL Catalog acceptedTerms dynamicPages API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Browse TIDAL's high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.",
+      "type": "text/plain"
+    }
+  }
+}

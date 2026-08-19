@@ -1,0 +1,316 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms comments API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "comments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple comments.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/comments",
+            "params": [
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Values prefixed with \"-\" are sorted descending; values without it are sorted ascending."
+              },
+              {
+                "name": "include",
+                "value": "ownerProfiles",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners, parentComment"
+              },
+              {
+                "name": "filter[parentComment.id]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by parent comment ID to get replies (e.g. `550e8400-e29b-41d4-a716-446655440000`)"
+              },
+              {
+                "name": "filter[subject.id]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by subject resource ID (e.g. `12345`)"
+              },
+              {
+                "name": "filter[subject.type]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by subject resource type (e.g. `albums`)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple comments by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Create single comment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.tidal.com/v2/comments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new comment."
+        },
+        {
+          "info": {
+            "name": "Get single comment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/comments/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "Comment Id"
+              },
+              {
+                "name": "include",
+                "value": "ownerProfiles",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners, parentComment"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single comment by id."
+        },
+        {
+          "info": {
+            "name": "Update single comment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.tidal.com/v2/comments/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "Comment Id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates existing comment."
+        },
+        {
+          "info": {
+            "name": "Delete single comment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://openapi.tidal.com/v2/comments/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "Comment Id"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes existing comment."
+        },
+        {
+          "info": {
+            "name": "Get ownerProfiles relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/comments/:id/relationships/ownerProfiles",
+            "params": [
+              {
+                "name": "id",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "Comment Id"
+              },
+              {
+                "name": "include",
+                "value": "ownerProfiles",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: ownerProfiles"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves ownerProfiles relationship."
+        },
+        {
+          "info": {
+            "name": "Get owners relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/comments/:id/relationships/owners",
+            "params": [
+              {
+                "name": "id",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "Comment Id"
+              },
+              {
+                "name": "include",
+                "value": "owners",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: owners"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves owners relationship."
+        },
+        {
+          "info": {
+            "name": "Get parentComment relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/comments/:id/relationships/parentComment",
+            "params": [
+              {
+                "name": "id",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "Comment Id"
+              },
+              {
+                "name": "include",
+                "value": "parentComment",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: parentComment"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves parentComment relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

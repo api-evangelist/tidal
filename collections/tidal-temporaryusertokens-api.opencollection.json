@@ -1,0 +1,119 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms temporaryUserTokens API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "temporaryUserTokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create single temporaryUserToken.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.tidal.com/v2/temporaryUserTokens",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new temporaryUserToken."
+        },
+        {
+          "info": {
+            "name": "Get single temporaryUserToken.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/temporaryUserTokens/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "abc123",
+                "type": "path",
+                "description": "Temporary user token id"
+              },
+              {
+                "name": "include",
+                "value": "owners",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: owners"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single temporaryUserToken by id."
+        },
+        {
+          "info": {
+            "name": "Get owners relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/temporaryUserTokens/:id/relationships/owners",
+            "params": [
+              {
+                "name": "id",
+                "value": "abc123",
+                "type": "path",
+                "description": "Temporary user token id"
+              },
+              {
+                "name": "include",
+                "value": "owners",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: owners"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves owners relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

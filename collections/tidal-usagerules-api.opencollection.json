@@ -1,0 +1,99 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms usageRules API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "usageRules",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple usageRules.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/usageRules",
+            "params": [
+              {
+                "name": "filter[id]",
+                "value": "",
+                "type": "query",
+                "description": "List of usage rules IDs (e.g. `VFJBQ0tTOjEyMzpOTw`)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple usageRules by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Create single usageRule.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.tidal.com/v2/usageRules",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new usageRule."
+        },
+        {
+          "info": {
+            "name": "Get single usageRule.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/usageRules/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "VFJBQ0tTOjEyMzpOTw",
+                "type": "path",
+                "description": "Usage rules id"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single usageRule by id."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

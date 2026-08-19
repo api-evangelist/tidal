@@ -1,0 +1,77 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms trackManifests API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "trackManifests",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get single trackManifest.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/trackManifests/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "123456",
+                "type": "path",
+                "description": "Track manifest id"
+              },
+              {
+                "name": "manifestType",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "formats",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "uriScheme",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "usage",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "adaptive",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single trackManifest by id."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

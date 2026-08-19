@@ -1,0 +1,1746 @@
+{
+  "item": [
+    {
+      "id": "b0c9d6c5-6d79-4ddb-b2de-3f8705e0fe9f",
+      "name": "dynamicModules",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8f5fbff9-0efc-438b-bf15-43fd3963fd94",
+          "name": "Get multiple dynamicModules.",
+          "request": {
+            "name": "Get multiple dynamicModules.",
+            "description": {
+              "content": "Retrieves multiple dynamicModules by available filters, or without if applicable.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dynamicModules"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "refreshId",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "countryCode",
+                  "value": "<string>",
+                  "description": "ISO 3166-1 alpha-2 country code"
+                },
+                {
+                  "disabled": false,
+                  "key": "locale",
+                  "value": "en-US",
+                  "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+                },
+                {
+                  "disabled": false,
+                  "key": "deviceType",
+                  "value": "<string>",
+                  "description": "(Required) The type of device making the request"
+                },
+                {
+                  "disabled": false,
+                  "key": "systemType",
+                  "value": "<string>",
+                  "description": "(Required) The system type of the device making the request"
+                },
+                {
+                  "disabled": false,
+                  "key": "clientVersion",
+                  "value": "<string>",
+                  "description": "(Required) Client version number"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Allows the client to customize which related resources should be returned. Available options: items"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Allows the client to customize which related resources should be returned. Available options: items"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[id]",
+                  "value": "<string>",
+                  "description": "DynamicModules Id (e.g. `nejMcAhh5N8S3EQ4LaqysVdI0cZZ`)"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[id]",
+                  "value": "<string>",
+                  "description": "DynamicModules Id (e.g. `nejMcAhh5N8S3EQ4LaqysVdI0cZZ`)"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://auth.tidal.com/v1/oauth2/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d648766b-b4dc-40b8-bc84-ad478ec58951",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"icons\": [\n          \"UNKNOWN\",\n          \"SPOTLIGHT_INFO\"\n        ],\n        \"layoutType\": \"COMPACT\",\n        \"moduleType\": \"HORIZONTAL_LIST\",\n        \"sourceType\": \"SHORTCUTS\",\n        \"subtitle\": \"Short description of this module\",\n        \"title\": \"Shortcuts\"\n      },\n      \"relationships\": {\n        \"items\": {\n          \"links\": {\n            \"self\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"meta\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"next\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"data\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"icons\": [\n          \"SPOTLIGHT_INFO\",\n          \"UNKNOWN\"\n        ],\n        \"layoutType\": \"COMPACT\",\n        \"moduleType\": \"HORIZONTAL_LIST\",\n        \"sourceType\": \"SHORTCUTS\",\n        \"subtitle\": \"Short description of this module\",\n        \"title\": \"Shortcuts\"\n      },\n      \"relationships\": {\n        \"items\": {\n          \"links\": {\n            \"self\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"meta\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"next\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"data\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      }\n    }\n  ],\n  \"links\": {\n    \"self\": \"/artists/xyz/relationships/tracks\",\n    \"meta\": {\n      \"nextCursor\": \"zyx\"\n    },\n    \"next\": \"/artists/xyz/relationships/tracks?page[cursor]=zyx\"\n  },\n  \"included\": [\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"createdAt\": \"1999-05-25T12:16:40.304Z\"\n      },\n      \"relationships\": {\n        \"owners\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"terms\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"createdAt\": \"2011-05-30T23:03:59.287Z\"\n      },\n      \"relationships\": {\n        \"owners\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"terms\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8ba0f4fc-4841-4afb-b9fc-8b5408db7a98",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ea46c720-b11d-4248-8a32-14a05d599f6f",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1dcc71f7-7e59-428b-90c1-455022722580",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4ae35e9d-f1a8-4677-8d3e-0e968a0a94c3",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ed9f45b4-0865-464a-8f54-5ea19cfe56e6",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4bdea855-da4a-412e-b6cd-29010b6e9ac8",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3eb16268-8ff7-4cd5-a4f1-987977b20d81",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "75355fa2-4dad-4bc3-b70c-8210a64cda33",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[id]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "484dcbe9-14a8-4eea-a19f-1d56f09c905a",
+          "name": "Get items relationship (\"to-many\").",
+          "request": {
+            "name": "Get items relationship (\"to-many\").",
+            "description": {
+              "content": "Retrieves items relationship.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dynamicModules",
+                ":id",
+                "relationships",
+                "items"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "refreshId",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[cursor]",
+                  "value": "<string>",
+                  "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+                },
+                {
+                  "disabled": false,
+                  "key": "countryCode",
+                  "value": "<string>",
+                  "description": "ISO 3166-1 alpha-2 country code"
+                },
+                {
+                  "disabled": false,
+                  "key": "locale",
+                  "value": "en-US",
+                  "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+                },
+                {
+                  "disabled": false,
+                  "key": "deviceType",
+                  "value": "<string>",
+                  "description": "(Required) The type of device making the request"
+                },
+                {
+                  "disabled": false,
+                  "key": "systemType",
+                  "value": "<string>",
+                  "description": "(Required) The system type of the device making the request"
+                },
+                {
+                  "disabled": false,
+                  "key": "clientVersion",
+                  "value": "<string>",
+                  "description": "(Required) Client version number"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Allows the client to customize which related resources should be returned. Available options: items"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Allows the client to customize which related resources should be returned. Available options: items"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) DynamicModules Id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://auth.tidal.com/v1/oauth2/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "665bb27d-7bb0-4ca7-8c18-a96aaa4508e9",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules",
+                    ":id",
+                    "relationships",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicModules Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"links\": {\n    \"self\": \"/artists/xyz/relationships/tracks\",\n    \"meta\": {\n      \"nextCursor\": \"zyx\"\n    },\n    \"next\": \"/artists/xyz/relationships/tracks?page[cursor]=zyx\"\n  },\n  \"data\": [\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\"\n    },\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\"\n    }\n  ],\n  \"included\": [\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"createdAt\": \"2001-04-06T07:38:18.073Z\"\n      },\n      \"relationships\": {\n        \"owners\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"terms\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"createdAt\": \"1981-01-16T15:15:36.656Z\"\n      },\n      \"relationships\": {\n        \"owners\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"terms\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f39fac3-bc00-4ba6-a936-f692a7a83bfb",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules",
+                    ":id",
+                    "relationships",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicModules Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "01f3ee81-bc94-4cc0-946c-af300a173e25",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules",
+                    ":id",
+                    "relationships",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicModules Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "63c15a52-74b7-44fd-a573-e262d9b4551b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules",
+                    ":id",
+                    "relationships",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicModules Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "eea857f0-83b8-49b0-a85c-bd8ce0548463",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules",
+                    ":id",
+                    "relationships",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicModules Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "678e990d-4d26-41e8-8ad7-476e5f17bca0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules",
+                    ":id",
+                    "relationships",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicModules Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7b4fbfc2-4ed8-4e31-aff5-c42c8495b478",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules",
+                    ":id",
+                    "relationships",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicModules Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f57fd1b2-bda3-4bfb-a445-f7c48d4b61f1",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules",
+                    ":id",
+                    "relationships",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicModules Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "49b94302-0981-480a-8eb1-b665fe321e27",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dynamicModules",
+                    ":id",
+                    "relationships",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "refreshId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[cursor]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en-US"
+                    },
+                    {
+                      "key": "deviceType",
+                      "value": "PHONE"
+                    },
+                    {
+                      "key": "systemType",
+                      "value": "IOS"
+                    },
+                    {
+                      "key": "clientVersion",
+                      "value": "2026.0.1"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    },
+                    {
+                      "key": "include",
+                      "value": "items"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) DynamicModules Id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://openapi.tidal.com/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "1b3193fa-25b4-4c92-981b-44afbf435ff0",
+    "name": "TIDAL Catalog acceptedTerms dynamicModules API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Browse TIDAL's high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms userOfflineMixes API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "userOfflineMixes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get single userOfflineMixe.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userOfflineMixes/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User offline mixes id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single userOfflineMixe by id."
+        },
+        {
+          "info": {
+            "name": "Get items relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/userOfflineMixes/:id/relationships/items",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "User offline mixes id. Use `me` for the authenticated user's resource"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves items relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,162 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms dynamicModules API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "dynamicModules",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple dynamicModules.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/dynamicModules",
+            "params": [
+              {
+                "name": "refreshId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "deviceType",
+                "value": "PHONE",
+                "type": "query",
+                "description": "The type of device making the request"
+              },
+              {
+                "name": "systemType",
+                "value": "IOS",
+                "type": "query",
+                "description": "The system type of the device making the request"
+              },
+              {
+                "name": "clientVersion",
+                "value": "2026.0.1",
+                "type": "query",
+                "description": "Client version number"
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              },
+              {
+                "name": "filter[id]",
+                "value": "",
+                "type": "query",
+                "description": "DynamicModules Id (e.g. `nejMcAhh5N8S3EQ4LaqysVdI0cZZ`)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple dynamicModules by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Get items relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/dynamicModules/:id/relationships/items",
+            "params": [
+              {
+                "name": "id",
+                "value": "nejMcAhh5N8S3EQ4LaqysVdI0cZZ",
+                "type": "path",
+                "description": "DynamicModules Id"
+              },
+              {
+                "name": "refreshId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "locale",
+                "value": "en-US",
+                "type": "query",
+                "description": "BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported."
+              },
+              {
+                "name": "deviceType",
+                "value": "PHONE",
+                "type": "query",
+                "description": "The type of device making the request"
+              },
+              {
+                "name": "systemType",
+                "value": "IOS",
+                "type": "query",
+                "description": "The system type of the device making the request"
+              },
+              {
+                "name": "clientVersion",
+                "value": "2026.0.1",
+                "type": "query",
+                "description": "Client version number"
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves items relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

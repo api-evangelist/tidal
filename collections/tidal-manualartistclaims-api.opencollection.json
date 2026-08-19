@@ -1,32 +1,28 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "TIDAL Catalog acceptedTerms users API",
+    "name": "TIDAL Catalog acceptedTerms manualArtistClaims API",
     "version": "1.10.14"
   },
   "items": [
     {
       "info": {
-        "name": "users",
+        "name": "manualArtistClaims",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Get single user.",
+            "name": "Create single manualArtistClaim.",
             "type": "http"
           },
           "http": {
-            "method": "GET",
-            "url": "https://openapi.tidal.com/v2/users/:id",
-            "params": [
-              {
-                "name": "id",
-                "value": "me",
-                "type": "path",
-                "description": "User id. Use `me` for the authenticated user's resource"
-              }
-            ],
+            "method": "POST",
+            "url": "https://openapi.tidal.com/v2/manualArtistClaims",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
             "auth": {
               "type": "oauth2",
               "flow": "authorization_code",
@@ -38,7 +34,7 @@
               }
             }
           },
-          "docs": "Retrieves single user by id."
+          "docs": "Creates a new manualArtistClaim."
         }
       ]
     }

@@ -1,0 +1,244 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms offlineTasks API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "offlineTasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple offlineTasks.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/offlineTasks",
+            "params": [
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "include",
+                "value": "collection",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: collection, item, owners"
+              },
+              {
+                "name": "filter[id]",
+                "value": "",
+                "type": "query",
+                "description": "List of offline task IDs (e.g. `a468bee8-8def-4a1b-8c1e-123456789abc`)"
+              },
+              {
+                "name": "filter[installation.id]",
+                "value": "",
+                "type": "query",
+                "description": "List of offline task IDs (e.g. `a468bee88def`)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple offlineTasks by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Get single offlineTask.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/offlineTasks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "a468bee8-8def-4a1b-8c1e-123456789abc",
+                "type": "path",
+                "description": "Offline task id"
+              },
+              {
+                "name": "include",
+                "value": "collection",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: collection, item, owners"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single offlineTask by id."
+        },
+        {
+          "info": {
+            "name": "Update single offlineTask.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.tidal.com/v2/offlineTasks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "a468bee8-8def-4a1b-8c1e-123456789abc",
+                "type": "path",
+                "description": "Offline task id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates existing offlineTask."
+        },
+        {
+          "info": {
+            "name": "Get collection relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/offlineTasks/:id/relationships/collection",
+            "params": [
+              {
+                "name": "id",
+                "value": "a468bee8-8def-4a1b-8c1e-123456789abc",
+                "type": "path",
+                "description": "Offline task id"
+              },
+              {
+                "name": "include",
+                "value": "collection",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: collection"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves collection relationship."
+        },
+        {
+          "info": {
+            "name": "Get item relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/offlineTasks/:id/relationships/item",
+            "params": [
+              {
+                "name": "id",
+                "value": "a468bee8-8def-4a1b-8c1e-123456789abc",
+                "type": "path",
+                "description": "Offline task id"
+              },
+              {
+                "name": "include",
+                "value": "item",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: item"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves item relationship."
+        },
+        {
+          "info": {
+            "name": "Get owners relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/offlineTasks/:id/relationships/owners",
+            "params": [
+              {
+                "name": "id",
+                "value": "a468bee8-8def-4a1b-8c1e-123456789abc",
+                "type": "path",
+                "description": "Offline task id"
+              },
+              {
+                "name": "include",
+                "value": "owners",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: owners"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves owners relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

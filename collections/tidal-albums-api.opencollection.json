@@ -1,0 +1,918 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms albums API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "albums",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple albums.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums",
+            "params": [
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Values prefixed with \"-\" are sorted descending; values without it are sorted ascending."
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "albumStatistics",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules"
+              },
+              {
+                "name": "filter[barcodeId]",
+                "value": "",
+                "type": "query",
+                "description": "List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. (e.g. `196589525444`)"
+              },
+              {
+                "name": "filter[id]",
+                "value": "",
+                "type": "query",
+                "description": "Album id (e.g. `251380836`)"
+              },
+              {
+                "name": "filter[owners.id]",
+                "value": "",
+                "type": "query",
+                "description": "User id. Use `me` for the authenticated user"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple albums by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Create single album.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.tidal.com/v2/albums",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new album."
+        },
+        {
+          "info": {
+            "name": "Get single album.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "albumStatistics",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single album by id."
+        },
+        {
+          "info": {
+            "name": "Update single album.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.tidal.com/v2/albums/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates existing album."
+        },
+        {
+          "info": {
+            "name": "Delete single album.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://openapi.tidal.com/v2/albums/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes existing album."
+        },
+        {
+          "info": {
+            "name": "Get albumStatistics relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/albumStatistics",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              },
+              {
+                "name": "include",
+                "value": "albumStatistics",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: albumStatistics"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves albumStatistics relationship."
+        },
+        {
+          "info": {
+            "name": "Get artists relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/artists",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "artists",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: artists"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves artists relationship."
+        },
+        {
+          "info": {
+            "name": "Get coverArt relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/coverArt",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "coverArt",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: coverArt"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves coverArt relationship."
+        },
+        {
+          "info": {
+            "name": "Update coverArt relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/coverArt",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates coverArt relationship."
+        },
+        {
+          "info": {
+            "name": "Get genres relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/genres",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "genres",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: genres"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves genres relationship."
+        },
+        {
+          "info": {
+            "name": "Get items relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/items",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "items",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: items"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves items relationship."
+        },
+        {
+          "info": {
+            "name": "Update items relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/items",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates items relationship."
+        },
+        {
+          "info": {
+            "name": "Get owners relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/owners",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              },
+              {
+                "name": "include",
+                "value": "owners",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: owners"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves owners relationship."
+        },
+        {
+          "info": {
+            "name": "Get priceConfig relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/priceConfig",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "priceConfig",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: priceConfig"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves priceConfig relationship."
+        },
+        {
+          "info": {
+            "name": "Get providers relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/providers",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "providers",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: providers"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves providers relationship."
+        },
+        {
+          "info": {
+            "name": "Get replacement relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/replacement",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "replacement",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: replacement"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves replacement relationship."
+        },
+        {
+          "info": {
+            "name": "Get shares relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/shares",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              },
+              {
+                "name": "include",
+                "value": "shares",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: shares"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves shares relationship."
+        },
+        {
+          "info": {
+            "name": "Get similarAlbums relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/similarAlbums",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "similarAlbums",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: similarAlbums"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves similarAlbums relationship."
+        },
+        {
+          "info": {
+            "name": "Get suggestedCoverArts relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/suggestedCoverArts",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              },
+              {
+                "name": "include",
+                "value": "suggestedCoverArts",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: suggestedCoverArts"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves suggestedCoverArts relationship."
+        },
+        {
+          "info": {
+            "name": "Get usageRules relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/albums/:id/relationships/usageRules",
+            "params": [
+              {
+                "name": "id",
+                "value": "251380836",
+                "type": "path",
+                "description": "Album id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "usageRules",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: usageRules"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves usageRules relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

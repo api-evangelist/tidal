@@ -1,0 +1,611 @@
+{
+  "item": [
+    {
+      "id": "07ca9151-3e67-482f-a2ad-8d4c9f202cd3",
+      "name": "manualArtistClaims",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5d11f746-940d-44f8-be4a-af3405ca657b",
+          "name": "Create single manualArtistClaim.",
+          "request": {
+            "name": "Create single manualArtistClaim.",
+            "description": {
+              "content": "Creates a new manualArtistClaim.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "manualArtistClaims"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "collection.read collection.write entitlements.read playback playlists.read playlists.write r_usr recommendations.read search.read search.write user.read w_usr"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://auth.tidal.com/v1/oauth2/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://login.tidal.com/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"artistId\": \"<string>\",\n      \"legalFirstName\": \"<string>\",\n      \"legalLastName\": \"<string>\",\n      \"websiteOrSocialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"acceptedTerms\": \"<boolean>\",\n      \"distributorName\": \"<string>\",\n      \"errorReason\": \"<string>\",\n      \"labelContactEmail\": \"<string>\",\n      \"labelContactName\": \"<string>\",\n      \"labelName\": \"<string>\",\n      \"managerEmail\": \"<string>\",\n      \"managerName\": \"<string>\",\n      \"role\": \"<string>\",\n      \"selectedAlbums\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"selectedSingles\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"socialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"type\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5935f1aa-1eb6-47fd-b9bc-3aa566370c32",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "manualArtistClaims"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"artistId\": \"<string>\",\n      \"legalFirstName\": \"<string>\",\n      \"legalLastName\": \"<string>\",\n      \"websiteOrSocialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"acceptedTerms\": \"<boolean>\",\n      \"distributorName\": \"<string>\",\n      \"errorReason\": \"<string>\",\n      \"labelContactEmail\": \"<string>\",\n      \"labelContactName\": \"<string>\",\n      \"labelName\": \"<string>\",\n      \"managerEmail\": \"<string>\",\n      \"managerName\": \"<string>\",\n      \"role\": \"<string>\",\n      \"selectedAlbums\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"selectedSingles\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"socialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"12345\",\n    \"type\": \"tracks\",\n    \"attributes\": {\n      \"artistId\": \"string\",\n      \"legalFirstName\": \"string\",\n      \"legalLastName\": \"string\",\n      \"websiteOrSocialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"acceptedTerms\": true,\n      \"createdAt\": \"2013-06-18T00:07:56.587Z\",\n      \"distributorName\": \"string\",\n      \"enrollmentType\": \"string\",\n      \"errorReason\": \"string\",\n      \"labelContactEmail\": \"string\",\n      \"labelContactName\": \"string\",\n      \"labelName\": \"string\",\n      \"lastModifiedAt\": \"1967-02-03T00:30:44.038Z\",\n      \"managerEmail\": \"string\",\n      \"managerName\": \"string\",\n      \"role\": \"string\",\n      \"selectedAlbums\": [\n        \"string\",\n        \"string\"\n      ],\n      \"selectedSingles\": [\n        \"string\",\n        \"string\"\n      ],\n      \"socialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"status\": \"SUBMITTED\",\n      \"upcs\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  },\n  \"links\": {\n    \"self\": \"/artists/xyz/relationships/tracks\",\n    \"meta\": {\n      \"nextCursor\": \"zyx\"\n    },\n    \"next\": \"/artists/xyz/relationships/tracks?page[cursor]=zyx\"\n  },\n  \"included\": [\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"createdAt\": \"1957-11-14T06:56:07.597Z\"\n      },\n      \"relationships\": {\n        \"owners\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"terms\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"createdAt\": \"2026-04-04T05:38:30.912Z\"\n      },\n      \"relationships\": {\n        \"owners\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"terms\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a143ecb-2aea-45bc-a346-ed28661af60c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "manualArtistClaims"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"artistId\": \"<string>\",\n      \"legalFirstName\": \"<string>\",\n      \"legalLastName\": \"<string>\",\n      \"websiteOrSocialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"acceptedTerms\": \"<boolean>\",\n      \"distributorName\": \"<string>\",\n      \"errorReason\": \"<string>\",\n      \"labelContactEmail\": \"<string>\",\n      \"labelContactName\": \"<string>\",\n      \"labelName\": \"<string>\",\n      \"managerEmail\": \"<string>\",\n      \"managerName\": \"<string>\",\n      \"role\": \"<string>\",\n      \"selectedAlbums\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"selectedSingles\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"socialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9009e30f-b032-4a63-a1cc-a2b9d3029e5c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "manualArtistClaims"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"artistId\": \"<string>\",\n      \"legalFirstName\": \"<string>\",\n      \"legalLastName\": \"<string>\",\n      \"websiteOrSocialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"acceptedTerms\": \"<boolean>\",\n      \"distributorName\": \"<string>\",\n      \"errorReason\": \"<string>\",\n      \"labelContactEmail\": \"<string>\",\n      \"labelContactName\": \"<string>\",\n      \"labelName\": \"<string>\",\n      \"managerEmail\": \"<string>\",\n      \"managerName\": \"<string>\",\n      \"role\": \"<string>\",\n      \"selectedAlbums\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"selectedSingles\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"socialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1c7dc2ac-d60c-4397-bd61-81cf0d3ebb92",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "manualArtistClaims"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"artistId\": \"<string>\",\n      \"legalFirstName\": \"<string>\",\n      \"legalLastName\": \"<string>\",\n      \"websiteOrSocialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"acceptedTerms\": \"<boolean>\",\n      \"distributorName\": \"<string>\",\n      \"errorReason\": \"<string>\",\n      \"labelContactEmail\": \"<string>\",\n      \"labelContactName\": \"<string>\",\n      \"labelName\": \"<string>\",\n      \"managerEmail\": \"<string>\",\n      \"managerName\": \"<string>\",\n      \"role\": \"<string>\",\n      \"selectedAlbums\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"selectedSingles\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"socialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "173152f1-6efe-4887-9ecc-ca8f305e4179",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "manualArtistClaims"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"artistId\": \"<string>\",\n      \"legalFirstName\": \"<string>\",\n      \"legalLastName\": \"<string>\",\n      \"websiteOrSocialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"acceptedTerms\": \"<boolean>\",\n      \"distributorName\": \"<string>\",\n      \"errorReason\": \"<string>\",\n      \"labelContactEmail\": \"<string>\",\n      \"labelContactName\": \"<string>\",\n      \"labelName\": \"<string>\",\n      \"managerEmail\": \"<string>\",\n      \"managerName\": \"<string>\",\n      \"role\": \"<string>\",\n      \"selectedAlbums\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"selectedSingles\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"socialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c19965ab-61d3-48f8-ac91-e9f8a15953a6",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "manualArtistClaims"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"artistId\": \"<string>\",\n      \"legalFirstName\": \"<string>\",\n      \"legalLastName\": \"<string>\",\n      \"websiteOrSocialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"acceptedTerms\": \"<boolean>\",\n      \"distributorName\": \"<string>\",\n      \"errorReason\": \"<string>\",\n      \"labelContactEmail\": \"<string>\",\n      \"labelContactName\": \"<string>\",\n      \"labelName\": \"<string>\",\n      \"managerEmail\": \"<string>\",\n      \"managerName\": \"<string>\",\n      \"role\": \"<string>\",\n      \"selectedAlbums\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"selectedSingles\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"socialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "62698fe5-0aba-4151-8728-89626357a8d8",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "manualArtistClaims"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"artistId\": \"<string>\",\n      \"legalFirstName\": \"<string>\",\n      \"legalLastName\": \"<string>\",\n      \"websiteOrSocialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"acceptedTerms\": \"<boolean>\",\n      \"distributorName\": \"<string>\",\n      \"errorReason\": \"<string>\",\n      \"labelContactEmail\": \"<string>\",\n      \"labelContactName\": \"<string>\",\n      \"labelName\": \"<string>\",\n      \"managerEmail\": \"<string>\",\n      \"managerName\": \"<string>\",\n      \"role\": \"<string>\",\n      \"selectedAlbums\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"selectedSingles\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"socialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "74d9fb0e-3d7f-4d7f-ac0b-82c2b2ab32d8",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "manualArtistClaims"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"artistId\": \"<string>\",\n      \"legalFirstName\": \"<string>\",\n      \"legalLastName\": \"<string>\",\n      \"websiteOrSocialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"acceptedTerms\": \"<boolean>\",\n      \"distributorName\": \"<string>\",\n      \"errorReason\": \"<string>\",\n      \"labelContactEmail\": \"<string>\",\n      \"labelContactName\": \"<string>\",\n      \"labelName\": \"<string>\",\n      \"managerEmail\": \"<string>\",\n      \"managerName\": \"<string>\",\n      \"role\": \"<string>\",\n      \"selectedAlbums\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"selectedSingles\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"socialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5cc38d17-c2d9-4012-a1c4-0d75c37e1f4f",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "manualArtistClaims"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"artistId\": \"<string>\",\n      \"legalFirstName\": \"<string>\",\n      \"legalLastName\": \"<string>\",\n      \"websiteOrSocialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"acceptedTerms\": \"<boolean>\",\n      \"distributorName\": \"<string>\",\n      \"errorReason\": \"<string>\",\n      \"labelContactEmail\": \"<string>\",\n      \"labelContactName\": \"<string>\",\n      \"labelName\": \"<string>\",\n      \"managerEmail\": \"<string>\",\n      \"managerName\": \"<string>\",\n      \"role\": \"<string>\",\n      \"selectedAlbums\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"selectedSingles\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"socialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4add828a-e7b8-4120-a6f6-68e970008747",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "manualArtistClaims"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"artistId\": \"<string>\",\n      \"legalFirstName\": \"<string>\",\n      \"legalLastName\": \"<string>\",\n      \"websiteOrSocialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"acceptedTerms\": \"<boolean>\",\n      \"distributorName\": \"<string>\",\n      \"errorReason\": \"<string>\",\n      \"labelContactEmail\": \"<string>\",\n      \"labelContactName\": \"<string>\",\n      \"labelName\": \"<string>\",\n      \"managerEmail\": \"<string>\",\n      \"managerName\": \"<string>\",\n      \"role\": \"<string>\",\n      \"selectedAlbums\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"selectedSingles\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"socialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1b7dd86c-4b6e-4d82-a7d6-b7633339c8af",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "manualArtistClaims"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"artistId\": \"<string>\",\n      \"legalFirstName\": \"<string>\",\n      \"legalLastName\": \"<string>\",\n      \"websiteOrSocialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"acceptedTerms\": \"<boolean>\",\n      \"distributorName\": \"<string>\",\n      \"errorReason\": \"<string>\",\n      \"labelContactEmail\": \"<string>\",\n      \"labelContactName\": \"<string>\",\n      \"labelName\": \"<string>\",\n      \"managerEmail\": \"<string>\",\n      \"managerName\": \"<string>\",\n      \"role\": \"<string>\",\n      \"selectedAlbums\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"selectedSingles\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"socialLink\": {\n        \"href\": \"<string>\"\n      },\n      \"upcs\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://openapi.tidal.com/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ad531195-52f3-42ca-a4a5-284f56faa33d",
+    "name": "TIDAL Catalog acceptedTerms manualArtistClaims API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Browse TIDAL's high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.",
+      "type": "text/plain"
+    }
+  }
+}

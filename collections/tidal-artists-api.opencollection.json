@@ -1,37 +1,25 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "TIDAL Catalog acceptedTerms playlists API",
+    "name": "TIDAL Catalog acceptedTerms artists API",
     "version": "1.10.14"
   },
   "items": [
     {
       "info": {
-        "name": "playlists",
+        "name": "artists",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Get multiple playlists.",
+            "name": "Get multiple artists.",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://openapi.tidal.com/v2/playlists",
+            "url": "https://openapi.tidal.com/v2/artists",
             "params": [
-              {
-                "name": "page[cursor]",
-                "value": "",
-                "type": "query",
-                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
-              },
-              {
-                "name": "sort",
-                "value": "",
-                "type": "query",
-                "description": "Values prefixed with \"-\" are sorted descending; values without it are sorted ascending."
-              },
               {
                 "name": "countryCode",
                 "value": "US",
@@ -40,15 +28,21 @@
               },
               {
                 "name": "include",
-                "value": "collaboratorProfiles",
+                "value": "albums",
                 "type": "query",
-                "description": "Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners"
+                "description": "Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos"
+              },
+              {
+                "name": "filter[handle]",
+                "value": "",
+                "type": "query",
+                "description": "Artist handle (e.g. `jayz`)"
               },
               {
                 "name": "filter[id]",
                 "value": "",
                 "type": "query",
-                "description": "Playlist id (e.g. `550e8400-e29b-41d4-a716-446655440000`)"
+                "description": "Artist id (e.g. `1566`)"
               },
               {
                 "name": "filter[owners.id]",
@@ -67,24 +61,16 @@
               }
             }
           },
-          "docs": "Retrieves multiple playlists by available filters, or without if applicable."
+          "docs": "Retrieves multiple artists by available filters, or without if applicable."
         },
         {
           "info": {
-            "name": "Create single playlist.",
+            "name": "Create single artist.",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://openapi.tidal.com/v2/playlists",
-            "params": [
-              {
-                "name": "countryCode",
-                "value": "US",
-                "type": "query",
-                "description": "ISO 3166-1 alpha-2 country code"
-              }
-            ],
+            "url": "https://openapi.tidal.com/v2/artists",
             "body": {
               "type": "json",
               "data": "{}"
@@ -100,22 +86,22 @@
               }
             }
           },
-          "docs": "Creates a new playlist."
+          "docs": "Creates a new artist."
         },
         {
           "info": {
-            "name": "Get single playlist.",
+            "name": "Get single artist.",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://openapi.tidal.com/v2/playlists/:id",
+            "url": "https://openapi.tidal.com/v2/artists/:id",
             "params": [
               {
                 "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "value": "1566",
                 "type": "path",
-                "description": "Playlist id"
+                "description": "Artist id"
               },
               {
                 "name": "countryCode",
@@ -125,9 +111,9 @@
               },
               {
                 "name": "include",
-                "value": "collaboratorProfiles",
+                "value": "albums",
                 "type": "query",
-                "description": "Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, items, ownerProfiles, owners"
+                "description": "Allows the client to customize which related resources should be returned. Available options: albums, biography, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos"
               }
             ],
             "auth": {
@@ -140,28 +126,22 @@
               }
             }
           },
-          "docs": "Retrieves single playlist by id."
+          "docs": "Retrieves single artist by id."
         },
         {
           "info": {
-            "name": "Update single playlist.",
+            "name": "Update single artist.",
             "type": "http"
           },
           "http": {
             "method": "PATCH",
-            "url": "https://openapi.tidal.com/v2/playlists/:id",
+            "url": "https://openapi.tidal.com/v2/artists/:id",
             "params": [
               {
                 "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "value": "1566",
                 "type": "path",
-                "description": "Playlist id"
-              },
-              {
-                "name": "countryCode",
-                "value": "US",
-                "type": "query",
-                "description": "ISO 3166-1 alpha-2 country code"
+                "description": "Artist id"
               }
             ],
             "body": {
@@ -179,51 +159,28 @@
               }
             }
           },
-          "docs": "Updates existing playlist."
+          "docs": "Updates existing artist."
         },
         {
           "info": {
-            "name": "Delete single playlist.",
-            "type": "http"
-          },
-          "http": {
-            "method": "DELETE",
-            "url": "https://openapi.tidal.com/v2/playlists/:id",
-            "params": [
-              {
-                "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
-                "type": "path",
-                "description": "Playlist id"
-              }
-            ],
-            "auth": {
-              "type": "oauth2",
-              "flow": "authorization_code",
-              "authorizationUrl": "https://login.tidal.com/authorize",
-              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Deletes existing playlist."
-        },
-        {
-          "info": {
-            "name": "Get collaboratorProfiles relationship (\"to-many\").",
+            "name": "Get albums relationship (\"to-many\").",
             "type": "http"
           },
           "http": {
             "method": "GET",
-            "url": "https://openapi.tidal.com/v2/playlists/:id/relationships/collaboratorProfiles",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/albums",
             "params": [
               {
                 "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "value": "1566",
                 "type": "path",
-                "description": "Playlist id"
+                "description": "Artist id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
               },
               {
                 "name": "countryCode",
@@ -233,15 +190,94 @@
               },
               {
                 "name": "include",
-                "value": "collaboratorProfiles",
+                "value": "albums",
                 "type": "query",
-                "description": "Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles"
+                "description": "Allows the client to customize which related resources should be returned. Available options: albums"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves albums relationship."
+        },
+        {
+          "info": {
+            "name": "Get biography relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/biography",
+            "params": [
+              {
+                "name": "id",
+                "value": "1566",
+                "type": "path",
+                "description": "Artist id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "biography",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: biography"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves biography relationship."
+        },
+        {
+          "info": {
+            "name": "Get followers relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/followers",
+            "params": [
+              {
+                "name": "id",
+                "value": "1566",
+                "type": "path",
+                "description": "Artist id"
+              },
+              {
+                "name": "viewerContext",
+                "value": "",
+                "type": "query"
               },
               {
                 "name": "page[cursor]",
                 "value": "",
                 "type": "query",
                 "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "include",
+                "value": "followers",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: followers"
               }
             ],
             "auth": {
@@ -255,22 +291,74 @@
               }
             }
           },
-          "docs": "Retrieves collaboratorProfiles relationship."
+          "docs": "Retrieves followers relationship."
         },
         {
           "info": {
-            "name": "Add to collaboratorProfiles relationship (\"to-many\").",
+            "name": "Get following relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/following",
+            "params": [
+              {
+                "name": "id",
+                "value": "1566",
+                "type": "path",
+                "description": "Artist id"
+              },
+              {
+                "name": "viewerContext",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "include",
+                "value": "following",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: following"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves following relationship."
+        },
+        {
+          "info": {
+            "name": "Add to following relationship (\"to-many\").",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://openapi.tidal.com/v2/playlists/:id/relationships/collaboratorProfiles",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/following",
             "params": [
               {
                 "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "value": "1566",
                 "type": "path",
-                "description": "Playlist id"
+                "description": "Artist id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
               }
             ],
             "body": {
@@ -288,22 +376,22 @@
               }
             }
           },
-          "docs": "Adds item(s) to collaboratorProfiles relationship."
+          "docs": "Adds item(s) to following relationship."
         },
         {
           "info": {
-            "name": "Delete from collaboratorProfiles relationship (\"to-many\").",
+            "name": "Delete from following relationship (\"to-many\").",
             "type": "http"
           },
           "http": {
             "method": "DELETE",
-            "url": "https://openapi.tidal.com/v2/playlists/:id/relationships/collaboratorProfiles",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/following",
             "params": [
               {
                 "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "value": "1566",
                 "type": "path",
-                "description": "Playlist id"
+                "description": "Artist id"
               }
             ],
             "body": {
@@ -321,330 +409,7 @@
               }
             }
           },
-          "docs": "Deletes item(s) from collaboratorProfiles relationship."
-        },
-        {
-          "info": {
-            "name": "Get collaborators relationship (\"to-many\").",
-            "type": "http"
-          },
-          "http": {
-            "method": "GET",
-            "url": "https://openapi.tidal.com/v2/playlists/:id/relationships/collaborators",
-            "params": [
-              {
-                "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
-                "type": "path",
-                "description": "Playlist id"
-              },
-              {
-                "name": "countryCode",
-                "value": "US",
-                "type": "query",
-                "description": "ISO 3166-1 alpha-2 country code"
-              },
-              {
-                "name": "include",
-                "value": "collaborators",
-                "type": "query",
-                "description": "Allows the client to customize which related resources should be returned. Available options: collaborators"
-              },
-              {
-                "name": "page[cursor]",
-                "value": "",
-                "type": "query",
-                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
-              }
-            ],
-            "auth": {
-              "type": "oauth2",
-              "flow": "authorization_code",
-              "authorizationUrl": "https://login.tidal.com/authorize",
-              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Retrieves collaborators relationship."
-        },
-        {
-          "info": {
-            "name": "Get coverArt relationship (\"to-many\").",
-            "type": "http"
-          },
-          "http": {
-            "method": "GET",
-            "url": "https://openapi.tidal.com/v2/playlists/:id/relationships/coverArt",
-            "params": [
-              {
-                "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
-                "type": "path",
-                "description": "Playlist id"
-              },
-              {
-                "name": "countryCode",
-                "value": "US",
-                "type": "query",
-                "description": "ISO 3166-1 alpha-2 country code"
-              },
-              {
-                "name": "include",
-                "value": "coverArt",
-                "type": "query",
-                "description": "Allows the client to customize which related resources should be returned. Available options: coverArt"
-              },
-              {
-                "name": "page[cursor]",
-                "value": "",
-                "type": "query",
-                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
-              }
-            ],
-            "auth": {
-              "type": "oauth2",
-              "flow": "client_credentials",
-              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Retrieves coverArt relationship."
-        },
-        {
-          "info": {
-            "name": "Update coverArt relationship (\"to-many\").",
-            "type": "http"
-          },
-          "http": {
-            "method": "PATCH",
-            "url": "https://openapi.tidal.com/v2/playlists/:id/relationships/coverArt",
-            "params": [
-              {
-                "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
-                "type": "path",
-                "description": "Playlist id"
-              }
-            ],
-            "body": {
-              "type": "json",
-              "data": "{}"
-            },
-            "auth": {
-              "type": "oauth2",
-              "flow": "authorization_code",
-              "authorizationUrl": "https://login.tidal.com/authorize",
-              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Updates coverArt relationship."
-        },
-        {
-          "info": {
-            "name": "Get items relationship (\"to-many\").",
-            "type": "http"
-          },
-          "http": {
-            "method": "GET",
-            "url": "https://openapi.tidal.com/v2/playlists/:id/relationships/items",
-            "params": [
-              {
-                "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
-                "type": "path",
-                "description": "Playlist id"
-              },
-              {
-                "name": "page[cursor]",
-                "value": "",
-                "type": "query",
-                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
-              },
-              {
-                "name": "countryCode",
-                "value": "US",
-                "type": "query",
-                "description": "ISO 3166-1 alpha-2 country code"
-              },
-              {
-                "name": "include",
-                "value": "items",
-                "type": "query",
-                "description": "Allows the client to customize which related resources should be returned. Available options: items"
-              }
-            ],
-            "auth": {
-              "type": "oauth2",
-              "flow": "client_credentials",
-              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Retrieves items relationship."
-        },
-        {
-          "info": {
-            "name": "Add to items relationship (\"to-many\").",
-            "type": "http"
-          },
-          "http": {
-            "method": "POST",
-            "url": "https://openapi.tidal.com/v2/playlists/:id/relationships/items",
-            "params": [
-              {
-                "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
-                "type": "path",
-                "description": "Playlist id"
-              },
-              {
-                "name": "countryCode",
-                "value": "US",
-                "type": "query",
-                "description": "ISO 3166-1 alpha-2 country code"
-              }
-            ],
-            "body": {
-              "type": "json",
-              "data": "{}"
-            },
-            "auth": {
-              "type": "oauth2",
-              "flow": "authorization_code",
-              "authorizationUrl": "https://login.tidal.com/authorize",
-              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Adds item(s) to items relationship."
-        },
-        {
-          "info": {
-            "name": "Update items relationship (\"to-many\").",
-            "type": "http"
-          },
-          "http": {
-            "method": "PATCH",
-            "url": "https://openapi.tidal.com/v2/playlists/:id/relationships/items",
-            "params": [
-              {
-                "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
-                "type": "path",
-                "description": "Playlist id"
-              }
-            ],
-            "body": {
-              "type": "json",
-              "data": "{}"
-            },
-            "auth": {
-              "type": "oauth2",
-              "flow": "authorization_code",
-              "authorizationUrl": "https://login.tidal.com/authorize",
-              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Updates items relationship."
-        },
-        {
-          "info": {
-            "name": "Delete from items relationship (\"to-many\").",
-            "type": "http"
-          },
-          "http": {
-            "method": "DELETE",
-            "url": "https://openapi.tidal.com/v2/playlists/:id/relationships/items",
-            "params": [
-              {
-                "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
-                "type": "path",
-                "description": "Playlist id"
-              }
-            ],
-            "body": {
-              "type": "json",
-              "data": "{}"
-            },
-            "auth": {
-              "type": "oauth2",
-              "flow": "authorization_code",
-              "authorizationUrl": "https://login.tidal.com/authorize",
-              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Deletes item(s) from items relationship."
-        },
-        {
-          "info": {
-            "name": "Get ownerProfiles relationship (\"to-many\").",
-            "type": "http"
-          },
-          "http": {
-            "method": "GET",
-            "url": "https://openapi.tidal.com/v2/playlists/:id/relationships/ownerProfiles",
-            "params": [
-              {
-                "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
-                "type": "path",
-                "description": "Playlist id"
-              },
-              {
-                "name": "countryCode",
-                "value": "US",
-                "type": "query",
-                "description": "ISO 3166-1 alpha-2 country code"
-              },
-              {
-                "name": "include",
-                "value": "ownerProfiles",
-                "type": "query",
-                "description": "Allows the client to customize which related resources should be returned. Available options: ownerProfiles"
-              },
-              {
-                "name": "page[cursor]",
-                "value": "",
-                "type": "query",
-                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
-              }
-            ],
-            "auth": {
-              "type": "oauth2",
-              "flow": "client_credentials",
-              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
-              "credentials": {
-                "clientId": "{{clientId}}",
-                "clientSecret": "{{clientSecret}}"
-              }
-            }
-          },
-          "docs": "Retrieves ownerProfiles relationship."
+          "docs": "Deletes item(s) from following relationship."
         },
         {
           "info": {
@@ -653,19 +418,13 @@
           },
           "http": {
             "method": "GET",
-            "url": "https://openapi.tidal.com/v2/playlists/:id/relationships/owners",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/owners",
             "params": [
               {
                 "name": "id",
-                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "value": "1566",
                 "type": "path",
-                "description": "Playlist id"
-              },
-              {
-                "name": "countryCode",
-                "value": "US",
-                "type": "query",
-                "description": "ISO 3166-1 alpha-2 country code"
+                "description": "Artist id"
               },
               {
                 "name": "include",
@@ -691,6 +450,355 @@
             }
           },
           "docs": "Retrieves owners relationship."
+        },
+        {
+          "info": {
+            "name": "Get profileArt relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/profileArt",
+            "params": [
+              {
+                "name": "id",
+                "value": "1566",
+                "type": "path",
+                "description": "Artist id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "profileArt",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: profileArt"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves profileArt relationship."
+        },
+        {
+          "info": {
+            "name": "Update profileArt relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/profileArt",
+            "params": [
+              {
+                "name": "id",
+                "value": "1566",
+                "type": "path",
+                "description": "Artist id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates profileArt relationship."
+        },
+        {
+          "info": {
+            "name": "Get radio relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/radio",
+            "params": [
+              {
+                "name": "id",
+                "value": "1566",
+                "type": "path",
+                "description": "Artist id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "radio",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: radio"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves radio relationship."
+        },
+        {
+          "info": {
+            "name": "Get roles relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/roles",
+            "params": [
+              {
+                "name": "id",
+                "value": "1566",
+                "type": "path",
+                "description": "Artist id"
+              },
+              {
+                "name": "include",
+                "value": "roles",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: roles"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves roles relationship."
+        },
+        {
+          "info": {
+            "name": "Get similarArtists relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/similarArtists",
+            "params": [
+              {
+                "name": "id",
+                "value": "1566",
+                "type": "path",
+                "description": "Artist id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "similarArtists",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: similarArtists"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves similarArtists relationship."
+        },
+        {
+          "info": {
+            "name": "Get trackProviders relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/trackProviders",
+            "params": [
+              {
+                "name": "id",
+                "value": "1566",
+                "type": "path",
+                "description": "Artist id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "include",
+                "value": "trackProviders",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: trackProviders"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves trackProviders relationship."
+        },
+        {
+          "info": {
+            "name": "Get tracks relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/tracks",
+            "params": [
+              {
+                "name": "id",
+                "value": "1566",
+                "type": "path",
+                "description": "Artist id"
+              },
+              {
+                "name": "collapseBy",
+                "value": "FINGERPRINT",
+                "type": "query",
+                "description": "Collapse by options for getting artist tracks. Available options: FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based entry fingerprints while collapsing by ID always returns all available items."
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "tracks",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: tracks"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves tracks relationship."
+        },
+        {
+          "info": {
+            "name": "Get videos relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/artists/:id/relationships/videos",
+            "params": [
+              {
+                "name": "id",
+                "value": "1566",
+                "type": "path",
+                "description": "Artist id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "videos",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: videos"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves videos relationship."
         }
       ]
     }

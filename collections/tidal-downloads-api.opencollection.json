@@ -1,0 +1,129 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms downloads API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "downloads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple downloads.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/downloads",
+            "params": [
+              {
+                "name": "include",
+                "value": "owners",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: owners"
+              },
+              {
+                "name": "filter[id]",
+                "value": "",
+                "type": "query",
+                "description": "Download id (e.g. `VFJBQ0tTOjEyMzQ1`)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple downloads by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Get single download.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/downloads/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "VFJBQ0tTOjEyMzQ1",
+                "type": "path",
+                "description": "Download id"
+              },
+              {
+                "name": "include",
+                "value": "owners",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: owners"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single download by id."
+        },
+        {
+          "info": {
+            "name": "Get owners relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/downloads/:id/relationships/owners",
+            "params": [
+              {
+                "name": "id",
+                "value": "VFJBQ0tTOjEyMzQ1",
+                "type": "path",
+                "description": "Download id"
+              },
+              {
+                "name": "include",
+                "value": "owners",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: owners"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves owners relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

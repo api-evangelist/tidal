@@ -1,0 +1,80 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms squareConnections API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "squareConnections",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create single squareConnection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.tidal.com/v2/squareConnections",
+            "params": [
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new squareConnection."
+        },
+        {
+          "info": {
+            "name": "Get single squareConnection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/squareConnections/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "me",
+                "type": "path",
+                "description": "Square connection id. Use `me` for the authenticated user's resource"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single squareConnection by id."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

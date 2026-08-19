@@ -1,0 +1,1098 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms tracks API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "tracks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple tracks.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks",
+            "params": [
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Values prefixed with \"-\" are sorted descending; values without it are sorted ascending."
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "albums",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules"
+              },
+              {
+                "name": "filter[id]",
+                "value": "",
+                "type": "query",
+                "description": "List of track IDs (e.g. `75413016`)"
+              },
+              {
+                "name": "filter[isrc]",
+                "value": "",
+                "type": "query",
+                "description": "List of ISRCs. When a single ISRC is provided, pagination is supported and multiple tracks may be returned. When multiple ISRCs are provided, one track per ISRC is returned without pagination. (e.g. `QMJMT1701237`)"
+              },
+              {
+                "name": "filter[owners.id]",
+                "value": "",
+                "type": "query",
+                "description": "User id. Use `me` for the authenticated user"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple tracks by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Create single track.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.tidal.com/v2/tracks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new track."
+        },
+        {
+          "info": {
+            "name": "Get single track.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "albums",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single track by id."
+        },
+        {
+          "info": {
+            "name": "Update single track.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.tidal.com/v2/tracks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates existing track."
+        },
+        {
+          "info": {
+            "name": "Delete single track.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://openapi.tidal.com/v2/tracks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes existing track."
+        },
+        {
+          "info": {
+            "name": "Get albums relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/albums",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "albums",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: albums"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves albums relationship."
+        },
+        {
+          "info": {
+            "name": "Update albums relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/albums",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates albums relationship."
+        },
+        {
+          "info": {
+            "name": "Get artists relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/artists",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "artists",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: artists"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves artists relationship."
+        },
+        {
+          "info": {
+            "name": "Get credits relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/credits",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "include",
+                "value": "credits",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: credits"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves credits relationship."
+        },
+        {
+          "info": {
+            "name": "Get download relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/download",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "include",
+                "value": "download",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: download"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves download relationship."
+        },
+        {
+          "info": {
+            "name": "Get genres relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/genres",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "genres",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: genres"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves genres relationship."
+        },
+        {
+          "info": {
+            "name": "Get lyrics relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/lyrics",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "include",
+                "value": "lyrics",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: lyrics"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves lyrics relationship."
+        },
+        {
+          "info": {
+            "name": "Get metadataStatus relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/metadataStatus",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "include",
+                "value": "metadataStatus",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: metadataStatus"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves metadataStatus relationship."
+        },
+        {
+          "info": {
+            "name": "Get owners relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/owners",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "include",
+                "value": "owners",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: owners"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves owners relationship."
+        },
+        {
+          "info": {
+            "name": "Get priceConfig relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/priceConfig",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "priceConfig",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: priceConfig"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves priceConfig relationship."
+        },
+        {
+          "info": {
+            "name": "Get providers relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/providers",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "providers",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: providers"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves providers relationship."
+        },
+        {
+          "info": {
+            "name": "Get radio relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/radio",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "include",
+                "value": "radio",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: radio"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves radio relationship."
+        },
+        {
+          "info": {
+            "name": "Get replacement relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/replacement",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "replacement",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: replacement"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves replacement relationship."
+        },
+        {
+          "info": {
+            "name": "Get shares relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/shares",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "include",
+                "value": "shares",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: shares"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves shares relationship."
+        },
+        {
+          "info": {
+            "name": "Get similarTracks relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/similarTracks",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "similarTracks",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: similarTracks"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves similarTracks relationship."
+        },
+        {
+          "info": {
+            "name": "Get sourceFile relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/sourceFile",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "include",
+                "value": "sourceFile",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: sourceFile"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves sourceFile relationship."
+        },
+        {
+          "info": {
+            "name": "Get suggestedTracks relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/suggestedTracks",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "suggestedTracks",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: suggestedTracks"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves suggestedTracks relationship."
+        },
+        {
+          "info": {
+            "name": "Get trackStatistics relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/trackStatistics",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "include",
+                "value": "trackStatistics",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: trackStatistics"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves trackStatistics relationship."
+        },
+        {
+          "info": {
+            "name": "Get usageRules relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/tracks/:id/relationships/usageRules",
+            "params": [
+              {
+                "name": "id",
+                "value": "75413016",
+                "type": "path",
+                "description": "Track id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "usageRules",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: usageRules"
+              },
+              {
+                "name": "shareCode",
+                "value": "",
+                "type": "query",
+                "description": "Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves usageRules relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

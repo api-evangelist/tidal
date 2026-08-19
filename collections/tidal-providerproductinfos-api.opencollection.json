@@ -1,0 +1,141 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms providerProductInfos API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "providerProductInfos",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple providerProductInfos.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/providerProductInfos",
+            "params": [
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "provider",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: provider, subject"
+              },
+              {
+                "name": "filter[barcodeId]",
+                "value": "",
+                "type": "query",
+                "description": "List of barcode IDs (EAN-13 or UPC-A) (e.g. `00602527336510`)"
+              },
+              {
+                "name": "filter[provider.id]",
+                "value": "",
+                "type": "query",
+                "description": "Content provider ID (e.g. `50`)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple providerProductInfos by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Get provider relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/providerProductInfos/:id/relationships/provider",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Provider product info id"
+              },
+              {
+                "name": "include",
+                "value": "provider",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: provider"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves provider relationship."
+        },
+        {
+          "info": {
+            "name": "Get subject relationship (\"to-one\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/providerProductInfos/:id/relationships/subject",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Provider product info id"
+              },
+              {
+                "name": "countryCode",
+                "value": "US",
+                "type": "query",
+                "description": "ISO 3166-1 alpha-2 country code"
+              },
+              {
+                "name": "include",
+                "value": "subject",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: subject"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves subject relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

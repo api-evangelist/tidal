@@ -1,0 +1,297 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms installations API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "installations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple installations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/installations",
+            "params": [
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "include",
+                "value": "offlineInventory",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners"
+              },
+              {
+                "name": "filter[clientProvidedInstallationId]",
+                "value": "",
+                "type": "query",
+                "description": "Client-provided installation identifier to filter by (e.g. `a468bee88def`)"
+              },
+              {
+                "name": "filter[id]",
+                "value": "",
+                "type": "query",
+                "description": "List of installation IDs (e.g. `a468bee88def`)"
+              },
+              {
+                "name": "filter[owners.id]",
+                "value": "",
+                "type": "query",
+                "description": "User ID to filter by. Use `me` for the authenticated user"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple installations by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Create single installation.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.tidal.com/v2/installations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new installation."
+        },
+        {
+          "info": {
+            "name": "Get single installation.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/installations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "a468bee88def",
+                "type": "path",
+                "description": "Installation id"
+              },
+              {
+                "name": "include",
+                "value": "offlineInventory",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves single installation by id."
+        },
+        {
+          "info": {
+            "name": "Get offlineInventory relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/installations/:id/relationships/offlineInventory",
+            "params": [
+              {
+                "name": "id",
+                "value": "a468bee88def",
+                "type": "path",
+                "description": "Installation id"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "include",
+                "value": "offlineInventory",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: offlineInventory"
+              },
+              {
+                "name": "filter[id]",
+                "value": "",
+                "type": "query",
+                "description": "Offline item id (e.g. `1234`)"
+              },
+              {
+                "name": "filter[state]",
+                "value": "",
+                "type": "query",
+                "description": "One of: PENDING, STORED (e.g. `PENDING`)"
+              },
+              {
+                "name": "filter[type]",
+                "value": "",
+                "type": "query",
+                "description": "One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. `tracks`)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves offlineInventory relationship."
+        },
+        {
+          "info": {
+            "name": "Add to offlineInventory relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.tidal.com/v2/installations/:id/relationships/offlineInventory",
+            "params": [
+              {
+                "name": "id",
+                "value": "a468bee88def",
+                "type": "path",
+                "description": "Installation id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Adds item(s) to offlineInventory relationship."
+        },
+        {
+          "info": {
+            "name": "Delete from offlineInventory relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://openapi.tidal.com/v2/installations/:id/relationships/offlineInventory",
+            "params": [
+              {
+                "name": "id",
+                "value": "a468bee88def",
+                "type": "path",
+                "description": "Installation id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes item(s) from offlineInventory relationship."
+        },
+        {
+          "info": {
+            "name": "Get owners relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/installations/:id/relationships/owners",
+            "params": [
+              {
+                "name": "id",
+                "value": "a468bee88def",
+                "type": "path",
+                "description": "Installation id"
+              },
+              {
+                "name": "include",
+                "value": "owners",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: owners"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves owners relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

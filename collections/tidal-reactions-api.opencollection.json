@@ -1,0 +1,222 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TIDAL Catalog acceptedTerms reactions API",
+    "version": "1.10.14"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "reactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get multiple reactions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/reactions",
+            "params": [
+              {
+                "name": "stats",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "statsOnly",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "viewerContext",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              },
+              {
+                "name": "include",
+                "value": "ownerProfiles",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners"
+              },
+              {
+                "name": "filter[emoji]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by emoji (e.g. `👍`)"
+              },
+              {
+                "name": "filter[subject.id]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by subject resource ID (e.g. `12345`)"
+              },
+              {
+                "name": "filter[subject.type]",
+                "value": "",
+                "type": "query",
+                "description": "Filter by subject resource type (e.g. `albums`)"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves multiple reactions by available filters, or without if applicable."
+        },
+        {
+          "info": {
+            "name": "Create single reaction.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.tidal.com/v2/reactions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new reaction."
+        },
+        {
+          "info": {
+            "name": "Delete single reaction.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://openapi.tidal.com/v2/reactions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "nejMcAhh5N8S3EQ4LaqysVdI0cZZ",
+                "type": "path",
+                "description": "Reaction Id"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes existing reaction."
+        },
+        {
+          "info": {
+            "name": "Get ownerProfiles relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/reactions/:id/relationships/ownerProfiles",
+            "params": [
+              {
+                "name": "id",
+                "value": "nejMcAhh5N8S3EQ4LaqysVdI0cZZ",
+                "type": "path",
+                "description": "Reaction Id"
+              },
+              {
+                "name": "include",
+                "value": "ownerProfiles",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: ownerProfiles"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves ownerProfiles relationship."
+        },
+        {
+          "info": {
+            "name": "Get owners relationship (\"to-many\").",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.tidal.com/v2/reactions/:id/relationships/owners",
+            "params": [
+              {
+                "name": "id",
+                "value": "nejMcAhh5N8S3EQ4LaqysVdI0cZZ",
+                "type": "path",
+                "description": "Reaction Id"
+              },
+              {
+                "name": "include",
+                "value": "owners",
+                "type": "query",
+                "description": "Allows the client to customize which related resources should be returned. Available options: owners"
+              },
+              {
+                "name": "page[cursor]",
+                "value": "",
+                "type": "query",
+                "description": "Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://login.tidal.com/authorize",
+              "accessTokenUrl": "https://auth.tidal.com/v1/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves owners relationship."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

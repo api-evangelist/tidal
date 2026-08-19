@@ -1,38 +1,57 @@
 {
   "item": [
     {
-      "id": "e2ef9936-7bbb-4aa1-9efe-53f584f8959a",
-      "name": "users",
+      "id": "9db29a21-2b6a-4256-b273-da20e6b5627c",
+      "name": "trackFiles",
       "description": {
         "content": "",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "0a8733aa-bbc8-456e-8c7a-ff4f2fac8a99",
-          "name": "Get single user.",
+          "id": "f4d78e5e-2816-4a07-a45d-3f82fb62aa42",
+          "name": "Get single trackFile.",
           "request": {
-            "name": "Get single user.",
+            "name": "Get single trackFile.",
             "description": {
-              "content": "Retrieves single user by id.",
+              "content": "Retrieves single trackFile by id.",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "users",
+                "trackFiles",
                 ":id"
               ],
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "formats",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "formats",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "usage",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "id",
-                  "description": "(Required) User id. Use `me` for the authenticated user's resource"
+                  "description": "(Required) Track file id"
                 }
               ]
             },
@@ -47,45 +66,50 @@
               "type": "oauth2",
               "oauth2": [
                 {
-                  "key": "scope",
-                  "value": "collection.read collection.write entitlements.read playback playlists.read playlists.write r_usr recommendations.read search.read search.write user.read w_usr"
-                },
-                {
                   "key": "accessTokenUrl",
                   "value": "https://auth.tidal.com/v1/oauth2/token"
                 },
                 {
-                  "key": "authUrl",
-                  "value": "https://login.tidal.com/authorize"
-                },
-                {
                   "key": "grant_type",
-                  "value": "authorization_code"
+                  "value": "client_credentials"
                 }
               ]
             }
           },
           "response": [
             {
-              "id": "0841faae-f1de-418a-a019-20dc4d304182",
+              "id": "963701d0-6fb0-4b9c-b16c-2016871cf8b4",
               "name": "Successful response",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "users",
+                    "trackFiles",
                     ":id"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "id",
-                      "description": "(Required) User id. Use `me` for the authenticated user's resource"
+                      "description": "(Required) Track file id"
                     }
                   ]
                 },
@@ -114,29 +138,42 @@
                   "value": "application/vnd.api+json"
                 }
               ],
-              "body": "{\n  \"data\": {\n    \"id\": \"12345\",\n    \"type\": \"tracks\",\n    \"attributes\": {\n      \"country\": \"US\",\n      \"username\": \"username\",\n      \"email\": \"test@test.com\",\n      \"emailVerified\": true,\n      \"firstName\": \"John\",\n      \"lastName\": \"Rambo\",\n      \"nostrPublicKey\": \"e3fc3965800f9c729b483a2a7291f30e569fbf5ab91a6eef332f9e28a5e923dd\"\n    }\n  },\n  \"links\": {\n    \"self\": \"/artists/xyz/relationships/tracks\",\n    \"meta\": {\n      \"nextCursor\": \"zyx\"\n    },\n    \"next\": \"/artists/xyz/relationships/tracks?page[cursor]=zyx\"\n  },\n  \"included\": [\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"createdAt\": \"1988-11-14T04:25:39.206Z\"\n      },\n      \"relationships\": {\n        \"owners\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"terms\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"createdAt\": \"2016-02-13T13:16:27.469Z\"\n      },\n      \"relationships\": {\n        \"owners\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"terms\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ]\n}",
+              "body": "{\n  \"data\": {\n    \"id\": \"12345\",\n    \"type\": \"tracks\",\n    \"attributes\": {\n      \"albumAudioNormalizationData\": {\n        \"peakAmplitude\": 4750.330914368016,\n        \"replayGain\": 9873.210756541985\n      },\n      \"format\": \"HEAACV1\",\n      \"trackAudioNormalizationData\": {\n        \"peakAmplitude\": 7567.960032359836,\n        \"replayGain\": 5894.776981994293\n      },\n      \"trackPresentation\": \"PREVIEW\",\n      \"url\": \"string\"\n    }\n  },\n  \"links\": {\n    \"self\": \"/artists/xyz/relationships/tracks\",\n    \"meta\": {\n      \"nextCursor\": \"zyx\"\n    },\n    \"next\": \"/artists/xyz/relationships/tracks?page[cursor]=zyx\"\n  },\n  \"included\": [\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"createdAt\": \"1999-11-28T17:07:30.909Z\"\n      },\n      \"relationships\": {\n        \"owners\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"terms\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"12345\",\n      \"type\": \"tracks\",\n      \"attributes\": {\n        \"createdAt\": \"1984-06-27T08:52:00.092Z\"\n      },\n      \"relationships\": {\n        \"owners\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"terms\": {\n          \"links\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"data\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "f99922e9-8169-46e6-ac3c-a144f78d4311",
+              "id": "98d2f446-9130-41fd-bd8b-ca43d9b04826",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "users",
+                    "trackFiles",
                     ":id"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "id",
-                      "description": "(Required) User id. Use `me` for the authenticated user's resource"
+                      "description": "(Required) Track file id"
                     }
                   ]
                 },
@@ -166,24 +203,97 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "c6fa3585-799c-4971-ae7f-384e5cd84a8e",
+              "id": "8853d2b7-c660-46cf-951b-6083c339c503",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "users",
+                    "trackFiles",
                     ":id"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "id",
-                      "description": "(Required) User id. Use `me` for the authenticated user's resource"
+                      "description": "(Required) Track file id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "17099a27-df0a-4cdf-a964-d594ed0344a7",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trackFiles",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Track file id"
                     }
                   ]
                 },
@@ -213,24 +323,37 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "e4a29bd5-351a-4b53-811b-e7617f0590c2",
+              "id": "89d50322-d429-4262-abf0-8373fa018dae",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "users",
+                    "trackFiles",
                     ":id"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "id",
-                      "description": "(Required) User id. Use `me` for the authenticated user's resource"
+                      "description": "(Required) Track file id"
                     }
                   ]
                 },
@@ -260,24 +383,37 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "80092068-ea37-4b8c-a786-59e2309a7a3d",
+              "id": "44f6fbdc-3328-40af-af8d-54746022f36e",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "users",
+                    "trackFiles",
                     ":id"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "id",
-                      "description": "(Required) User id. Use `me` for the authenticated user's resource"
+                      "description": "(Required) Track file id"
                     }
                   ]
                 },
@@ -307,24 +443,37 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "6f3e2547-a640-44dd-9ba4-f060ccfa8c1b",
+              "id": "bad271bd-da9e-4e6e-b09a-4d442f61628b",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "users",
+                    "trackFiles",
                     ":id"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "id",
-                      "description": "(Required) User id. Use `me` for the authenticated user's resource"
+                      "description": "(Required) Track file id"
                     }
                   ]
                 },
@@ -354,24 +503,37 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "61c32391-a9b4-4883-92ec-2c8b9fe0a27b",
+              "id": "4c89e38b-9e59-41a3-bf00-b90d0d97da71",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "users",
+                    "trackFiles",
                     ":id"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "id",
-                      "description": "(Required) User id. Use `me` for the authenticated user's resource"
+                      "description": "(Required) Track file id"
                     }
                   ]
                 },
@@ -401,24 +563,37 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "5335305b-8928-42ab-942d-6af662f2394d",
+              "id": "900e4689-6fae-427c-afd6-323ed4d71d8f",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "users",
+                    "trackFiles",
                     ":id"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "id",
-                      "description": "(Required) User id. Use `me` for the authenticated user's resource"
+                      "description": "(Required) Track file id"
                     }
                   ]
                 },
@@ -448,24 +623,37 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "51ec8baa-0197-407d-beef-3edf776a9dec",
+              "id": "7eb7ab01-20e0-4bfc-b84e-21e297327579",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "users",
+                    "trackFiles",
                     ":id"
                   ],
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "formats",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "usage",
+                      "value": "<string>"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "id",
-                      "description": "(Required) User id. Use `me` for the authenticated user's resource"
+                      "description": "(Required) Track file id"
                     }
                   ]
                 },
@@ -513,8 +701,8 @@
     }
   ],
   "info": {
-    "_postman_id": "0bac2740-84a8-46a5-be09-da31a59d197b",
-    "name": "TIDAL Catalog acceptedTerms users API",
+    "_postman_id": "e5afbd3d-1526-430a-ba0e-c7a1b4d6781b",
+    "name": "TIDAL Catalog acceptedTerms trackFiles API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
       "content": "Browse TIDAL's high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.",
