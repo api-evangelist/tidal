@@ -1,0 +1,73 @@
+slug: tidal
+provider: TIDAL
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Media, Entertainment & Telecom Content
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 5
+edges:
+- tag: userRecommendations
+  spec_file: tidal-userrecommendations-api-openapi.yml
+  capability_id: BC-3770.40
+  capability_id_l1: BC-3770
+  capability_name: Content Recommendation Modelling
+  confidence: 0.8
+  evidence: GET /userRecommendations/{id}/relationships/discoveryMixes ... myMixes ... newArrivalMixes;
+    UserRecommendations_Attributes
+  reason: Explicitly exposes per-user recommendation aggregates composed of discovery, my-mix and new-arrival
+    mixes — personalised content recommendation for viewer/listener surfaces.
+- tag: albums
+  spec_file: tidal-albums-api-openapi.yml
+  capability_id: BC-3710.20
+  capability_id_l1: BC-3710
+  capability_name: Metadata Cataloguing
+  confidence: 0.75
+  evidence: POST /albums "Create single album", PATCH /albums/{id} "Update single album", "Get coverArt
+    relationship", "Get genres relationship", "Get items relationship"
+  reason: Full CRUD over album records plus curation of cover art, genre and track-item relationships
+    — authoring and stewardship of descriptive catalogue metadata that makes content discoverable. Some
+    chance the intended fit is content identifier/versioning, hence not higher.
+- tag: tracks
+  spec_file: tidal-tracks-api-openapi.yml
+  capability_id: BC-3710.20
+  capability_id_l1: BC-3710
+  capability_name: Metadata Cataloguing
+  confidence: 0.75
+  evidence: 'GET /tracks/{id}/relationships/credits; GET /tracks/{id}/relationships/genres; GET /tracks/{id}/relationships/lyrics;
+    "Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits,
+    and artwork"'
+  reason: CRUD over catalog track records with descriptive metadata relationships (artists, credits, genres,
+    lyrics, albums) is authoring and curation of descriptive metadata that makes assets discoverable —
+    metadata cataloguing of media assets.
+- tag: artistBiographies
+  spec_file: tidal-artistbiographies-api-openapi.yml
+  capability_id: BC-3710.20
+  capability_id_l1: BC-3710
+  capability_name: Metadata Cataloguing
+  confidence: 0.7
+  evidence: 'GET /artistBiographies "Get multiple artistBiographies"; PATCH /artistBiographies/{id} "Update
+    single artistBiographie"; spec description: "Browse TIDAL''s high-fidelity music catalog: albums,
+    artists, tracks, videos, genres, lyrics, credits, and artwork"'
+  reason: Read and update of artist biography text within the music catalogue — authoring and curation
+    of descriptive metadata for catalogue assets, which is metadata cataloguing rather than any editorial-production
+    capability.
+- tag: artists
+  spec_file: tidal-artists-api-openapi.yml
+  capability_id: BC-3710.20
+  capability_id_l1: BC-3710
+  capability_name: Metadata Cataloguing
+  confidence: 0.7
+  evidence: 'GET /artists/{id}/relationships/biography, GET /artists/{id}/relationships/profileArt; description
+    ''Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits,
+    and artwork.'''
+  reason: The tag exposes catalogue artist entities and their descriptive metadata relationships (biography,
+    profile art, albums), i.e. authoring and serving descriptive metadata that makes music assets discoverable.
+    Some ambiguity with on-demand catalogue curation, but the surface is metadata records rather than
+    curated collections.
