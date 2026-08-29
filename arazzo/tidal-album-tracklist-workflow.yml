@@ -12,8 +12,11 @@ info:
     runtime expressions used to chain identifiers.
   version: 1.0.0
 sourceDescriptions:
-- name: catalogApi
-  url: ../openapi/tidal-catalog-api-openapi.yml
+- name: albumsApi
+  url: ../openapi/tidal-albums-api-openapi.yml
+  type: openapi
+- name: tracksApi
+  url: ../openapi/tidal-tracks-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: album-tracklist
@@ -41,7 +44,7 @@ workflows:
     description: >-
       Read the album resource, including its artists and items relationships for
       context.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1albums~1{id}/get'
+    operationPath: '{$sourceDescriptions.albumsApi.url}#/paths/~1albums~1{id}/get'
     parameters:
     - name: Authorization
       in: header
@@ -64,7 +67,7 @@ workflows:
     description: >-
       Follow the album items relationship to enumerate the track and video
       resource identifiers on the album.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1albums~1{id}~1relationships~1items/get'
+    operationPath: '{$sourceDescriptions.albumsApi.url}#/paths/~1albums~1{id}~1relationships~1items/get'
     parameters:
     - name: Authorization
       in: header
@@ -91,7 +94,7 @@ workflows:
   - stepId: getFirstTrack
     description: >-
       Read the first album item as a track, including its artists relationship.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}/get'
+    operationPath: '{$sourceDescriptions.tracksApi.url}#/paths/~1tracks~1{id}/get'
     parameters:
     - name: Authorization
       in: header
@@ -114,7 +117,7 @@ workflows:
     description: >-
       Follow the track artists relationship to resolve the performing artist
       identifiers for the first track.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}~1relationships~1artists/get'
+    operationPath: '{$sourceDescriptions.tracksApi.url}#/paths/~1tracks~1{id}~1relationships~1artists/get'
     parameters:
     - name: Authorization
       in: header

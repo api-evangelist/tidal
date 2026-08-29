@@ -12,8 +12,8 @@ info:
     runtime expressions used to chain identifiers.
   version: 1.0.0
 sourceDescriptions:
-- name: catalogApi
-  url: ../openapi/tidal-catalog-api-openapi.yml
+- name: artistsApi
+  url: ../openapi/tidal-artists-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: artist-discography
@@ -41,7 +41,7 @@ workflows:
     description: >-
       Retrieve the artist resource, including the albums relationship so the
       discography can be enumerated.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1artists~1{id}/get'
+    operationPath: '{$sourceDescriptions.artistsApi.url}#/paths/~1artists~1{id}/get'
     parameters:
     - name: Authorization
       in: header
@@ -64,7 +64,7 @@ workflows:
     description: >-
       Follow the artist albums relationship to list the album resource
       identifiers attributed to the artist.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1artists~1{id}~1relationships~1albums/get'
+    operationPath: '{$sourceDescriptions.artistsApi.url}#/paths/~1artists~1{id}~1relationships~1albums/get'
     parameters:
     - name: Authorization
       in: header
@@ -84,7 +84,7 @@ workflows:
     description: >-
       Follow the artist tracks relationship to list the artist's tracks,
       collapsing similar entries by fingerprint as required by the operation.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1artists~1{id}~1relationships~1tracks/get'
+    operationPath: '{$sourceDescriptions.artistsApi.url}#/paths/~1artists~1{id}~1relationships~1tracks/get'
     parameters:
     - name: Authorization
       in: header
@@ -107,7 +107,7 @@ workflows:
     description: >-
       Follow the similarArtists relationship to surface related artists for
       further exploration.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1artists~1{id}~1relationships~1similarArtists/get'
+    operationPath: '{$sourceDescriptions.artistsApi.url}#/paths/~1artists~1{id}~1relationships~1similarArtists/get'
     parameters:
     - name: Authorization
       in: header

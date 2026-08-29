@@ -14,11 +14,14 @@ info:
     descriptions.
   version: 1.0.0
 sourceDescriptions:
-- name: searchApi
-  url: ../openapi/tidal-search-api-openapi.yml
+- name: albumsApi
+  url: ../openapi/tidal-albums-api-openapi.yml
   type: openapi
-- name: catalogApi
-  url: ../openapi/tidal-catalog-api-openapi.yml
+- name: searchresultsApi
+  url: ../openapi/tidal-searchresults-api-openapi.yml
+  type: openapi
+- name: tracksApi
+  url: ../openapi/tidal-tracks-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: search-to-track-album
@@ -46,7 +49,7 @@ workflows:
     description: >-
       Read the searchResult for the supplied query, including its tracks
       relationship so matched track identifiers are available.
-    operationPath: '{$sourceDescriptions.searchApi.url}#/paths/~1searchResults~1{id}/get'
+    operationPath: '{$sourceDescriptions.searchresultsApi.url}#/paths/~1searchResults~1{id}/get'
     parameters:
     - name: Authorization
       in: header
@@ -68,7 +71,7 @@ workflows:
     description: >-
       Follow the searchResult tracks relationship to obtain the list of track
       resource identifiers that matched the query.
-    operationPath: '{$sourceDescriptions.searchApi.url}#/paths/~1searchResults~1{id}~1relationships~1tracks/get'
+    operationPath: '{$sourceDescriptions.searchresultsApi.url}#/paths/~1searchResults~1{id}~1relationships~1tracks/get'
     parameters:
     - name: Authorization
       in: header
@@ -95,7 +98,7 @@ workflows:
     description: >-
       Retrieve the first matched track in full, including its albums
       relationship so the parent album can be resolved.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}/get'
+    operationPath: '{$sourceDescriptions.tracksApi.url}#/paths/~1tracks~1{id}/get'
     parameters:
     - name: Authorization
       in: header
@@ -118,7 +121,7 @@ workflows:
     description: >-
       Follow the track albums relationship to obtain the identifier of the album
       that contains the track.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}~1relationships~1albums/get'
+    operationPath: '{$sourceDescriptions.tracksApi.url}#/paths/~1tracks~1{id}~1relationships~1albums/get'
     parameters:
     - name: Authorization
       in: header
@@ -137,7 +140,7 @@ workflows:
     description: >-
       Read the album that contains the matched track, including its artists and
       items so the full album context is returned.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1albums~1{id}/get'
+    operationPath: '{$sourceDescriptions.albumsApi.url}#/paths/~1albums~1{id}/get'
     parameters:
     - name: Authorization
       in: header

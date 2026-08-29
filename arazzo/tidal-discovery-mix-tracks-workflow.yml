@@ -13,11 +13,11 @@ info:
     identifiers between the two specs.
   version: 1.0.0
 sourceDescriptions:
-- name: recommendationsApi
-  url: ../openapi/tidal-recommendations-api-openapi.yml
+- name: tracksApi
+  url: ../openapi/tidal-tracks-api-openapi.yml
   type: openapi
-- name: catalogApi
-  url: ../openapi/tidal-catalog-api-openapi.yml
+- name: userdiscoverymixesApi
+  url: ../openapi/tidal-userdiscoverymixes-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: discovery-mix-tracks
@@ -44,7 +44,7 @@ workflows:
     description: >-
       Read the authenticated user's userDiscoveryMixes resource, using `me` to
       target the caller, including the items relationship.
-    operationPath: '{$sourceDescriptions.recommendationsApi.url}#/paths/~1userDiscoveryMixes~1{id}/get'
+    operationPath: '{$sourceDescriptions.userdiscoverymixesApi.url}#/paths/~1userDiscoveryMixes~1{id}/get'
     parameters:
     - name: Authorization
       in: header
@@ -69,7 +69,7 @@ workflows:
     description: >-
       Follow the discovery mix items relationship to enumerate the recommended
       track resource identifiers.
-    operationPath: '{$sourceDescriptions.recommendationsApi.url}#/paths/~1userDiscoveryMixes~1{id}~1relationships~1items/get'
+    operationPath: '{$sourceDescriptions.userdiscoverymixesApi.url}#/paths/~1userDiscoveryMixes~1{id}~1relationships~1items/get'
     parameters:
     - name: Authorization
       in: header
@@ -100,7 +100,7 @@ workflows:
     description: >-
       Read the first recommended track from the catalog, including its artists
       relationship.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}/get'
+    operationPath: '{$sourceDescriptions.tracksApi.url}#/paths/~1tracks~1{id}/get'
     parameters:
     - name: Authorization
       in: header
@@ -123,7 +123,7 @@ workflows:
     description: >-
       Follow the track artists relationship to resolve the performing artist for
       the first recommended track.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}~1relationships~1artists/get'
+    operationPath: '{$sourceDescriptions.tracksApi.url}#/paths/~1tracks~1{id}~1relationships~1artists/get'
     parameters:
     - name: Authorization
       in: header

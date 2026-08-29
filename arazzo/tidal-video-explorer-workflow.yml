@@ -11,8 +11,8 @@ info:
     status, and the JSON:API runtime expressions used to chain identifiers.
   version: 1.0.0
 sourceDescriptions:
-- name: catalogApi
-  url: ../openapi/tidal-catalog-api-openapi.yml
+- name: videosApi
+  url: ../openapi/tidal-videos-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: video-explorer
@@ -39,7 +39,7 @@ workflows:
   - stepId: getVideo
     description: >-
       Read the video resource, including its artists relationship for context.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1videos~1{id}/get'
+    operationPath: '{$sourceDescriptions.videosApi.url}#/paths/~1videos~1{id}/get'
     parameters:
     - name: Authorization
       in: header
@@ -62,7 +62,7 @@ workflows:
     description: >-
       Follow the video artists relationship to resolve the performing artist
       resource identifiers.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1videos~1{id}~1relationships~1artists/get'
+    operationPath: '{$sourceDescriptions.videosApi.url}#/paths/~1videos~1{id}~1relationships~1artists/get'
     parameters:
     - name: Authorization
       in: header
@@ -82,7 +82,7 @@ workflows:
     description: >-
       Follow the similarVideos relationship to surface related videos for
       further exploration.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1videos~1{id}~1relationships~1similarVideos/get'
+    operationPath: '{$sourceDescriptions.videosApi.url}#/paths/~1videos~1{id}~1relationships~1similarVideos/get'
     parameters:
     - name: Authorization
       in: header

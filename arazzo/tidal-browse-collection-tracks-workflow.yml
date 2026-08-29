@@ -12,11 +12,11 @@ info:
     the runtime expressions that chain identifiers between the two specs.
   version: 1.0.0
 sourceDescriptions:
-- name: userCollectionsApi
-  url: ../openapi/tidal-user-collections-api-openapi.yml
+- name: tracksApi
+  url: ../openapi/tidal-tracks-api-openapi.yml
   type: openapi
-- name: catalogApi
-  url: ../openapi/tidal-catalog-api-openapi.yml
+- name: usercollectiontracksApi
+  url: ../openapi/tidal-usercollectiontracks-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: browse-collection-tracks
@@ -43,7 +43,7 @@ workflows:
     description: >-
       Read the authenticated user's userCollectionTracks resource, using `me` to
       target the caller, including the items relationship.
-    operationPath: '{$sourceDescriptions.userCollectionsApi.url}#/paths/~1userCollectionTracks~1{id}/get'
+    operationPath: '{$sourceDescriptions.usercollectiontracksApi.url}#/paths/~1userCollectionTracks~1{id}/get'
     parameters:
     - name: Authorization
       in: header
@@ -68,7 +68,7 @@ workflows:
     description: >-
       Follow the items relationship to enumerate the saved track resource
       identifiers in the user's collection.
-    operationPath: '{$sourceDescriptions.userCollectionsApi.url}#/paths/~1userCollectionTracks~1{id}~1relationships~1items/get'
+    operationPath: '{$sourceDescriptions.usercollectiontracksApi.url}#/paths/~1userCollectionTracks~1{id}~1relationships~1items/get'
     parameters:
     - name: Authorization
       in: header
@@ -99,7 +99,7 @@ workflows:
     description: >-
       Read the first saved track from the catalog, including its albums
       relationship for enrichment.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}/get'
+    operationPath: '{$sourceDescriptions.tracksApi.url}#/paths/~1tracks~1{id}/get'
     parameters:
     - name: Authorization
       in: header
@@ -122,7 +122,7 @@ workflows:
     description: >-
       Follow the track albums relationship to resolve the album that contains
       the first saved track.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}~1relationships~1albums/get'
+    operationPath: '{$sourceDescriptions.tracksApi.url}#/paths/~1tracks~1{id}~1relationships~1albums/get'
     parameters:
     - name: Authorization
       in: header

@@ -13,11 +13,11 @@ info:
     manifest request.
   version: 1.0.0
 sourceDescriptions:
-- name: catalogApi
-  url: ../openapi/tidal-catalog-api-openapi.yml
+- name: trackmanifestsApi
+  url: ../openapi/tidal-trackmanifests-api-openapi.yml
   type: openapi
-- name: playbackApi
-  url: ../openapi/tidal-playback-api-openapi.yml
+- name: tracksApi
+  url: ../openapi/tidal-tracks-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: track-playback-manifest
@@ -45,7 +45,7 @@ workflows:
     description: >-
       Look up tracks matching the supplied ISRC using the tracks collection
       filter, returning candidate track resources.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks/get'
+    operationPath: '{$sourceDescriptions.tracksApi.url}#/paths/~1tracks/get'
     parameters:
     - name: Authorization
       in: header
@@ -72,7 +72,7 @@ workflows:
     description: >-
       Read the matched track in full to confirm it before requesting a playback
       manifest.
-    operationPath: '{$sourceDescriptions.catalogApi.url}#/paths/~1tracks~1{id}/get'
+    operationPath: '{$sourceDescriptions.tracksApi.url}#/paths/~1tracks~1{id}/get'
     parameters:
     - name: Authorization
       in: header
@@ -93,7 +93,7 @@ workflows:
       Request an adaptive HLS playback manifest for the confirmed track,
       supplying the required manifestType, formats, uriScheme, usage, and
       adaptive parameters.
-    operationPath: '{$sourceDescriptions.playbackApi.url}#/paths/~1trackManifests~1{id}/get'
+    operationPath: '{$sourceDescriptions.trackmanifestsApi.url}#/paths/~1trackManifests~1{id}/get'
     parameters:
     - name: Authorization
       in: header
