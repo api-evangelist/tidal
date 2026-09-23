@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: TIDAL Catalog acceptedTerms User Data Export Requests API
+  title: TIDAL Catalog acceptedTerms User Reports API
   version: 1.10.14
   description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
@@ -8,24 +8,24 @@ servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: userDataExportRequests
+- name: User Reports
 paths:
-  /userDataExportRequests:
+  /userReports:
     post:
-      description: Creates a new userDataExportRequest.
+      description: Creates a new userReport.
       parameters:
       - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         content:
           application/vnd.api+json:
             schema:
-              $ref: '#/components/schemas/UserDataExportRequestsCreateOperation_Payload'
+              $ref: '#/components/schemas/UserReportsCreateOperation_Payload'
       responses:
         '201':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/UserDataExportRequests_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/UserReports_Single_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -50,12 +50,12 @@ paths:
       security:
       - Authorization_Code_PKCE:
         - w_usr
-      summary: Create single userDataExportRequest
+      summary: Create single userReport
       tags:
-      - userDataExportRequests
+      - User Reports
       x-path-item-properties:
         required-access-tier: INTERNAL
-      operationId: postUserDataExportRequests
+      operationId: postUserReports
       x-operation-id-source: derived
 components:
   schemas:
@@ -302,6 +302,27 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserReportsCreateOperation_Payload_Data_Attributes:
+      required:
+      - description
+      - reason
+      type: object
+      properties:
+        description:
+          type: string
+        reason:
+          type: string
+          enum:
+          - SEXUAL_CONTENT_OR_NUDITY
+          - VIOLENT_OR_DANGEROUS_CONTENT
+          - HATEFUL_OR_ABUSIVE_CONTENT
+          - HARASSMENT
+          - PRIVACY_VIOLATION
+          - SCAMS_OR_FRAUD
+          - SPAM
+          - COPYRIGHT_INFRINGEMENT
+          - APPEAL
+          - UNKNOWN
     DynamicModules_Resource_Object:
       required:
       - id
@@ -461,13 +482,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    UserDataExportRequestsCreateOperation_Payload:
-      required:
-      - data
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/UserDataExportRequestsCreateOperation_Payload_Data'
     UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
       - id
@@ -687,6 +701,21 @@ components:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
         provider:
           $ref: '#/components/schemas/Single_Relationship_Data_Document'
+    UserReportsCreateOperation_Payload_Data:
+      required:
+      - attributes
+      - relationships
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserReportsCreateOperation_Payload_Data_Attributes'
+        relationships:
+          $ref: '#/components/schemas/UserReportsCreateOperation_Payload_Data_Relationships'
+        type:
+          type: string
+          enum:
+          - userReports
     DspSharingLinks_Resource_Object:
       required:
       - id
@@ -1449,18 +1478,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    UserDataExportRequestsCreateOperation_Payload_Data:
-      required:
-      - attributes
-      - type
-      type: object
-      properties:
-        attributes:
-          $ref: '#/components/schemas/UserDataExportRequestsCreateOperation_Payload_Data_Attributes'
-        type:
-          type: string
-          enum:
-          - userDataExportRequests
     Clients_Attributes:
       required:
       - accessTier
@@ -1606,6 +1623,18 @@ components:
         meta:
           $ref: '#/components/schemas/Artwork_File_Meta'
       description: Artwork files
+    UserReports_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserReports_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     ContentClaims_Relationships:
       properties:
         claimedResource:
@@ -1627,6 +1656,16 @@ components:
           $ref: '#/components/schemas/Included'
         links:
           $ref: '#/components/schemas/Links'
+    LegacySource:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
     Reactions_Attributes:
       required:
       - createdAt
@@ -1641,21 +1680,6 @@ components:
         emoji:
           type: string
           description: The type of reaction representing an emoji
-    LegacySource:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-    Artists_Followers_Resource_Identifier_Meta:
-      type: object
-      properties:
-        viewer:
-          $ref: '#/components/schemas/Artists_Followers_Resource_Meta_ViewerContext'
     UserCollectionVideos_Items_Resource_Identifier:
       required:
       - id
@@ -1672,6 +1696,11 @@ components:
           type: string
           description: Resource type
           example: tracks
+    Artists_Followers_Resource_Identifier_Meta:
+      type: object
+      properties:
+        viewer:
+          $ref: '#/components/schemas/Artists_Followers_Resource_Meta_ViewerContext'
     UserNewReleaseMixes_Attributes:
       type: object
     LyricsProvider:
@@ -3354,21 +3383,6 @@ components:
           type: integer
           description: Number of items in the collection
           format: int32
-    UserDataExportRequestsCreateOperation_Payload_Data_Attributes:
-      required:
-      - flowType
-      type: object
-      properties:
-        flowType:
-          type: string
-          enum:
-          - GDPR
-          - CCPA
-          - COPPA
-          - ANZ_PA
-          - US_PRIVACY_REGULATION
-          - APPI
-          - RETENTION_POLICY
     Artists_Following_Multi_Relationship_Data_Document:
       required:
       - links
@@ -3765,10 +3779,42 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserReportsCreateOperation_Payload:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserReportsCreateOperation_Payload_Data'
+    UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources_Data:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - tracks
+          - artists
+          - playlists
     AlbumStatistics_Relationships:
       properties:
         owners:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          maxItems: 1
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources_Data'
     Users_Attributes:
       required:
       - country
@@ -4345,18 +4391,6 @@ components:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
         videos:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-    UserDataExportRequests_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/UserDataExportRequests_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     Videos_Attributes:
       required:
       - duration
@@ -4649,6 +4683,13 @@ components:
           type: string
           description: Resource type
           example: tracks
+    UserReportsCreateOperation_Payload_Data_Relationships:
+      required:
+      - reportedResources
+      type: object
+      properties:
+        reportedResources:
+          $ref: '#/components/schemas/UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources'
     File_Upload_Link:
       required:
       - href

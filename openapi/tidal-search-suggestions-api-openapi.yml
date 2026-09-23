@@ -1,31 +1,60 @@
 openapi: 3.2.0
 info:
-  title: TIDAL Catalog acceptedTerms User Data Export Requests API
+  title: TIDAL Search Search Suggestions API
   version: 1.10.14
-  description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
+  description: Search the TIDAL catalog with personalized search results, suggestions, and per-user search history.
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
 servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: userDataExportRequests
+- name: Search Suggestions
 paths:
-  /userDataExportRequests:
-    post:
-      description: Creates a new userDataExportRequest.
+  /searchSuggestions/{id}:
+    get:
+      description: Retrieves single searchSuggestion by id.
       parameters:
-      - $ref: '#/components/parameters/IdempotencyKey'
-      requestBody:
-        content:
-          application/vnd.api+json:
-            schema:
-              $ref: '#/components/schemas/UserDataExportRequestsCreateOperation_Payload'
+      - description: Search query string used as the resource identifier
+        example: hello
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Explicit filter. Valid values: INCLUDE or EXCLUDE'
+        example: INCLUDE
+        in: query
+        name: explicitFilter
+        required: false
+        schema:
+          type: string
+          enum:
+          - INCLUDE
+          - EXCLUDE
+          default: INCLUDE
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: directHits, history'
+        example: directHits
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: directHits
       responses:
-        '201':
+        '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/UserDataExportRequests_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/SearchSuggestions_Single_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -35,12 +64,8 @@ paths:
           $ref: '#/components/responses/Default405Response'
         '406':
           $ref: '#/components/responses/Default406Response'
-        '409':
-          $ref: '#/components/responses/Idempotency409Response'
         '415':
           $ref: '#/components/responses/Default415Response'
-        '422':
-          $ref: '#/components/responses/Idempotency422Response'
         '429':
           $ref: '#/components/responses/Default429Response'
         '500':
@@ -48,14 +73,169 @@ paths:
         '503':
           $ref: '#/components/responses/Default503Response'
       security:
-      - Authorization_Code_PKCE:
-        - w_usr
-      summary: Create single userDataExportRequest
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get single searchSuggestion
       tags:
-      - userDataExportRequests
+      - Search Suggestions
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+      operationId: getSearchSuggestionsById
+      x-operation-id-source: derived
+  /searchSuggestions/{id}/relationships/directHits:
+    get:
+      description: Retrieves directHits relationship.
+      parameters:
+      - description: Search query string used as the resource identifier
+        example: hello
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Explicit filter. Valid values: INCLUDE or EXCLUDE'
+        example: INCLUDE
+        in: query
+        name: explicitFilter
+        required: false
+        schema:
+          type: string
+          enum:
+          - INCLUDE
+          - EXCLUDE
+          default: INCLUDE
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: directHits'
+        example: directHits
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: directHits
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SearchSuggestions_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get directHits relationship ("to-many")
+      tags:
+      - Search Suggestions
+      x-path-item-properties:
+        required-access-tier: THIRD_PARTY
+      operationId: getSearchSuggestionsByIdRelationshipsDirectHits
+      x-operation-id-source: derived
+  /searchSuggestions/{id}/relationships/history:
+    get:
+      description: Retrieves history relationship.
+      parameters:
+      - description: Search query string used as the resource identifier
+        example: hello
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Explicit filter. Valid values: INCLUDE or EXCLUDE'
+        example: INCLUDE
+        in: query
+        name: explicitFilter
+        required: false
+        schema:
+          type: string
+          enum:
+          - INCLUDE
+          - EXCLUDE
+          default: INCLUDE
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: history'
+        example: history
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: history
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SearchSuggestions_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Authorization_Code_PKCE: []
+      summary: Get history relationship ("to-many")
+      tags:
+      - Search Suggestions
       x-path-item-properties:
         required-access-tier: INTERNAL
-      operationId: postUserDataExportRequests
+      operationId: getSearchSuggestionsByIdRelationshipsHistory
       x-operation-id-source: derived
 components:
   schemas:
@@ -461,13 +641,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    UserDataExportRequestsCreateOperation_Payload:
-      required:
-      - data
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/UserDataExportRequestsCreateOperation_Payload_Data'
     UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
       - id
@@ -963,6 +1136,19 @@ components:
         name:
           type: string
           description: Name of the artist role
+    SearchSuggestions_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Albums_SuggestedCoverArts_Multi_Relationship_Data_Document_Meta:
       type: object
       properties:
@@ -1449,18 +1635,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    UserDataExportRequestsCreateOperation_Payload_Data:
-      required:
-      - attributes
-      - type
-      type: object
-      properties:
-        attributes:
-          $ref: '#/components/schemas/UserDataExportRequestsCreateOperation_Payload_Data_Attributes'
-        type:
-          type: string
-          enum:
-          - userDataExportRequests
     Clients_Attributes:
       required:
       - accessTier
@@ -2008,19 +2182,6 @@ components:
             $ref: '#/components/schemas/Resource_Identifier'
         links:
           $ref: '#/components/schemas/Links'
-    UserCollections_Playlists_Multi_Relationship_Data_Document:
-      required:
-      - links
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserCollections_Playlists_Resource_Identifier'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     SquareConnections_Resource_Object:
       required:
       - id
@@ -2038,6 +2199,31 @@ components:
           type: string
           description: Resource type
           example: tracks
+    SearchSuggestions_Single_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/SearchSuggestions_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
+    UserCollections_Playlists_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCollections_Playlists_Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     TidalLyricsProvider:
       type: object
       allOf:
@@ -3354,21 +3540,6 @@ components:
           type: integer
           description: Number of items in the collection
           format: int32
-    UserDataExportRequestsCreateOperation_Payload_Data_Attributes:
-      required:
-      - flowType
-      type: object
-      properties:
-        flowType:
-          type: string
-          enum:
-          - GDPR
-          - CCPA
-          - COPPA
-          - ANZ_PA
-          - US_PRIVACY_REGULATION
-          - APPI
-          - RETENTION_POLICY
     Artists_Following_Multi_Relationship_Data_Document:
       required:
       - links
@@ -4345,18 +4516,6 @@ components:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
         videos:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-    UserDataExportRequests_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/UserDataExportRequests_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     Videos_Attributes:
       required:
       - duration

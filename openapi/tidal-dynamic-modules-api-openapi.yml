@@ -1,31 +1,97 @@
 openapi: 3.2.0
 info:
-  title: TIDAL Catalog acceptedTerms User Data Export Requests API
+  title: TIDAL Recommendations Dynamic Modules API
   version: 1.10.14
-  description: 'Browse TIDAL''s high-fidelity music catalog: albums, artists, tracks, videos, genres, lyrics, credits, and artwork. JSON:API compliant with relationship traversal.'
+  description: Personalized recommendations including Daily Mixes, Discovery Mix, New Release Mix, Offline Mix, and dynamic editorial pages.
   x-source: https://tidal-music.github.io/tidal-api-reference/tidal-api-oas.json
 servers:
 - url: https://openapi.tidal.com/v2
   description: Production
 tags:
-- name: userDataExportRequests
+- name: Dynamic Modules
 paths:
-  /userDataExportRequests:
-    post:
-      description: Creates a new userDataExportRequest.
+  /dynamicModules:
+    get:
+      description: Retrieves multiple dynamicModules by available filters, or without if applicable.
       parameters:
-      - $ref: '#/components/parameters/IdempotencyKey'
-      requestBody:
-        content:
-          application/vnd.api+json:
-            schema:
-              $ref: '#/components/schemas/UserDataExportRequestsCreateOperation_Payload'
+      - in: query
+        name: refreshId
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+        example: en-US
+        in: query
+        name: locale
+        required: false
+        schema:
+          type: string
+          default: en-US
+      - description: The type of device making the request
+        example: PHONE
+        in: query
+        name: deviceType
+        required: true
+        schema:
+          type: string
+          enum:
+          - BROWSER
+          - CAR
+          - DESKTOP
+          - PHONE
+          - TABLET
+          - TV
+      - description: The system type of the device making the request
+        example: IOS
+        in: query
+        name: systemType
+        required: true
+        schema:
+          type: string
+          enum:
+          - ANDROID
+          - DESKTOP
+          - TESLA
+          - IOS
+          - WEB
+      - description: Client version number
+        example: 2026.0.1
+        in: query
+        name: clientVersion
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: items'
+        example: items
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: items
+      - description: DynamicModules Id (e.g. `nejMcAhh5N8S3EQ4LaqysVdI0cZZ`)
+        in: query
+        name: filter[id]
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
       responses:
-        '201':
+        '200':
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/UserDataExportRequests_Single_Resource_Data_Document'
+                $ref: '#/components/schemas/DynamicModules_Multi_Resource_Data_Document'
           description: Successful response
         '400':
           $ref: '#/components/responses/Default400Response'
@@ -35,12 +101,8 @@ paths:
           $ref: '#/components/responses/Default405Response'
         '406':
           $ref: '#/components/responses/Default406Response'
-        '409':
-          $ref: '#/components/responses/Idempotency409Response'
         '415':
           $ref: '#/components/responses/Default415Response'
-        '422':
-          $ref: '#/components/responses/Idempotency422Response'
         '429':
           $ref: '#/components/responses/Default429Response'
         '500':
@@ -48,14 +110,129 @@ paths:
         '503':
           $ref: '#/components/responses/Default503Response'
       security:
-      - Authorization_Code_PKCE:
-        - w_usr
-      summary: Create single userDataExportRequest
+      - Client_Credentials: []
+      - Authorization_Code_PKCE: []
+      summary: Get multiple dynamicModules
       tags:
-      - userDataExportRequests
+      - Dynamic Modules
       x-path-item-properties:
         required-access-tier: INTERNAL
-      operationId: postUserDataExportRequests
+      operationId: getDynamicModules
+      x-operation-id-source: derived
+  /dynamicModules/{id}/relationships/items:
+    get:
+      description: Retrieves items relationship.
+      parameters:
+      - description: DynamicModules Id
+        example: nejMcAhh5N8S3EQ4LaqysVdI0cZZ
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: refreshId
+        required: false
+        schema:
+          type: string
+      - description: Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified
+        in: query
+        name: page[cursor]
+        required: false
+        schema:
+          type: string
+      - description: ISO 3166-1 alpha-2 country code
+        example: US
+        in: query
+        name: countryCode
+        required: false
+        schema:
+          type: string
+      - description: BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported.
+        example: en-US
+        in: query
+        name: locale
+        required: false
+        schema:
+          type: string
+          default: en-US
+      - description: The type of device making the request
+        example: PHONE
+        in: query
+        name: deviceType
+        required: true
+        schema:
+          type: string
+          enum:
+          - BROWSER
+          - CAR
+          - DESKTOP
+          - PHONE
+          - TABLET
+          - TV
+      - description: The system type of the device making the request
+        example: IOS
+        in: query
+        name: systemType
+        required: true
+        schema:
+          type: string
+          enum:
+          - ANDROID
+          - DESKTOP
+          - TESLA
+          - IOS
+          - WEB
+      - description: Client version number
+        example: 2026.0.1
+        in: query
+        name: clientVersion
+        required: true
+        schema:
+          type: string
+      - description: 'Allows the client to customize which related resources should be returned. Available options: items'
+        example: items
+        in: query
+        name: include
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            example: items
+      responses:
+        '200':
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/DynamicModules_Multi_Relationship_Data_Document'
+          description: Successful response
+        '400':
+          $ref: '#/components/responses/Default400Response'
+        '404':
+          $ref: '#/components/responses/Default404Response'
+        '405':
+          $ref: '#/components/responses/Default405Response'
+        '406':
+          $ref: '#/components/responses/Default406Response'
+        '415':
+          $ref: '#/components/responses/Default415Response'
+        '429':
+          $ref: '#/components/responses/Default429Response'
+        '500':
+          $ref: '#/components/responses/Default500Response'
+        '503':
+          $ref: '#/components/responses/Default503Response'
+      security:
+      - Client_Credentials: []
+      - Authorization_Code_PKCE:
+        - r_usr
+      summary: Get items relationship ("to-many")
+      tags:
+      - Dynamic Modules
+      x-path-item-properties:
+        required-access-tier: INTERNAL
+      operationId: getDynamicModulesByIdRelationshipsItems
       x-operation-id-source: derived
 components:
   schemas:
@@ -461,13 +638,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    UserDataExportRequestsCreateOperation_Payload:
-      required:
-      - data
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/UserDataExportRequestsCreateOperation_Payload_Data'
     UserCollectionSaveForLaters_Items_Resource_Identifier:
       required:
       - id
@@ -963,6 +1133,19 @@ components:
         name:
           type: string
           description: Name of the artist role
+    DynamicModules_Multi_Relationship_Data_Document:
+      required:
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource_Identifier'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     Albums_SuggestedCoverArts_Multi_Relationship_Data_Document_Meta:
       type: object
       properties:
@@ -1449,18 +1632,6 @@ components:
           type: string
           description: Resource type
           example: tracks
-    UserDataExportRequestsCreateOperation_Payload_Data:
-      required:
-      - attributes
-      - type
-      type: object
-      properties:
-        attributes:
-          $ref: '#/components/schemas/UserDataExportRequestsCreateOperation_Payload_Data_Attributes'
-        type:
-          type: string
-          enum:
-          - userDataExportRequests
     Clients_Attributes:
       required:
       - accessTier
@@ -2452,6 +2623,20 @@ components:
       properties:
         owners:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
+    DynamicModules_Multi_Resource_Data_Document:
+      required:
+      - data
+      - links
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DynamicModules_Resource_Object'
+        included:
+          $ref: '#/components/schemas/Included'
+        links:
+          $ref: '#/components/schemas/Links'
     UserCollectionVideos_Items_Resource_Identifier_Meta:
       required:
       - addedAt
@@ -2460,25 +2645,6 @@ components:
         addedAt:
           type: string
           format: date-time
-    UserRecommendations_Resource_Object:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        attributes:
-          $ref: '#/components/schemas/UserRecommendations_Attributes'
-        id:
-          type: string
-          description: Resource id
-          example: '12345'
-        relationships:
-          $ref: '#/components/schemas/UserRecommendations_Relationships'
-        type:
-          minLength: 1
-          type: string
-          description: Resource type
-          example: tracks
     TrackStatistics_Attributes:
       required:
       - totalPlaybacks
@@ -2580,6 +2746,25 @@ components:
             description: UPCs associated with the claim
         websiteOrSocialLink:
           $ref: '#/components/schemas/Link_Object'
+    UserRecommendations_Resource_Object:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/UserRecommendations_Attributes'
+        id:
+          type: string
+          description: Resource id
+          example: '12345'
+        relationships:
+          $ref: '#/components/schemas/UserRecommendations_Relationships'
+        type:
+          minLength: 1
+          type: string
+          description: Resource type
+          example: tracks
     LegacyBarcodeId:
       type: object
       properties:
@@ -3354,21 +3539,6 @@ components:
           type: integer
           description: Number of items in the collection
           format: int32
-    UserDataExportRequestsCreateOperation_Payload_Data_Attributes:
-      required:
-      - flowType
-      type: object
-      properties:
-        flowType:
-          type: string
-          enum:
-          - GDPR
-          - CCPA
-          - COPPA
-          - ANZ_PA
-          - US_PRIVACY_REGULATION
-          - APPI
-          - RETENTION_POLICY
     Artists_Following_Multi_Relationship_Data_Document:
       required:
       - links
@@ -4345,18 +4515,6 @@ components:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
         videos:
           $ref: '#/components/schemas/Multi_Relationship_Data_Document'
-    UserDataExportRequests_Single_Resource_Data_Document:
-      required:
-      - data
-      - links
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/UserDataExportRequests_Resource_Object'
-        included:
-          $ref: '#/components/schemas/Included'
-        links:
-          $ref: '#/components/schemas/Links'
     Videos_Attributes:
       required:
       - duration
